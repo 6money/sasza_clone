@@ -1,0 +1,19 @@
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-core'
+
+dependencies {
+	api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+	api "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
+	api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+	api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
+	api "com.github.MrStahlfelge.gdx-websockets:core:$websocketVersion"
+	api "de.golfgl.gdxcontrollerutils:gdx-controllerutils-mapping:$controllerMappingVersion"
+	api "com.crashinvaders.vfx:gdx-vfx-core:$gdxVfxCoreVersion"
+	api "com.crashinvaders.vfx:gdx-vfx-effects:$gdxVfxEffectsVersion"
+	api "com.github.tommyettinger:jbump:$jbumpVersion"
+	api "com.github.raeleus.TenPatch:tenpatch:$tenPatchVersion"
+	api "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
+	api "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
+	api "com.github.tommyettinger:regexodus:$regExodusVersion"
+}
