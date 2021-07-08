@@ -1,10 +1,9 @@
-package com.sixmoney;
+package com.sixmoney.sasza_clone;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.sixmoney.Sasza;
 
 /** Launches the Android application. */
 public class AndroidLauncher extends AndroidApplication {

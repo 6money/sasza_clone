@@ -124,7 +124,7 @@ task run(type: Exec) {
 	}
 
 	def adb = path + "/platform-tools/adb"
-	commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.sixmoney/com.sixmoney.AndroidLauncher'
+	commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.sixmoney/com.sixmoney.sasza_clone.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"

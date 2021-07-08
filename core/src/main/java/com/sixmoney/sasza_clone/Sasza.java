@@ -1,4 +1,4 @@
-package com.sixmoney;
+package com.sixmoney.sasza_clone;
 
 import com.badlogic.gdx.Game;
 

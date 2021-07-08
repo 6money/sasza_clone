@@ -1,9 +1,9 @@
-package com.sixmoney.desktop;
+package com.sixmoney.sasza_clone.desktop;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.sixmoney.Sasza;
+import com.sixmoney.sasza_clone.Sasza;
 
 /** Launches the desktop (LWJGL) application. */
 public class DesktopLauncher {

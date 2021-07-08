@@ -11,8 +11,8 @@
 	<inherits name="com.crashinvaders.vfx.GdxVfxGwt" />
 	<inherits name="com.dongbat.jbump" />
 	<inherits name="com.ray3k.tenpatch.tenpatch" />
-	<inherits name="com.sixmoney.Sasza" />
-	<entry-point class="com.sixmoney.gwt.GwtLauncher" />
+	<inherits name="com.sixmoney.sasza_clone.Sasza" />
+	<entry-point class="com.sixmoney.sasza_clone.gwt.GwtLauncher" />
 	<set-configuration-property name="gdx.assetpath" value="../assets" />
 	<set-configuration-property name="xsiframe.failIfScriptTag" value="FALSE"/>
 	<!-- These two lines reduce the work GWT has to do during compilation and also shrink output size. -->

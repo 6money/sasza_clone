@@ -1,9 +1,9 @@
-package com.sixmoney.gwt;
+package com.sixmoney.sasza_clone.gwt;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.sixmoney.Sasza;
+import com.sixmoney.sasza_clone.Sasza;
 
 /** Launches the GWT application. */
 public class GwtLauncher extends GwtApplication {
