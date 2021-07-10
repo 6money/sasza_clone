@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.desktop;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.sixmoney.sasza_clone.Constants;
 import com.sixmoney.sasza_clone.Sasza;
 
 /** Launches the desktop (LWJGL) application. */
@@ -18,8 +19,8 @@ public class DesktopLauncher {
 	private static LwjglApplicationConfiguration getDefaultConfiguration() {
 		LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
 		configuration.title = "sasza_clone";
-		configuration.width = 640;
-		configuration.height = 480;
+		configuration.width = Constants.WINDOW_WIDTH;
+		configuration.height = Constants.WINDOW_HEIGHT;
 		//// This prevents a confusing error that would appear after exiting normally.
 		configuration.forceExit = false;
 		
