@@ -2,17 +2,17 @@ package com.sixmoney.sasza_clone.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.sixmoney.sasza_clone.Constants;
 import com.sixmoney.sasza_clone.Sasza;
+import com.sixmoney.sasza_clone.utils.Constants;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
 	public static void main(String[] args) {
-		createApplication();
+		createApplication(args);
 	}
 
-	private static Lwjgl3Application createApplication() {
-		return new Lwjgl3Application(new Sasza(), getDefaultConfiguration());
+	private static Lwjgl3Application createApplication(String[] args) {
+		return new Lwjgl3Application(new Sasza(args), getDefaultConfiguration());
 	}
 
 	private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
