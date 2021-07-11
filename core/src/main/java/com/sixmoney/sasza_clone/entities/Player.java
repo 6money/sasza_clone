@@ -6,24 +6,53 @@ import com.sixmoney.sasza_clone.utils.Assets;
 
 public class Player {
     private Vector2 position;
+    private int distance;
+    private boolean moveUp;
+    private boolean moveDown;
+    private boolean moveLeft;
+    private boolean moveRight;
 
     public Player() {
         position = new Vector2(0, 0);
+        distance = 10;
+        moveUp = false;
+        moveDown = false;
+        moveLeft = false;
+        moveRight = false;
     }
 
-    public void move(int distance, String direction) {
+    public void startMove(String direction) {
         switch (direction) {
             case "UP":
-                position.y += distance;
+                moveUp = true;
                 break;
             case "DOWN":
-                position.y -= distance;
+                moveDown = true;
                 break;
             case "LEFT":
-                position.x -= distance;
+                moveLeft = true;
                 break;
             case "RIGHT":
-                position.x += distance;
+                moveRight = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void stopMove(String direction) {
+        switch (direction) {
+            case "UP":
+                moveUp = false;
+                break;
+            case "DOWN":
+                moveDown = false;
+                break;
+            case "LEFT":
+                moveLeft = false;
+                break;
+            case "RIGHT":
+                moveRight = false;
                 break;
             default:
                 break;
@@ -31,7 +60,18 @@ public class Player {
     }
 
     public void update() {
-
+        if (moveUp) {
+            position.y += distance;
+        }
+        if (moveDown) {
+            position.y -= distance;
+        }
+        if (moveLeft) {
+            position.x -= distance;
+        }
+        if (moveRight) {
+            position.x += distance;
+        }
     }
 
     public void render(Batch batch) {

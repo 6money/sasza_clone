@@ -36,6 +36,8 @@ public class GameWorldScreen extends InputAdapter implements Screen {
 
     @Override
     public void render(float delta) {
+        player.update();
+
         Gdx.gl.glClearColor(Constants.BG_COLOR.r,Constants.BG_COLOR.g,Constants.BG_COLOR.b,Constants.BG_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -74,16 +76,35 @@ public class GameWorldScreen extends InputAdapter implements Screen {
     public boolean keyDown (int keycode) {
         switch (keycode) {
             case Input.Keys.W:
-                player.move(10, "UP");
+                player.startMove("UP");
                 return true;
             case Input.Keys.S:
-                player.move(10, "DOWN");
+                player.startMove("DOWN");
                 return true;
             case Input.Keys.A:
-                player.move(10, "LEFT");
+                player.startMove("LEFT");
                 return true;
             case Input.Keys.D:
-                player.move(10, "RIGHT");
+                player.startMove("RIGHT");
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp (int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                player.stopMove("UP");
+                return true;
+            case Input.Keys.S:
+                player.stopMove("DOWN");
+                return true;
+            case Input.Keys.A:
+                player.stopMove("LEFT");
+                return true;
+            case Input.Keys.D:
+                player.stopMove("RIGHT");
                 return true;
         }
         return false;
