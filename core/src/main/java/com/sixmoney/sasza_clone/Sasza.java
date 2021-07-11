@@ -4,8 +4,10 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.sixmoney.sasza_clone.screens.MainMenu;
 import com.sixmoney.sasza_clone.screens.OptionsScreen;
+import com.sixmoney.sasza_clone.utils.Assets;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Sasza extends Game {
@@ -13,6 +15,7 @@ public class Sasza extends Game {
 
 	private final String[] args;
 	private boolean debug;
+	private Assets assets;
 
 	public boolean mobileControls;
 
@@ -44,6 +47,8 @@ public class Sasza extends Game {
 			mobileControls = true;
 		}
 
+		assets = Assets.get_instance();
+
 		setScreen(new MainMenu(this));
 	}
 
@@ -51,12 +56,16 @@ public class Sasza extends Game {
 	public void dispose() {
 		super.dispose();
 		screen.dispose();
+		assets.dispose();
 	}
 
 	public void switchScreen(String screen_name) {
 		Gdx.input.setInputProcessor(null);
 
 		switch (screen_name) {
+			case "gameplay":
+				setScreen(new GameWorldScreen(this));
+				break;
 			case "options":
 				setScreen(new OptionsScreen(this));
 				break;

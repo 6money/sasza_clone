@@ -1,3 +1,5 @@
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+
 buildscript {
 	repositories {
 		mavenLocal()
@@ -9,6 +11,7 @@ buildscript {
 	dependencies {
 		classpath "com.android.tools.build:gradle:$androidPluginVersion"
 		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
+		classpath 'com.badlogicgames.gdx:gdx-tools:1.10.0'
 	}
 }
 
@@ -23,6 +26,19 @@ configure(subprojects - project(':android')) {
 	compileJava {
 		options.incremental = true
 	}
+
+	task packTextures {
+		def inputDir = "$rootDir/core/assets/sprites"
+		def outputDir = "$rootDir/assets/packaged"
+		inputs.dir inputDir
+		outputs.dir outputDir
+		doLast {
+			delete(outputDir)
+			TexturePacker.process(inputDir, outputDir, "sasza_clone.pack")
+		}
+	}
+
+	project.tasks.compileJava.dependsOn packTextures
 }
 
 subprojects {

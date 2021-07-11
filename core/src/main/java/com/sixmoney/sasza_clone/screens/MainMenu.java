@@ -48,13 +48,13 @@ public class MainMenu implements Screen {
 
 		tableMenu.row();
 		TextButton buttonPlay = new TextButton("PLAY", skin);
-//		buttonPlay.addListener(new ClickListener() {
-//			@Override
-//			public void clicked(InputEvent event, float x, float y) {
-//				gigaGalGame.switchScreen("gameplay", Constants.LEVEL_1);
-//				dispose();
-//			}
-//		});
+		buttonPlay.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				saszaGame.switchScreen("gameplay");
+				dispose();
+			}
+		});
 		tableMenu.add(buttonPlay).minHeight(100f);
 
 		tableMenu.row();
