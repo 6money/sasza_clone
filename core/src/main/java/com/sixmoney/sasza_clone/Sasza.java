@@ -11,8 +11,7 @@ import com.sixmoney.sasza_clone.utils.Assets;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Sasza extends Game {
-	public static final String TAG = Sasza.class.getName();
-
+	private static final String TAG = Sasza.class.getName();
 	private final String[] args;
 	private boolean debug;
 	private Assets assets;

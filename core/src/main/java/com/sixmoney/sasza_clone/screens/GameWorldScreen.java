@@ -37,11 +37,13 @@ public class GameWorldScreen extends InputAdapter implements Screen {
     @Override
     public void render(float delta) {
         player.update();
+        viewport.getCamera().position.set(player.getPosition().x, player.getPosition().y, 0);
+        viewport.apply();
 
         Gdx.gl.glClearColor(Constants.BG_COLOR.r,Constants.BG_COLOR.g,Constants.BG_COLOR.b,Constants.BG_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(viewport.getCamera().projection);
+        batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
         player.render(batch);
         batch.end();

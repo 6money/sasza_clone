@@ -21,6 +21,14 @@ public class Player {
         moveRight = false;
     }
 
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
     public void startMove(String direction) {
         switch (direction) {
             case "UP":

@@ -21,8 +21,7 @@ import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.PreferenceManager;
 
 public class OptionsScreen implements Screen {
-    public static final String TAG = OptionsScreen.class.getName();
-
+    private static final String TAG = OptionsScreen.class.getName();
     private Sasza game;
     private Stage stage;
     private Skin skin;
