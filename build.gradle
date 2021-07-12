@@ -38,7 +38,19 @@ configure(subprojects - project(':android')) {
 		}
 	}
 
+//	task packPrivateTextures {
+//		def inputDir = "$rootDir/core/assets/sasza_clone_private_assets"
+//		def outputDir = "$rootDir/assets/packagedPrivate"
+//		inputs.dir inputDir
+//		outputs.dir outputDir
+//		doLast {
+//			delete(outputDir)
+//			TexturePacker.process(inputDir, outputDir, "sasza_clone_private.pack")
+//		}
+//	}
+
 	project.tasks.compileJava.dependsOn packTextures
+//	project.tasks.compileJava.dependsOn packPrivateTextures
 }
 
 subprojects {

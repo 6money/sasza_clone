@@ -36,15 +36,17 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.setErrorListener(this);
         long startLoad = TimeUtils.nanoTime();
         assetManager.load(Constants.TEXTURE_ATLAS, TextureAtlas.class);
+        assetManager.load(Constants.TEXTURE_ATLAS_PRIVATE, TextureAtlas.class);
         assetManager.load(Constants.SKIN_PATH, Skin.class);
         assetManager.finishLoading();
         Gdx.app.log(TAG, "Assets Loaded in " + Utils.secondsSince(startLoad) + " seconds");
         Gdx.app.log(TAG, assetManager.getAssetNames().toString());
 
         TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS);
+        TextureAtlas atlasPrivate = assetManager.get(Constants.TEXTURE_ATLAS_PRIVATE);
 
         skinAssets = new SkinAssets(assetManager);
-        playerAssets = new PlayerAssets(atlas);
+        playerAssets = new PlayerAssets(atlas, atlasPrivate);
     }
 
     public AssetManager getAssetManager() {
@@ -70,9 +72,11 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     public class PlayerAssets {
+        public TextureRegion player;
         public TextureRegion playerPlaceholder;
 
-        public PlayerAssets(TextureAtlas atlas) {
+        public PlayerAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
+            player = atlasPrivate.findRegion(Constants.PLAYER);
             playerPlaceholder = atlas.findRegion(Constants.PLAYER_PLACEHOLDER);
         }
     }

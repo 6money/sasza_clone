@@ -83,6 +83,6 @@ public class Player {
     }
 
     public void render(Batch batch) {
-        batch.draw(Assets.get_instance().playerAssets.playerPlaceholder, position.x, position.y);
+        batch.draw(Assets.get_instance().playerAssets.player, position.x, position.y);
     }
 }
