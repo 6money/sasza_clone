@@ -1,0 +1,3 @@
+[submodule "core/assets/sasza_clone_private_assets"]
+	path = core/assets/sasza_clone_private_assets
+	url = git@github.com:6money/sasza_clone_private_assets.git
