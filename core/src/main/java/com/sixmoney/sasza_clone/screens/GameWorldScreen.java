@@ -42,7 +42,7 @@ public class GameWorldScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-        world = new World<>(5);
+        world = new World<>();
         world.setTileMode(false);
         player = new Player();
         world.add(player.item, player.bbox.x, player.bbox.y, player.bbox.width, player.bbox.height);
@@ -62,12 +62,12 @@ public class GameWorldScreen extends InputAdapter implements Screen {
         player.update(delta, world);
 
         viewport.apply(); // viewport.apply() will call camera.update()
-
         Gdx.gl.glClearColor(Constants.BG_COLOR.r,Constants.BG_COLOR.g,Constants.BG_COLOR.b,Constants.BG_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+
         crate.render(batch);
         player.render(batch);
 
@@ -159,6 +159,27 @@ public class GameWorldScreen extends InputAdapter implements Screen {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
+        player.setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
+        player.setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
+        player.setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
         Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
         player.setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
         return true;
