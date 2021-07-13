@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,6 +26,6 @@ public abstract class Entity {
     }
 
     public void renderDebug(ShapeDrawer drawer) {
-        drawer.rectangle(bbox);
+        drawer.rectangle(bbox, Color.MAGENTA);
     }
 }
