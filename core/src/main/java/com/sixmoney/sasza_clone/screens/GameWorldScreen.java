@@ -11,15 +11,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.dongbat.jbump.World;
+import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.Sasza;
-import com.sixmoney.sasza_clone.entities.Crate;
-import com.sixmoney.sasza_clone.entities.Entity;
-import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.overlays.HUD;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.LevelLoader;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -27,14 +25,12 @@ public class GameWorldScreen extends InputAdapter implements Screen {
     private static final String TAG = GameWorldScreen.class.getName();
 
     private Sasza saszaGame;
-    public World<Entity> world;
     private Viewport viewport;
     private ChaseCam camera;
     private Batch batch;
     private ShapeDrawer drawer;
-    private Player player;
     private HUD hud;
-    private Crate crate;
+    private Level level;
 
     public GameWorldScreen(Sasza game) {
         saszaGame = game;
@@ -42,24 +38,19 @@ public class GameWorldScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-        world = new World<>();
-        world.setTileMode(false);
-        player = new Player();
-        world.add(player.item, player.bbox.x, player.bbox.y, player.bbox.width, player.bbox.height);
-        camera = new ChaseCam(player);
-        viewport = new ExtendViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
+        viewport = new ExtendViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         batch = new SpriteBatch();
         drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
         hud = new HUD();
-        crate = new Crate();
-        world.add(crate.item, crate.bbox.x, crate.bbox.y, crate.bbox.width, crate.bbox.height);
+        level = LevelLoader.load("debug", viewport);
+        camera = (ChaseCam) viewport.getCamera();
 
         Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void render(float delta) {
-        player.update(delta, world);
+        level.update(delta);
 
         viewport.apply(); // viewport.apply() will call camera.update()
         Gdx.gl.glClearColor(Constants.BG_COLOR.r,Constants.BG_COLOR.g,Constants.BG_COLOR.b,Constants.BG_COLOR.a);
@@ -68,12 +59,10 @@ public class GameWorldScreen extends InputAdapter implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        crate.render(batch);
-        player.render(batch);
+        level.render(batch);
 
         if (saszaGame.debug) {
-            crate.renderDebug(drawer);
-            player.renderDebug(drawer);
+            level.renderDebug(drawer);
         }
 
         batch.end();
@@ -111,16 +100,16 @@ public class GameWorldScreen extends InputAdapter implements Screen {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.W:
-                player.startMove("UP");
+                level.getPlayer().startMove("UP");
                 return true;
             case Input.Keys.S:
-                player.startMove("DOWN");
+                level.getPlayer().startMove("DOWN");
                 return true;
             case Input.Keys.A:
-                player.startMove("LEFT");
+                level.getPlayer().startMove("LEFT");
                 return true;
             case Input.Keys.D:
-                player.startMove("RIGHT");
+                level.getPlayer().startMove("RIGHT");
                 return true;
         }
         return false;
@@ -130,16 +119,16 @@ public class GameWorldScreen extends InputAdapter implements Screen {
     public boolean keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.W:
-                player.stopMove("UP");
+                level.getPlayer().stopMove("UP");
                 return true;
             case Input.Keys.S:
-                player.stopMove("DOWN");
+                level.getPlayer().stopMove("DOWN");
                 return true;
             case Input.Keys.A:
-                player.stopMove("LEFT");
+                level.getPlayer().stopMove("LEFT");
                 return true;
             case Input.Keys.D:
-                player.stopMove("RIGHT");
+                level.getPlayer().stopMove("RIGHT");
                 return true;
         }
         return false;
@@ -160,28 +149,28 @@ public class GameWorldScreen extends InputAdapter implements Screen {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        player.setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
         return true;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        player.setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        player.setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        player.setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
         return true;
     }
 }

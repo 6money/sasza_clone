@@ -51,8 +51,15 @@ configure(subprojects - project(':android')) {
 //		}
 //	}
 
+	task copyLevels(type: Copy){
+		from "$rootDir/sasza_clone_levels/scenes"
+		into "$rootDir/assets/levels"
+		exclude "MainScene.dt"
+	}
+
 	project.tasks.compileJava.dependsOn packTextures
 //	project.tasks.compileJava.dependsOn packPrivateTextures
+	project.tasks.compileJava.dependsOn copyLevels
 }
 
 subprojects {

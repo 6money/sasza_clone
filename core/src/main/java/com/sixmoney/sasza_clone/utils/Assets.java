@@ -15,10 +15,13 @@ public class Assets implements Disposable, AssetErrorListener {
     public static Assets instance;
 
     private AssetManager assetManager;
+    private TextureAtlas atlas;
+    private TextureAtlas atlasPrivate;
 
     public DebugAssets debugAssets;
     public PlayerAssets playerAssets;
     public EnvronmentAssets envronmentAssets;
+    public TileAssets tileAssets;
     public SkinAssets skinAssets;
 
     private Assets() {
@@ -44,17 +47,26 @@ public class Assets implements Disposable, AssetErrorListener {
         Gdx.app.log(TAG, "Assets Loaded in " + Utils.secondsSince(startLoad) + " seconds");
         Gdx.app.log(TAG, assetManager.getAssetNames().toString());
 
-        TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS);
-        TextureAtlas atlasPrivate = assetManager.get(Constants.TEXTURE_ATLAS_PRIVATE);
+        atlas = assetManager.get(Constants.TEXTURE_ATLAS);
+        atlasPrivate = assetManager.get(Constants.TEXTURE_ATLAS_PRIVATE);
 
         skinAssets = new SkinAssets(assetManager);
         debugAssets = new DebugAssets(atlas);
         playerAssets = new PlayerAssets(atlas, atlasPrivate);
         envronmentAssets = new EnvronmentAssets(atlas, atlasPrivate);
+        tileAssets = new TileAssets(atlasPrivate);
     }
 
     public AssetManager getAssetManager() {
         return assetManager;
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
+
+    public TextureAtlas getPrivateAtlas() {
+        return atlasPrivate;
     }
 
     @Override
@@ -98,6 +110,26 @@ public class Assets implements Disposable, AssetErrorListener {
 
         public EnvronmentAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             box2 = atlasPrivate.findRegion(Constants.BOX_2);
+        }
+    }
+
+    public class TileAssets {
+        public TextureRegion dirtToRoad;
+        public TextureRegion sandToRoad;
+        public TextureRegion grassToRoad;
+        public TextureRegion grass;
+        public TextureRegion dirt;
+        public TextureRegion sand;
+        public TextureRegion water;
+
+        public TileAssets(TextureAtlas atlasPrivate) {
+            dirtToRoad = atlasPrivate.findRegion(Constants.DIRT_TO_ROAD);
+            sandToRoad = atlasPrivate.findRegion(Constants.SAND_TO_ROAD);
+            grassToRoad = atlasPrivate.findRegion(Constants.GRASS_TO_ROAD);
+            grass = atlasPrivate.findRegion(Constants.GRASS);
+            dirt = atlasPrivate.findRegion(Constants.DIRT);
+            sand = atlasPrivate.findRegion(Constants.SAND);
+            water = atlasPrivate.findRegion(Constants.WATER);
         }
     }
 }
