@@ -17,6 +17,7 @@ public class Assets implements Disposable, AssetErrorListener {
     private AssetManager assetManager;
 
     public PlayerAssets playerAssets;
+    public EnvronmentAssets envronmentAssets;
     public SkinAssets skinAssets;
 
     private Assets() {
@@ -47,6 +48,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
         skinAssets = new SkinAssets(assetManager);
         playerAssets = new PlayerAssets(atlas, atlasPrivate);
+        envronmentAssets = new EnvronmentAssets(atlas, atlasPrivate);
     }
 
     public AssetManager getAssetManager() {
@@ -78,6 +80,14 @@ public class Assets implements Disposable, AssetErrorListener {
         public PlayerAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             player = atlasPrivate.findRegion(Constants.PLAYER);
             playerPlaceholder = atlas.findRegion(Constants.PLAYER_PLACEHOLDER);
+        }
+    }
+
+    public class EnvronmentAssets {
+        public TextureRegion box2;
+
+        public EnvronmentAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
+            box2 = atlasPrivate.findRegion(Constants.BOX_2);
         }
     }
 }
