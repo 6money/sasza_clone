@@ -13,9 +13,9 @@ import com.sixmoney.sasza_clone.utils.Assets;
 public class Sasza extends Game {
 	private static final String TAG = Sasza.class.getName();
 	private final String[] args;
-	private boolean debug;
 	private Assets assets;
 
+	public boolean debug;
 	public boolean mobileControls;
 
 	public Sasza(String[] args) {

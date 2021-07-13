@@ -7,6 +7,7 @@ buildscript {
 	dependencies {
 	// temporarily uses a JitPack dependency on a working version of Gretty until the next 3.x release
 		classpath "com.github.tommyettinger.gretty:gretty:3.0.4.5"
+		classpath "space.earlygrey:shapedrawer:$shapedrawerVersion:sources"
 	}
 }
 apply plugin: "gwt"

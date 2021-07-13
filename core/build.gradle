@@ -10,4 +10,5 @@ dependencies {
 	api "com.crashinvaders.vfx:gdx-vfx-effects:$gdxVfxEffectsVersion"
 	api "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
 	api "com.github.tommyettinger:jbump:$jbumpVersion"
+	api "space.earlygrey:shapedrawer:$shapedrawerVersion"
 }

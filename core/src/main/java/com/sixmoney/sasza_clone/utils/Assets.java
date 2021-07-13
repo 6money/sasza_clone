@@ -16,6 +16,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
     private AssetManager assetManager;
 
+    public DebugAssets debugAssets;
     public PlayerAssets playerAssets;
     public EnvronmentAssets envronmentAssets;
     public SkinAssets skinAssets;
@@ -47,6 +48,7 @@ public class Assets implements Disposable, AssetErrorListener {
         TextureAtlas atlasPrivate = assetManager.get(Constants.TEXTURE_ATLAS_PRIVATE);
 
         skinAssets = new SkinAssets(assetManager);
+        debugAssets = new DebugAssets(atlas);
         playerAssets = new PlayerAssets(atlas, atlasPrivate);
         envronmentAssets = new EnvronmentAssets(atlas, atlasPrivate);
     }
@@ -70,6 +72,14 @@ public class Assets implements Disposable, AssetErrorListener {
 
         public SkinAssets(AssetManager assetManager) {
             skin = assetManager.get(Constants.SKIN_PATH);
+        }
+    }
+
+    public class DebugAssets {
+        public TextureRegion bboxOutline;
+
+        public DebugAssets(TextureAtlas atlas) {
+            bboxOutline = atlas.findRegion(Constants.BBOX_OUTLINE);
         }
     }
 

@@ -11,29 +11,29 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.dongbat.jbump.Collision;
-import com.dongbat.jbump.CollisionFilter;
-import com.dongbat.jbump.Collisions;
-import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.Sasza;
 import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.overlays.HUD;
+import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
 
+import space.earlygrey.shapedrawer.ShapeDrawer;
+
 public class GameWorldScreen extends InputAdapter implements Screen {
-    public static final String TAG = GameWorldScreen.class.getName();
+    private static final String TAG = GameWorldScreen.class.getName();
 
     private Sasza saszaGame;
+    public World<Entity> world;
     private Viewport viewport;
     private ChaseCam camera;
     private Batch batch;
+    private ShapeDrawer drawer;
     private Player player;
     private HUD hud;
-    private World<Entity> world;
     private Crate crate;
 
     public GameWorldScreen(Sasza game) {
@@ -42,13 +42,14 @@ public class GameWorldScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-        world = new World<>();
+        world = new World<>(5);
         world.setTileMode(false);
         player = new Player();
         world.add(player.item, player.bbox.x, player.bbox.y, player.bbox.width, player.bbox.height);
         camera = new ChaseCam(player);
         viewport = new ExtendViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
         batch = new SpriteBatch();
+        drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
         hud = new HUD();
         crate = new Crate();
         world.add(crate.item, crate.bbox.x, crate.bbox.y, crate.bbox.width, crate.bbox.height);
@@ -58,15 +59,7 @@ public class GameWorldScreen extends InputAdapter implements Screen {
 
     @Override
     public void render(float delta) {
-        player.update(delta);
-        Response.Result result = world.move(player.item, player.position.x, player.position.y, CollisionFilter.defaultFilter);
-        Collisions projectedCollisions = result.projectedCollisions;
-        for (int i = 0; i < projectedCollisions.size(); i++) {
-            Collision collision = projectedCollisions.get(i);
-            if (collision.type == null || collision.type == Response.slide) {
-                player.setPosition(collision.touch.x, collision.touch.y);
-            }
-        }
+        player.update(delta, world);
 
         viewport.apply(); // viewport.apply() will call camera.update()
 
@@ -77,6 +70,12 @@ public class GameWorldScreen extends InputAdapter implements Screen {
         batch.begin();
         crate.render(batch);
         player.render(batch);
+
+        if (saszaGame.debug) {
+            crate.renderDebug(drawer);
+            player.renderDebug(drawer);
+        }
+
         batch.end();
 
         hud.render(batch);

@@ -11,6 +11,7 @@
 	<inherits name="com.crashinvaders.vfx.GdxVfxGwt" />
 	<inherits name="com.dongbat.jbump" />
 	<inherits name="com.ray3k.tenpatch.tenpatch" />
+	<inherits name="space.earlygrey.shapedrawer"/>
 	<inherits name="com.sixmoney.sasza_clone.Sasza" />
 	<entry-point class="com.sixmoney.sasza_clone.gwt.GwtLauncher" />
 	<set-configuration-property name="gdx.assetpath" value="../assets" />

@@ -19,6 +19,9 @@ public class Constants {
     public static final String TEXTURE_ATLAS_PRIVATE = "packagedPrivate/sasza_clone_private.pack.atlas";
     public static final String VERSION = "0.0.1-alpha";
 
+    // debug sprites
+    public static final String BBOX_OUTLINE = "bbox_pixel";
+
     // player
     public static final float PLAYER_SPEED = 200;
     public static final Vector2 PLAYER_CENTER = new Vector2(32, 32);
