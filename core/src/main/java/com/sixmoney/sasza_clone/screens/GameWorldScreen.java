@@ -59,7 +59,7 @@ public class GameWorldScreen extends InputAdapter implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        level.render(batch);
+        level.render(batch, drawer);
 
         if (saszaGame.debug) {
             level.renderDebug(drawer);

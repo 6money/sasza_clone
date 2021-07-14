@@ -1,5 +1,7 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.Collision;
@@ -11,6 +13,8 @@ import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
 
+import space.earlygrey.shapedrawer.ShapeDrawer;
+
 public class Player extends Entity {
     private static final String TAG = Player.class.getName();
 
@@ -18,6 +22,7 @@ public class Player extends Entity {
     private boolean moveDown;
     private boolean moveLeft;
     private boolean moveRight;
+    private Vector2 lazerVector;
 
     public Player(float x, float y) {
         super();
@@ -30,6 +35,7 @@ public class Player extends Entity {
         item = new Item<>(this);
         rotation = 0;
         textureRegion = Assets.get_instance().playerAssets.player;
+        lazerVector = new Vector2();
     }
 
     public Vector2 getPosition() {
@@ -118,6 +124,17 @@ public class Player extends Entity {
         }
     }
 
+
+    public void render(Batch batch, ShapeDrawer drawer) {
+        super.render(batch);
+
+        lazerVector.set(0, -1);
+        lazerVector.rotateDeg(rotation);
+        lazerVector.setLength(100f);
+        lazerVector.add(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y);
+
+        drawer.line(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y, lazerVector.x, lazerVector.y, Color.RED);
+    }
 
 
     public static class PlayerCollisionFilter implements CollisionFilter {

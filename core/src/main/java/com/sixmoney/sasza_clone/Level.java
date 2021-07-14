@@ -81,7 +81,7 @@ public class Level {
         player.update(delta, world);
     }
 
-    public void render(Batch batch) {
+    public void render(Batch batch, ShapeDrawer drawer) {
         for (FloorTile tile: grassTiles) {
             tile.render(batch);
         }
@@ -97,7 +97,7 @@ public class Level {
         for (Entity entity: environmentEntities) {
             entity.render(batch);
         }
-        player.render(batch);
+        player.render(batch, drawer);
     }
 
     public void renderDebug(ShapeDrawer drawer) {
