@@ -14,4 +14,9 @@ public class FloorTile extends Entity {
         bbox = new Rectangle(position.x, position.y, textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
         item = new Item<>(this);
     }
+
+    @Override
+    public String toString() {
+        return "tile located at x: %s, y: %s, width: %s, height: %s".formatted(position.x, position.y, textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+    }
 }

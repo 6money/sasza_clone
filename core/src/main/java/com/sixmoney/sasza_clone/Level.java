@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dongbat.jbump.World;
-import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
@@ -17,34 +16,35 @@ public class Level {
     private Viewport viewport;
     private ChaseCam camera;
     private Player player;
-    private Crate crate;
 
     private Array<FloorTile> grassTiles;
     private Array<FloorTile> dirtTiles;
     private Array<FloorTile> sandTiles;
     private Array<FloorTile> waterTiles;
+    private Array<Entity> environmentEntities;
 
     public Level(Viewport viewport) {
         this.viewport = viewport;
 
         world = new World<>();
         world.setTileMode(false);
-        player = new Player();
-        world.add(player.item, player.bbox.x, player.bbox.y, player.bbox.width, player.bbox.height);
-        crate = new Crate();
-        world.add(crate.item, crate.bbox.x, crate.bbox.y, crate.bbox.width, crate.bbox.height);
-
-        camera = new ChaseCam(player);
-        viewport.setCamera(camera);
 
         grassTiles = new Array<>();
         dirtTiles = new Array<>();
         sandTiles = new Array<>();
         waterTiles = new Array<>();
+        environmentEntities = new Array<>();
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+        world.add(player.item, player.bbox.x, player.bbox.y, player.bbox.width, player.bbox.height);
+        camera = new ChaseCam(player);
+        viewport.setCamera(camera);
     }
 
     public void setGrassTiles(Array<FloorTile> grassTiles) {
@@ -70,6 +70,13 @@ public class Level {
         }
     }
 
+    public void setEnvironmentEntities(Array<Entity> entities) {
+        this.environmentEntities = entities;
+        for (Entity entity: environmentEntities) {
+            world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
+        }
+    }
+
     public void update(float delta) {
         player.update(delta, world);
     }
@@ -87,15 +94,19 @@ public class Level {
         for (FloorTile tile: waterTiles) {
             tile.render(batch);
         }
-        crate.render(batch);
+        for (Entity entity: environmentEntities) {
+            entity.render(batch);
+        }
         player.render(batch);
     }
 
     public void renderDebug(ShapeDrawer drawer) {
-        crate.renderDebug(drawer);
-        player.renderDebug(drawer);
         for (FloorTile tile: waterTiles) {
             tile.renderDebug(drawer);
         }
+        for (Entity entity: environmentEntities) {
+            entity.renderDebug(drawer);
+        }
+        player.renderDebug(drawer);
     }
 }

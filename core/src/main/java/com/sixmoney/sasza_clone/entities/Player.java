@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.Collision;
@@ -20,9 +19,9 @@ public class Player extends Entity {
     private boolean moveLeft;
     private boolean moveRight;
 
-    public Player() {
+    public Player(float x, float y) {
         super();
-        position = new Vector2(0, 0);
+        position = new Vector2(x, y);
         bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
         moveUp = false;
         moveDown = false;
@@ -114,7 +113,6 @@ public class Player extends Entity {
         for (int i = 0; i < projectedCollisions.size(); i++) {
             Collision collision = projectedCollisions.get(i);
             if (collision.type == Response.slide) {
-                Gdx.app.log(TAG, collision.touch.toString());
                 setPosition(collision.touch.x - (bbox.x - position.x), collision.touch.y - (bbox.y - position.y));
             }
         }
