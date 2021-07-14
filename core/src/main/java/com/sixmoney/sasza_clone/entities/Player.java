@@ -23,7 +23,7 @@ public class Player extends Entity {
     public Player() {
         super();
         position = new Vector2(0, 0);
-        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y, Constants.PLAYER_CENTER.x, Constants.PLAYER_CENTER.y);
+        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
         moveUp = false;
         moveDown = false;
         moveLeft = false;
@@ -44,8 +44,8 @@ public class Player extends Entity {
     }
 
     private void updateBBox() {
-        bbox.x = position.x + Constants.PLAYER_CENTER.x / 2;
-        bbox.y = position.y + Constants.PLAYER_CENTER.y / 2;
+        bbox.x = position.x + Constants.PLAYER_CENTER.x * 3 / 4;
+        bbox.y = position.y + Constants.PLAYER_CENTER.y * 3 / 4;
     }
 
     public void setRotation(Vector2 pointerPosition) {
@@ -126,6 +126,7 @@ public class Player extends Entity {
         @Override
         public Response filter(Item item, Item other) {
             if (other.userData instanceof Crate) return Response.slide;
+            if (other.userData instanceof FloorTile) return Response.slide;
             else return null;
         }
     }

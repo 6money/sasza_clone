@@ -61,6 +61,13 @@ public class Level {
 
     public void setWaterTiles(Array<FloorTile> waterTiles) {
         this.waterTiles = waterTiles;
+        for (FloorTile waterTile: waterTiles) {
+            waterTile.bbox.x += 55;
+            waterTile.bbox.y += 55;
+            waterTile.bbox.width -= 110;
+            waterTile.bbox.height -= 110;
+            world.add(waterTile.item, waterTile.bbox.x, waterTile.bbox.y, waterTile.bbox.width, waterTile.bbox.height);
+        }
     }
 
     public void update(float delta) {
@@ -87,5 +94,8 @@ public class Level {
     public void renderDebug(ShapeDrawer drawer) {
         crate.renderDebug(drawer);
         player.renderDebug(drawer);
+        for (FloorTile tile: waterTiles) {
+            tile.renderDebug(drawer);
+        }
     }
 }
