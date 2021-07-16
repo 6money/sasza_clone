@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
@@ -23,6 +24,7 @@ public class Player extends Entity {
     private boolean moveLeft;
     private boolean moveRight;
     private Vector2 lazerVector;
+    private Vector2 bulletOffset;
 
     public Player(float x, float y) {
         super();
@@ -36,6 +38,7 @@ public class Player extends Entity {
         rotation = 0;
         textureRegion = Assets.get_instance().playerAssets.player;
         lazerVector = new Vector2();
+        bulletOffset = new Vector2( -3, -18);
     }
 
     public Vector2 getPosition() {
@@ -128,12 +131,15 @@ public class Player extends Entity {
     public void render(Batch batch, ShapeDrawer drawer) {
         super.render(batch);
 
+        Vector2 bulletOffsetTemp = new Vector2(bulletOffset);
+        bulletOffsetTemp.rotateDeg(rotation);
         lazerVector.set(0, -1);
         lazerVector.rotateDeg(rotation);
         lazerVector.setLength(100f);
-        lazerVector.add(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y);
+        lazerVector.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
+        Gdx.app.log(TAG, "" + bulletOffsetTemp.len());
 
-        drawer.line(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y, lazerVector.x, lazerVector.y, Color.RED);
+        drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, lazerVector.x, lazerVector.y, Color.RED);
     }
 
 
