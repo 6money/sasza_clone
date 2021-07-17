@@ -6,7 +6,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dongbat.jbump.CollisionFilter;
+import com.dongbat.jbump.Item;
 import com.dongbat.jbump.ItemInfo;
+import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.Entity;
@@ -31,6 +33,7 @@ public class Level {
     private Array<FloorTile> waterTiles;
     private Array<Entity> environmentEntities;
     private final DelayedRemovalArray<Bullet> bullets;
+    private BulletCollisionFilter bulletCollisionFilter;
 
     public Level(Viewport viewport) {
         this.viewport = viewport;
@@ -44,6 +47,7 @@ public class Level {
         waterTiles = new Array<>();
         environmentEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
+        bulletCollisionFilter = new BulletCollisionFilter();
     }
 
     public Player getPlayer() {
@@ -149,7 +153,7 @@ public class Level {
                 player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
                 bulletVector.x,
                 bulletVector.y,
-                CollisionFilter.defaultFilter,
+                bulletCollisionFilter,
                 items
         );
 
@@ -159,5 +163,13 @@ public class Level {
 
         bullets.add(new Bullet(player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, player.rotation, bulletVector.x, bulletVector.y, player.getGun().getProjectileSpeed()));
         player.shoot();
+    }
+
+    public static class BulletCollisionFilter implements CollisionFilter {
+        @Override
+        public Response filter(Item item, Item other) {
+            if (!(item.userData instanceof FloorTile)) return Response.touch;
+            else return null;
+        }
     }
 }

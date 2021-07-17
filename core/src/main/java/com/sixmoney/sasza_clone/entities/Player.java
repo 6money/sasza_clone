@@ -156,7 +156,7 @@ public class Player extends Entity {
                 position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
                 lazerVector.x,
                 lazerVector.y,
-                CollisionFilter.defaultFilter,
+                new LazerCollisionFilter(),
                 items
         );
 
@@ -180,8 +180,17 @@ public class Player extends Entity {
     public static class PlayerCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
+            if(other == null) return null;
             if (other.userData instanceof Crate) return Response.slide;
             if (other.userData instanceof FloorTile) return Response.slide;
+            else return null;
+        }
+    }
+
+    public static class LazerCollisionFilter implements CollisionFilter {
+        @Override
+        public Response filter(Item item, Item other) {
+            if (!(item.userData instanceof FloorTile)) return Response.touch;
             else return null;
         }
     }

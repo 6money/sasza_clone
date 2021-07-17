@@ -29,12 +29,12 @@ public class Bullet extends Entity {
         remainingDistance = temp.len();
         temp.nor();
 
-        if (remainingDistance < speed) {
+        if (remainingDistance == 0) {
             dead = true;
             return;
         }
 
-        temp.setLength(speed);
+        temp.setLength(Math.min(remainingDistance, speed));
         position.add(temp);
     }
 }
