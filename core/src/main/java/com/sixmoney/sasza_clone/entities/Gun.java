@@ -8,6 +8,7 @@ public class Gun {
     private int currentAmmo;
     private int currentMagazineAmmo;
     private float projectileSpeed;
+    private float damage;
 
     public Gun() {
         magazineSize = 30;
@@ -17,6 +18,7 @@ public class Gun {
         currentAmmo = maxAmmo;
         currentMagazineAmmo = magazineSize;
         projectileSpeed = 20;
+        damage = 10f;
     }
 
     public int getMagazineSize() {
@@ -69,5 +71,9 @@ public class Gun {
 
     public float getProjectileSpeed() {
         return projectileSpeed;
+    }
+
+    public float getDamage() {
+        return damage;
     }
 }

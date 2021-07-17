@@ -14,5 +14,7 @@ public class Crate extends Entity {
         position = new Vector2(x, y);
         bbox = new Rectangle(position.x, position.y, textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
         item = new Item<>(this);
+        health = 100;
+        destructible = true;
     }
 }

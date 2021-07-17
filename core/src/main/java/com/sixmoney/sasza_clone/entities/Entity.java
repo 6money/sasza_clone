@@ -17,9 +17,13 @@ public abstract class Entity {
     public float rotation;
     public Item<Entity> item;
     public TextureRegion textureRegion;
+    public float health;
+    public boolean destructible;
 
     protected Entity() {
         rotation = 0;
+        health = 0;
+        destructible = false;
         textureRegion = Assets.get_instance().playerAssets.playerPlaceholder;
     }
 

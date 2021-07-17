@@ -179,6 +179,16 @@ public class Level {
 
         if (items.size() > 0) {
             bulletVector.set(items.get(0).x1, items.get(0).y1);
+
+            Item item = items.get(0).item;
+
+            if (((Entity) item.userData).destructible) {
+                ((Entity) item.userData).health -= player.getGun().getDamage();
+                if (((Entity) item.userData).health <= 0) {
+                    environmentEntities.removeValue((Entity) item.userData, true);
+                    world.remove(item);
+                }
+            }
         }
 
         bullets.add(new Bullet(player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, player.rotation, bulletVector.x, bulletVector.y, player.getGun().getProjectileSpeed()));

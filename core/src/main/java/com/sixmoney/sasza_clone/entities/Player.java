@@ -43,6 +43,8 @@ public class Player extends Entity {
         lazerVector = new Vector2();
         bulletOffset = new Vector2( -3, -18);
         gun = new Gun();
+        health = 200f;
+        destructible = true;
     }
 
     public Vector2 getPosition() {
