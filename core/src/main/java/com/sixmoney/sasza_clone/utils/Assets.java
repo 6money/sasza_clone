@@ -20,6 +20,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public DebugAssets debugAssets;
     public PlayerAssets playerAssets;
+    public EnemyAssets enemyAssets;
     public EnvronmentAssets envronmentAssets;
     public TileAssets tileAssets;
     public SkinAssets skinAssets;
@@ -53,6 +54,7 @@ public class Assets implements Disposable, AssetErrorListener {
         skinAssets = new SkinAssets(assetManager);
         debugAssets = new DebugAssets(atlas);
         playerAssets = new PlayerAssets(atlas, atlasPrivate);
+        enemyAssets = new EnemyAssets(atlas, atlasPrivate);
         envronmentAssets = new EnvronmentAssets(atlas, atlasPrivate);
         tileAssets = new TileAssets(atlasPrivate);
     }
@@ -132,6 +134,16 @@ public class Assets implements Disposable, AssetErrorListener {
             dirt = atlasPrivate.findRegion(Constants.DIRT);
             sand = atlasPrivate.findRegion(Constants.SAND);
             water = atlasPrivate.findRegion(Constants.WATER);
+        }
+    }
+
+    public class EnemyAssets {
+        public TextureRegion enemy;
+        public TextureRegion rifleProjectile;
+
+        public EnemyAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
+            enemy = atlasPrivate.findRegion(Constants.ENEMY);
+            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
         }
     }
 }

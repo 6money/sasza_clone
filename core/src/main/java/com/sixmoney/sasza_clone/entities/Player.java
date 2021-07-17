@@ -1,5 +1,7 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class Player extends Entity {
+public class Player extends Entity implements Steerable<Vector2> {
     private static final String TAG = Player.class.getName();
 
     private boolean moveUp;
@@ -29,10 +31,17 @@ public class Player extends Entity {
     private Vector2 bulletOffset;
     private Gun gun;
 
+    private boolean tagged;
+    private float zeroLinearSpeedThreshold;
+    private float maxLinearSpeed;
+    private float maxLinearAcceleration;
+    private float maxAngularSpeed;
+    private float maxAngularAcceleration;
+
     public Player(float x, float y) {
         super();
         position = new Vector2(x, y);
-        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
+        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 3 / 4, position.y + Constants.PLAYER_CENTER.y * 3 / 4, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
         moveUp = false;
         moveDown = false;
         moveLeft = false;
@@ -45,10 +54,6 @@ public class Player extends Entity {
         gun = new Gun();
         health = 200f;
         destructible = true;
-    }
-
-    public Vector2 getPosition() {
-        return position;
     }
 
     public void setPosition(float x, float y) {
@@ -182,6 +187,7 @@ public class Player extends Entity {
             if(other == null) return null;
             if (other.userData instanceof Crate) return Response.slide;
             if (other.userData instanceof FloorTile) return Response.slide;
+            if (other.userData instanceof Enemy) return Response.slide;
             else return null;
         }
     }
@@ -192,6 +198,111 @@ public class Player extends Entity {
             if (!(item.userData instanceof FloorTile)) return Response.touch;
             else return null;
         }
+    }
+
+    @Override
+    public Vector2 getLinearVelocity() {
+        return velocity;
+    }
+
+    @Override
+    public float getAngularVelocity() {
+        return 0;
+    }
+
+    @Override
+    public float getBoundingRadius() {
+        return Constants.PLAYER_CENTER.x / 2;
+    }
+
+    @Override
+    public boolean isTagged() {
+        return tagged;
+    }
+
+    @Override
+    public void setTagged(boolean tagged) {
+        this.tagged = tagged;
+    }
+
+    @Override
+    public float getZeroLinearSpeedThreshold() {
+        return zeroLinearSpeedThreshold;
+    }
+
+    @Override
+    public void setZeroLinearSpeedThreshold(float value) {
+        zeroLinearSpeedThreshold = value;
+    }
+
+    @Override
+    public float getMaxLinearSpeed() {
+        return maxLinearSpeed;
+    }
+
+    @Override
+    public void setMaxLinearSpeed(float maxLinearSpeed) {
+        this.maxLinearSpeed = maxLinearSpeed;
+    }
+
+    @Override
+    public float getMaxLinearAcceleration() {
+        return maxLinearAcceleration;
+    }
+
+    @Override
+    public void setMaxLinearAcceleration(float maxLinearAcceleration) {
+        this.maxLinearAcceleration = maxLinearAcceleration;
+    }
+
+    @Override
+    public float getMaxAngularSpeed() {
+        return maxAngularSpeed;
+    }
+
+    @Override
+    public void setMaxAngularSpeed(float maxAngularSpeed) {
+        this.maxAngularSpeed = maxAngularSpeed;
+    }
+
+    @Override
+    public float getMaxAngularAcceleration() {
+        return maxAngularAcceleration;
+    }
+
+    @Override
+    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
+        this.maxAngularAcceleration = maxAngularAcceleration;
+    }
+
+    @Override
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    @Override
+    public float getOrientation() {
+        return rotation;
+    }
+
+    @Override
+    public void setOrientation(float orientation) {
+        rotation = orientation;
+    }
+
+    @Override
+    public float vectorToAngle(Vector2 vector) {
+        return 0;
+    }
+
+    @Override
+    public Vector2 angleToVector(Vector2 outVector, float angle) {
+        return null;
+    }
+
+    @Override
+    public Location<Vector2> newLocation() {
+        return this;
     }
 }
 

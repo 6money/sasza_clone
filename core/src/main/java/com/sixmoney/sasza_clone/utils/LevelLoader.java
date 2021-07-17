@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.entities.Crate;
+import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
@@ -41,7 +42,7 @@ public class LevelLoader {
                 }
             }
 
-            loadImages(tiles, level);
+            loadTiles(tiles, level);
             loadOthers(other, level);
         } catch (Exception ex) {
             Gdx.app.error(TAG, ex.getMessage());
@@ -52,7 +53,7 @@ public class LevelLoader {
     }
 
 
-    private static void loadImages(Array<JsonValue> tiles, Level level) {
+    private static void loadTiles(Array<JsonValue> tiles, Level level) {
         Array<FloorTile> grassTileArray = new Array<>();
         Array<FloorTile> dirtTileArray = new Array<>();
         Array<FloorTile> sandTileArray = new Array<>();
@@ -96,6 +97,7 @@ public class LevelLoader {
 
     private static void loadOthers(Array<JsonValue> objects, Level level) {
         Array<Entity> environmentArray = new Array<>();
+        Array<Enemy> enemyArray = new Array<>();
 
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
@@ -110,9 +112,14 @@ public class LevelLoader {
                     Crate crate = new Crate(x, y);
                     environmentArray.add(crate);
                     break;
+                case Constants.ENEMY:
+                    Enemy enemy = new Enemy(x, y);
+                    enemyArray.add(enemy);
+                    break;
             }
         }
 
         level.setEnvironmentEntities(environmentArray);
+        level.setEnemyEntities(enemyArray);
     }
 }

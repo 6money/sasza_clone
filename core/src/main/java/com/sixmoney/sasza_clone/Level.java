@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone;
 
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -12,6 +13,8 @@ import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.entities.Bullet;
+import com.sixmoney.sasza_clone.entities.Crate;
+import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
@@ -34,6 +37,7 @@ public class Level {
     private Array<FloorTile> sandTiles;
     private Array<FloorTile> waterTiles;
     private Array<Entity> environmentEntities;
+    private Array<Enemy> enemyEntities;
     private final DelayedRemovalArray<Bullet> bullets;
     private BulletCollisionFilter bulletCollisionFilter;
     private long shootStartTime;
@@ -51,10 +55,13 @@ public class Level {
         sandTiles = new Array<>();
         waterTiles = new Array<>();
         environmentEntities = new Array<>();
+        enemyEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
         bulletCollisionFilter = new BulletCollisionFilter();
         shooting = false;
         shootStartTime = TimeUtils.nanoTime();
+
+
     }
 
     public Player getPlayer() {
@@ -98,10 +105,27 @@ public class Level {
         }
     }
 
+    public void setEnemyEntities(Array<Enemy> entities) {
+        this.enemyEntities = entities;
+        for (Entity entity: enemyEntities) {
+            world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
+        }
+
+        Arrive<Vector2> arrive = new Arrive<Vector2>(enemyEntities.get(0), player)
+                .setTimeToTarget(0.1f)
+                .setArrivalTolerance(2f)
+                .setDecelerationRadius(5);
+        enemyEntities.get(0).setBehavior(arrive);
+    }
+
     public void update(float delta) {
         if (shooting && Utils.secondsSince(shootStartTime) > 1 / player.getGun().getFireRate()) {
             shootStartTime = TimeUtils.nanoTime();
             shoot();
+        }
+
+        for (Enemy enemy: enemyEntities) {
+            enemy.update(delta, world);
         }
 
         player.update(delta, world);
@@ -132,6 +156,9 @@ public class Level {
         for (Entity entity: environmentEntities) {
             entity.render(batch);
         }
+        for (Entity entity: enemyEntities) {
+            entity.render(batch);
+        }
 
         player.render(batch, drawer);
 
@@ -145,6 +172,9 @@ public class Level {
             tile.renderDebug(drawer);
         }
         for (Entity entity: environmentEntities) {
+            entity.renderDebug(drawer);
+        }
+        for (Entity entity: enemyEntities) {
             entity.renderDebug(drawer);
         }
         player.renderDebug(drawer);
@@ -185,7 +215,11 @@ public class Level {
             if (((Entity) item.userData).destructible) {
                 ((Entity) item.userData).health -= player.getGun().getDamage();
                 if (((Entity) item.userData).health <= 0) {
-                    environmentEntities.removeValue((Entity) item.userData, true);
+                    if (item.userData instanceof Enemy) {
+                        enemyEntities.removeValue((Enemy) item.userData, true);
+                    } else if (item.userData instanceof Crate) {
+                        environmentEntities.removeValue((Entity) item.userData, true);
+                    }
                     world.remove(item);
                 }
             }
