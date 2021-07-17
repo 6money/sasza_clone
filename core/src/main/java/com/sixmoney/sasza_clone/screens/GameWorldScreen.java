@@ -39,8 +39,8 @@ public class GameWorldScreen implements Screen {
         viewport = new ExtendViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         batch = new SpriteBatch();
         drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
-        hud = new HUD();
         level = LevelLoader.load("debug", viewport);
+        hud = new HUD(level);
         camera = (ChaseCam) viewport.getCamera();
         inputHandler = new InputHandler(level, camera);
 

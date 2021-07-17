@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Item;
@@ -16,6 +17,7 @@ import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -34,6 +36,9 @@ public class Level {
     private Array<Entity> environmentEntities;
     private final DelayedRemovalArray<Bullet> bullets;
     private BulletCollisionFilter bulletCollisionFilter;
+    private long shootStartTime;
+
+    public boolean shooting;
 
     public Level(Viewport viewport) {
         this.viewport = viewport;
@@ -48,6 +53,8 @@ public class Level {
         environmentEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
         bulletCollisionFilter = new BulletCollisionFilter();
+        shooting = false;
+        shootStartTime = TimeUtils.nanoTime();
     }
 
     public Player getPlayer() {
@@ -92,6 +99,11 @@ public class Level {
     }
 
     public void update(float delta) {
+        if (shooting && Utils.secondsSince(shootStartTime) > 1 / player.getGun().getFireRate()) {
+            shootStartTime = TimeUtils.nanoTime();
+            shoot();
+        }
+
         player.update(delta, world);
 
         bullets.begin();
@@ -139,6 +151,14 @@ public class Level {
     }
 
     public void shoot() {
+        if (player.getGun().getCurrentAmmo() == 0 && player.getGun().getCurrentMagazineAmmo() == 0) {
+            return;
+        }
+
+        if (player.getGun().getCurrentMagazineAmmo() <= 0) {
+            player.getGun().reload();
+        }
+
         ArrayList<ItemInfo> items = new ArrayList<>();
         float rotation = player.rotation;
         Vector2 bulletOffsetTemp = new Vector2(player.getBulletOffset());
@@ -162,7 +182,7 @@ public class Level {
         }
 
         bullets.add(new Bullet(player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, player.rotation, bulletVector.x, bulletVector.y, player.getGun().getProjectileSpeed()));
-        player.shoot();
+        player.getGun().decrementCurrentMagazineAmmo();
     }
 
     public static class BulletCollisionFilter implements CollisionFilter {

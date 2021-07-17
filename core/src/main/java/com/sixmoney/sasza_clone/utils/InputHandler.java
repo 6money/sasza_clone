@@ -77,15 +77,22 @@ public class InputHandler extends InputAdapter {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
         level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
-        level.shoot();
-        return true;
+        if (button == 0) {
+            level.shooting = true;
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
         level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
-        return true;
+        if (button == 0) {
+            level.shooting = false;
+            return true;
+        }
+        return false;
     }
 
     @Override

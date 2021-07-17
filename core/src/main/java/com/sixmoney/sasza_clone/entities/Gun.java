@@ -11,7 +11,7 @@ public class Gun {
 
     public Gun() {
         magazineSize = 30;
-        fireRate = 4f;
+        fireRate = 12f;
         range = 200;
         maxAmmo = 240;
         currentAmmo = maxAmmo;

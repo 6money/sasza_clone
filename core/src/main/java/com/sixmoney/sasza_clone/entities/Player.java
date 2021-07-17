@@ -113,9 +113,6 @@ public class Player extends Entity {
         }
     }
 
-    public void shoot() {
-        gun.decrementCurrentMagazineAmmo();
-    }
 
     public void update(float delta, World<Entity> world) {
         if (moveUp) {
