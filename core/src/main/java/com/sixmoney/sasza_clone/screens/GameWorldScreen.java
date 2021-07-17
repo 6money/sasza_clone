@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.Sasza;
 import com.sixmoney.sasza_clone.overlays.HUD;
+import com.sixmoney.sasza_clone.overlays.PauseOverlay;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
@@ -27,8 +28,11 @@ public class GameWorldScreen implements Screen {
     private Batch batch;
     private ShapeDrawer drawer;
     private HUD hud;
-    private Level level;
-    private InputHandler inputHandler;
+    private PauseOverlay pauseOverlay;
+
+    public Level level;
+    public InputHandler inputHandler;
+    public boolean paused;
 
     public GameWorldScreen(Sasza game) {
         saszaGame = game;
@@ -41,15 +45,19 @@ public class GameWorldScreen implements Screen {
         drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
         level = LevelLoader.load("debug", viewport);
         hud = new HUD(level);
+        pauseOverlay = new PauseOverlay(this, batch);
         camera = (ChaseCam) viewport.getCamera();
-        inputHandler = new InputHandler(level, camera);
+        inputHandler = new InputHandler(this, camera);
+        paused = false;
 
         Gdx.input.setInputProcessor(inputHandler);
     }
 
     @Override
     public void render(float delta) {
-        level.update(delta);
+        if (!paused) {
+            level.update(delta);
+        }
 
         viewport.apply(); // viewport.apply() will call camera.update()
         Gdx.gl.glClearColor(Constants.BG_COLOR.r,Constants.BG_COLOR.g,Constants.BG_COLOR.b,Constants.BG_COLOR.a);
@@ -67,6 +75,10 @@ public class GameWorldScreen implements Screen {
         batch.end();
 
         hud.render(batch);
+
+        if (paused) {
+            pauseOverlay.render();
+        }
     }
 
     @Override
@@ -93,5 +105,19 @@ public class GameWorldScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
+        pauseOverlay.dispose();
+        hud.dispose();
+    }
+
+    public void setPaused() {
+        paused = true;
+        Gdx.input.setInputProcessor(pauseOverlay.inputProcessor);
+    }
+
+    public void quit() {
+        Gdx.app.postRunnable(() -> {
+            saszaGame.switchScreen("menu");
+            dispose();
+        });
     }
 }

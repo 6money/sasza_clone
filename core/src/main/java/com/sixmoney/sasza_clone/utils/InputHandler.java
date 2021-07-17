@@ -5,13 +5,16 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.sixmoney.sasza_clone.Level;
+import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 
 public class InputHandler extends InputAdapter {
+    GameWorldScreen gameWorldScreen;
     Level level;
     ChaseCam camera;
 
-    public InputHandler(Level level, ChaseCam camera) {
-        this.level = level;
+    public InputHandler(GameWorldScreen gameWorldScreen, ChaseCam camera) {
+        this.gameWorldScreen = gameWorldScreen;
+        level = gameWorldScreen.level;
         this.camera = camera;
     }
 
@@ -31,6 +34,8 @@ public class InputHandler extends InputAdapter {
             case Input.Keys.D:
                 level.getPlayer().startMove("RIGHT");
                 return true;
+            case Input.Keys.ESCAPE:
+                gameWorldScreen.setPaused();
         }
         return false;
     }

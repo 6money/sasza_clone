@@ -65,4 +65,9 @@ public class Constants {
     public static final String LEVEL_HEIGHT_KEY = "height";
     public static final String LEVEL_IDENTIFIER_KEY = "itemIdentifier";
     public static final String LEVEL_CUSTOM_VARS = "customVars";
+
+    // Overlays
+    public static final String PAUSED_MESSAGE = "PAUSED";
+    public static final String RESUME_MESSAGE = "RESUME";
+    public static final String QUIT_MESSAGE = "QUIT";
 }
