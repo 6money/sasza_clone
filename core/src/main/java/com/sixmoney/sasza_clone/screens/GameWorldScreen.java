@@ -84,7 +84,8 @@ public class GameWorldScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        hud.viewport.update(width, height, true);
+        hud.resize(width, height);
+        pauseOverlay.resize(width, height);
     }
 
     @Override

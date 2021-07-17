@@ -8,6 +8,7 @@ public class Bullet extends Entity {
     private float speed;
     private float remainingDistance;
     private boolean dead;
+    private boolean firstUpdate;
 
     public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed) {
         super();
@@ -17,6 +18,7 @@ public class Bullet extends Entity {
         textureRegion = Assets.get_instance().playerAssets.rifleProjectile;
         this.speed = speed;
         dead = false;
+        firstUpdate = true;
     }
 
     public boolean getDead() {
@@ -24,6 +26,11 @@ public class Bullet extends Entity {
     }
 
     public void update() {
+        if (firstUpdate) {
+            firstUpdate = false;
+            return;
+        }
+
         Vector2 temp = new Vector2(target);
         temp.sub(position);
         remainingDistance = temp.len();

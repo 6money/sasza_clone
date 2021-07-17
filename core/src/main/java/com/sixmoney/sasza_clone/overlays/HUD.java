@@ -9,8 +9,7 @@ import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.utils.Constants;
 
 public class HUD {
-    public Viewport viewport;
-
+    private Viewport viewport;
     private BitmapFont font;
     private Level level;
 
@@ -31,6 +30,10 @@ public class HUD {
         font.draw(batch, String.valueOf(Gdx.graphics.getFramesPerSecond()), viewport.getCamera().viewportWidth - Constants.HUD_MARGIN * 3, viewport.getCamera().viewportHeight - Constants.HUD_MARGIN * 2);
         batch.end();
 
+    }
+
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
     }
 
     public void dispose() {
