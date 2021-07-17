@@ -29,6 +29,7 @@ public class Constants {
     // player sprites
     public static final String PLAYER = "Hero_Rifle";
     public static final String PLAYER_PLACEHOLDER = "particle_pixel";
+    public static final String RIFLE_PROJECTILE = "GunnerBullet";
 
     // environment sprites
     public static final String BOX_2 = "TDS04_0013_Box-02";

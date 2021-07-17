@@ -1,13 +1,21 @@
 package com.sixmoney.sasza_clone;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.dongbat.jbump.CollisionFilter;
+import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.World;
+import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
+import com.sixmoney.sasza_clone.utils.Constants;
+
+import java.util.ArrayList;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -22,6 +30,7 @@ public class Level {
     private Array<FloorTile> sandTiles;
     private Array<FloorTile> waterTiles;
     private Array<Entity> environmentEntities;
+    private final DelayedRemovalArray<Bullet> bullets;
 
     public Level(Viewport viewport) {
         this.viewport = viewport;
@@ -34,6 +43,7 @@ public class Level {
         sandTiles = new Array<>();
         waterTiles = new Array<>();
         environmentEntities = new Array<>();
+        bullets = new DelayedRemovalArray<>();
     }
 
     public Player getPlayer() {
@@ -79,6 +89,15 @@ public class Level {
 
     public void update(float delta) {
         player.update(delta, world);
+
+        bullets.begin();
+        for (Bullet bullet: bullets) {
+            bullet.update();
+            if (bullet.getDead()) {
+                bullets.removeValue(bullet, true);
+            }
+        }
+        bullets.end();
     }
 
     public void render(Batch batch, ShapeDrawer drawer) {
@@ -97,7 +116,12 @@ public class Level {
         for (Entity entity: environmentEntities) {
             entity.render(batch);
         }
+
         player.render(batch, drawer);
+
+        for (Bullet bullet: bullets) {
+            bullet.render(batch);
+        }
     }
 
     public void renderDebug(ShapeDrawer drawer) {
@@ -108,5 +132,32 @@ public class Level {
             entity.renderDebug(drawer);
         }
         player.renderDebug(drawer);
+    }
+
+    public void shoot() {
+        ArrayList<ItemInfo> items = new ArrayList<>();
+        float rotation = player.rotation;
+        Vector2 bulletOffsetTemp = new Vector2(player.getBulletOffset());
+        bulletOffsetTemp.rotateDeg(rotation);
+        Vector2 bulletVector = new Vector2(0, -1);
+        bulletVector.rotateDeg(rotation);
+        bulletVector.setLength(player.getGun().getRange());
+        bulletVector.add(player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
+
+        world.querySegmentWithCoords(
+                player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x,
+                player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
+                bulletVector.x,
+                bulletVector.y,
+                CollisionFilter.defaultFilter,
+                items
+        );
+
+        if (items.size() > 0) {
+            bulletVector.set(items.get(0).x1, items.get(0).y1);
+        }
+
+        bullets.add(new Bullet(player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, player.rotation, bulletVector.x, bulletVector.y, player.getGun().getProjectileSpeed()));
+        player.shoot();
     }
 }

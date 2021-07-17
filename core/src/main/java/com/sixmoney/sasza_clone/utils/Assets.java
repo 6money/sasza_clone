@@ -98,10 +98,12 @@ public class Assets implements Disposable, AssetErrorListener {
     public class PlayerAssets {
         public TextureRegion player;
         public TextureRegion playerPlaceholder;
+        public TextureRegion rifleProjectile;
 
         public PlayerAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             player = atlasPrivate.findRegion(Constants.PLAYER);
             playerPlaceholder = atlas.findRegion(Constants.PLAYER_PLACEHOLDER);
+            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
         }
     }
 

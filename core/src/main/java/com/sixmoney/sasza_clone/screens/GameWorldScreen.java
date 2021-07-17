@@ -1,14 +1,10 @@
 package com.sixmoney.sasza_clone.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
@@ -17,11 +13,12 @@ import com.sixmoney.sasza_clone.overlays.HUD;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.InputHandler;
 import com.sixmoney.sasza_clone.utils.LevelLoader;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class GameWorldScreen extends InputAdapter implements Screen {
+public class GameWorldScreen implements Screen {
     private static final String TAG = GameWorldScreen.class.getName();
 
     private Sasza saszaGame;
@@ -31,6 +28,7 @@ public class GameWorldScreen extends InputAdapter implements Screen {
     private ShapeDrawer drawer;
     private HUD hud;
     private Level level;
+    private InputHandler inputHandler;
 
     public GameWorldScreen(Sasza game) {
         saszaGame = game;
@@ -44,8 +42,9 @@ public class GameWorldScreen extends InputAdapter implements Screen {
         hud = new HUD();
         level = LevelLoader.load("debug", viewport);
         camera = (ChaseCam) viewport.getCamera();
+        inputHandler = new InputHandler(level, camera);
 
-        Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(inputHandler);
     }
 
     @Override
@@ -94,83 +93,5 @@ public class GameWorldScreen extends InputAdapter implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        switch (keycode) {
-            case Input.Keys.W:
-                level.getPlayer().startMove("UP");
-                return true;
-            case Input.Keys.S:
-                level.getPlayer().startMove("DOWN");
-                return true;
-            case Input.Keys.A:
-                level.getPlayer().startMove("LEFT");
-                return true;
-            case Input.Keys.D:
-                level.getPlayer().startMove("RIGHT");
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        switch (keycode) {
-            case Input.Keys.W:
-                level.getPlayer().stopMove("UP");
-                return true;
-            case Input.Keys.S:
-                level.getPlayer().stopMove("DOWN");
-                return true;
-            case Input.Keys.A:
-                level.getPlayer().stopMove("LEFT");
-                return true;
-            case Input.Keys.D:
-                level.getPlayer().stopMove("RIGHT");
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean scrolled (float amountX, float amountY) {
-        if (amountY > 0) {
-            camera.zoomOut(0.1f);
-            return true;
-        } else if (amountY < 0) {
-            camera.zoomIn(0.1f);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
-        return true;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
-        return true;
     }
 }

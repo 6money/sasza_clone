@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,10 +8,13 @@ import com.dongbat.jbump.Collision;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Collisions;
 import com.dongbat.jbump.Item;
+import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
+
+import java.util.ArrayList;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -25,6 +27,7 @@ public class Player extends Entity {
     private boolean moveRight;
     private Vector2 lazerVector;
     private Vector2 bulletOffset;
+    private Gun gun;
 
     public Player(float x, float y) {
         super();
@@ -39,6 +42,7 @@ public class Player extends Entity {
         textureRegion = Assets.get_instance().playerAssets.player;
         lazerVector = new Vector2();
         bulletOffset = new Vector2( -3, -18);
+        gun = new Gun();
     }
 
     public Vector2 getPosition() {
@@ -61,6 +65,14 @@ public class Player extends Entity {
         Vector2 vec = pointerPosition.sub(playerCenter);
         vec.nor();
         rotation = vec.angleDeg() + 90;
+    }
+
+    public Vector2 getBulletOffset() {
+        return bulletOffset;
+    }
+
+    public Gun getGun() {
+        return gun;
     }
 
     public void startMove(String direction) {
@@ -101,6 +113,10 @@ public class Player extends Entity {
         }
     }
 
+    public void shoot() {
+        gun.decrementCurrentMagazineAmmo();
+    }
+
     public void update(float delta, World<Entity> world) {
         if (moveUp) {
             position.y += delta * Constants.PLAYER_SPEED;
@@ -125,21 +141,39 @@ public class Player extends Entity {
                 setPosition(collision.touch.x - (bbox.x - position.x), collision.touch.y - (bbox.y - position.y));
             }
         }
+
+
+        ArrayList<ItemInfo> items = new ArrayList<>();
+        Vector2 bulletOffsetTemp = new Vector2(bulletOffset);
+        bulletOffsetTemp.rotateDeg(rotation);
+        lazerVector.set(0, -1);
+        lazerVector.rotateDeg(rotation);
+        lazerVector.setLength(gun.getRange());
+        lazerVector.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
+
+        world.querySegmentWithCoords(
+                position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x,
+                position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
+                lazerVector.x,
+                lazerVector.y,
+                CollisionFilter.defaultFilter,
+                items
+        );
+
+        if (items.size() > 0) {
+            lazerVector.set(items.get(0).x1, items.get(0).y1);
+        }
     }
 
 
     public void render(Batch batch, ShapeDrawer drawer) {
         super.render(batch);
 
+
         Vector2 bulletOffsetTemp = new Vector2(bulletOffset);
         bulletOffsetTemp.rotateDeg(rotation);
-        lazerVector.set(0, -1);
-        lazerVector.rotateDeg(rotation);
-        lazerVector.setLength(100f);
-        lazerVector.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
-        Gdx.app.log(TAG, "" + bulletOffsetTemp.len());
 
-        drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, lazerVector.x, lazerVector.y, Color.RED);
+        drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
     }
 
 

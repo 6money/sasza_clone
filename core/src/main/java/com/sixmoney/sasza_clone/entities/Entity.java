@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.Item;
+import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -19,6 +20,7 @@ public abstract class Entity {
 
     protected Entity() {
         rotation = 0;
+        textureRegion = Assets.get_instance().playerAssets.playerPlaceholder;
     }
 
     public void render(Batch batch) {
