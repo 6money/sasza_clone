@@ -13,6 +13,9 @@ public class Constants {
     public static final int WORLD_HEIGHT = 360;
     public static final Color BG_COLOR = Color.SKY;
     public static final int CHASE_CAM_SPEED = 200;
+    public static final int BACKGROUND_FPS = 30;
+    public static final int FORGROUND_FPS = 144;
+    public static final boolean V_SYNC = false;
     public static final String SKIN_PATH = "ui/uiskin.json";
     public static final String PREFERENCES_NAME = "sasza_clone";
     public static final String TEXTURE_ATLAS = "packaged/sasza_clone.pack.atlas";

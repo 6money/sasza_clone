@@ -21,6 +21,9 @@ public class DesktopLauncher {
 		configuration.title = "sasza_clone";
 		configuration.width = Constants.WINDOW_WIDTH;
 		configuration.height = Constants.WINDOW_HEIGHT;
+		configuration.backgroundFPS = Constants.BACKGROUND_FPS;
+		configuration.foregroundFPS = Constants.FORGROUND_FPS;
+		configuration.vSyncEnabled = Constants.V_SYNC;
 		//// This prevents a confusing error that would appear after exiting normally.
 		configuration.forceExit = false;
 		
