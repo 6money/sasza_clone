@@ -99,6 +99,8 @@ public class Player extends Entity implements Steerable<Vector2> {
             default:
                 break;
         }
+
+        generateVelocity();
     }
 
     public void stopMove(String direction) {
@@ -118,22 +120,32 @@ public class Player extends Entity implements Steerable<Vector2> {
             default:
                 break;
         }
+
+        generateVelocity();
+    }
+
+    private void generateVelocity() {
+        velocity.set(0, 0);
+
+        if (moveUp) {
+            velocity.y += Constants.PLAYER_SPEED;
+        }
+        if (moveDown) {
+            velocity.y -= Constants.PLAYER_SPEED;
+        }
+        if (moveLeft) {
+            velocity.x -= Constants.PLAYER_SPEED;
+        }
+        if (moveRight) {
+            velocity.x += Constants.PLAYER_SPEED;
+        }
+
+        velocity.setLength(Constants.PLAYER_SPEED);
     }
 
 
     public void update(float delta, World<Entity> world) {
-        if (moveUp) {
-            position.y += delta * Constants.PLAYER_SPEED;
-        }
-        if (moveDown) {
-            position.y -= delta * Constants.PLAYER_SPEED;
-        }
-        if (moveLeft) {
-            position.x -= delta * Constants.PLAYER_SPEED;
-        }
-        if (moveRight) {
-            position.x += delta * Constants.PLAYER_SPEED;
-        }
+        position.mulAdd(velocity, delta);
 
         updateBBox();
 
@@ -277,7 +289,7 @@ public class Player extends Entity implements Steerable<Vector2> {
 
     @Override
     public Vector2 getPosition() {
-        return position;
+        return new Vector2(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
     }
 
     @Override

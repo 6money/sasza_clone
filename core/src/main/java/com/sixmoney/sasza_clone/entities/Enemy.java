@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.utils.Location;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.Collision;
@@ -40,7 +41,7 @@ public class Enemy extends Entity implements Steerable<Vector2> {
         acceleration = new Vector2(0, 0);
         steerOutput = new SteeringAcceleration<Vector2>(new Vector2());
 
-        maxLinearSpeed = 100f;
+        maxLinearSpeed = 180;
         maxLinearAcceleration = 5000f;
         maxAngularSpeed = 10f;
         maxAngularAcceleration = 5f;
@@ -86,6 +87,10 @@ public class Enemy extends Entity implements Steerable<Vector2> {
             Gdx.app.log("velocity", velocity.toString());
 
             position.mulAdd(velocity, delta);
+        }
+
+        if (!velocity.isZero()) {
+            rotation = velocity.angleDeg() + 90;
         }
     }
 
@@ -182,7 +187,7 @@ public class Enemy extends Entity implements Steerable<Vector2> {
 
     @Override
     public Vector2 getPosition() {
-        return position;
+        return new Vector2(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
     }
 
     @Override
@@ -197,12 +202,14 @@ public class Enemy extends Entity implements Steerable<Vector2> {
 
     @Override
     public float vectorToAngle(Vector2 vector) {
-        return 90;
+        return MathUtils.atan2(-vector.x, vector.y);
     }
 
     @Override
     public Vector2 angleToVector(Vector2 outVector, float angle) {
-        return new Vector2(1, 0);
+        outVector.x = -MathUtils.sin(angle);
+        outVector.y = -MathUtils.cos(angle);
+        return outVector;
     }
 
     @Override

@@ -107,15 +107,15 @@ public class Level {
 
     public void setEnemyEntities(Array<Enemy> entities) {
         this.enemyEntities = entities;
-        for (Entity entity: enemyEntities) {
-            world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
-        }
+        for (Enemy enemy: enemyEntities) {
+            world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
 
-        Arrive<Vector2> arrive = new Arrive<Vector2>(enemyEntities.get(0), player)
-                .setTimeToTarget(0.1f)
-                .setArrivalTolerance(2f)
-                .setDecelerationRadius(5);
-        enemyEntities.get(0).setBehavior(arrive);
+            Arrive<Vector2> arrive = new Arrive<Vector2>(enemy, player)
+                    .setTimeToTarget(0.1f)
+                    .setArrivalTolerance(50f)
+                    .setDecelerationRadius(50);
+            enemy.setBehavior(arrive);
+        }
     }
 
     public void update(float delta) {
