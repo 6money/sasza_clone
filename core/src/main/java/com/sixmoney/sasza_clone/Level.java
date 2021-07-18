@@ -1,6 +1,9 @@
 package com.sixmoney.sasza_clone;
 
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
+import com.badlogic.gdx.ai.steer.utils.RayConfiguration;
+import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -18,8 +21,10 @@ import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
+import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.JBumpRaycastCollisionDetector;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import java.util.ArrayList;
@@ -111,11 +116,16 @@ public class Level {
         for (Enemy enemy: enemyEntities) {
             world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
 
-            Arrive<Vector2> arrive = new Arrive<Vector2>(enemy, player)
+            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 50, 25, 30);
+            RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
+            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 32);
+            enemy.addBehavior(raycastObstacleAvoidance);
+
+            Arrive<Vector2> arrive = new Arrive<>(enemy, player)
                     .setTimeToTarget(0.1f)
                     .setArrivalTolerance(30f)
                     .setDecelerationRadius(50);
-            enemy.setBehavior(arrive);
+            enemy.addBehavior(arrive);
         }
     }
 

@@ -34,8 +34,8 @@ public class Enemy extends Character {
     }
 
     public void update(float delta, World<Entity> world) {
-        if (behavior != null) {
-            behavior.calculateSteering(steerOutput);
+        if (prioritySteering.isEnabled()) {
+            prioritySteering.calculateSteering(steerOutput);
             applySteering(delta);
         }
 

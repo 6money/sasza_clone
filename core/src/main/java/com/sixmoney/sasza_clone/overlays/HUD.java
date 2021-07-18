@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.overlays;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
@@ -28,6 +29,7 @@ public class HUD {
         font.draw(batch, String.valueOf(level.getPlayer().getGun().getCurrentAmmo()), Constants.HUD_MARGIN, viewport.getCamera().viewportHeight - Constants.HUD_MARGIN * 2);
         font.draw(batch, String.valueOf(level.getPlayer().getGun().getCurrentMagazineAmmo()), Constants.HUD_MARGIN, viewport.getCamera().viewportHeight - Constants.HUD_MARGIN * 4);
         font.draw(batch, String.valueOf(Gdx.graphics.getFramesPerSecond()), viewport.getCamera().viewportWidth - Constants.HUD_MARGIN * 3, viewport.getCamera().viewportHeight - Constants.HUD_MARGIN * 2);
+        font.draw(batch, MathUtils.round(level.getPlayer().getPosition().x) + "," + MathUtils.round(level.getPlayer().getPosition().y), viewport.getCamera().viewportWidth - Constants.HUD_MARGIN * 8, viewport.getCamera().viewportHeight - Constants.HUD_MARGIN * 4);
         batch.end();
 
     }

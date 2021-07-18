@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.entities;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.PrioritySteering;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.sixmoney.sasza_clone.utils.Constants;
@@ -18,15 +19,17 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected float maxAngularAcceleration;
     protected SteeringBehavior<Vector2> behavior;
     protected SteeringAcceleration<Vector2> steerOutput;
+    protected PrioritySteering<Vector2> prioritySteering;
 
     public Character() {
         super();
         steerOutput = new SteeringAcceleration<Vector2>(new Vector2());
-        maxLinearSpeed = 180;
+        maxLinearSpeed = 120;
         maxLinearAcceleration = 5000f;
         maxAngularSpeed = 10f;
         maxAngularAcceleration = 5f;
         tagged = false;
+        prioritySteering = new PrioritySteering<>(this, 0.0001f);
     }
 
     protected void applySteering(float delta) {
@@ -48,8 +51,8 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         }
     }
 
-    public void setBehavior(SteeringBehavior<Vector2> behavior) {
-        this.behavior = behavior;
+    public void addBehavior(SteeringBehavior<Vector2> behavior) {
+        prioritySteering.add(behavior);
     }
 
     @Override
