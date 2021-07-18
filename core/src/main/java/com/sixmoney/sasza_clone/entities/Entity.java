@@ -11,10 +11,11 @@ import com.sixmoney.sasza_clone.utils.Utils;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public abstract class Entity{
+public abstract class Entity {
     public Vector2 position;
     public Rectangle bbox;
     public Vector2 velocity;
+    public Vector2 acceleration;
     public float rotation;
     public Item<Entity> item;
     public TextureRegion textureRegion;
@@ -25,6 +26,7 @@ public abstract class Entity{
         rotation = 0;
         health = 0;
         velocity = new Vector2(0, 0);
+        acceleration = new Vector2(0, 0);
         destructible = false;
         textureRegion = Assets.get_instance().playerAssets.playerPlaceholder;
     }

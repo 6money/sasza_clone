@@ -1,11 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.steer.SteeringAcceleration;
-import com.badlogic.gdx.ai.steer.SteeringBehavior;
-import com.badlogic.gdx.ai.utils.Location;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.Collision;
@@ -17,18 +11,8 @@ import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
 
-public class Enemy extends Entity implements Steerable<Vector2> {
-
-    private Vector2 acceleration;
-
-    private boolean tagged;
-    private float zeroLinearSpeedThreshold;
-    private float maxLinearSpeed;
-    private float maxLinearAcceleration;
-    private float maxAngularSpeed;
-    private float maxAngularAcceleration;
-    private SteeringBehavior<Vector2> behavior;
-    private SteeringAcceleration<Vector2> steerOutput;
+public class Enemy extends Character {
+    private static final String TAG = Enemy.class.getName();
 
     public Enemy(float x, float y) {
         super();
@@ -38,19 +22,10 @@ public class Enemy extends Entity implements Steerable<Vector2> {
         textureRegion = Assets.get_instance().enemyAssets.enemy;
         destructible = true;
         health = 200;
-        acceleration = new Vector2(0, 0);
-        steerOutput = new SteeringAcceleration<Vector2>(new Vector2());
 
-        maxLinearSpeed = 180;
-        maxLinearAcceleration = 5000f;
-        maxAngularSpeed = 10f;
-        maxAngularAcceleration = 5f;
-        tagged = false;
     }
 
-    public void setBehavior(SteeringBehavior<Vector2> behavior) {
-        this.behavior = behavior;
-    }
+
 
     public void setPosition(float x, float y) {
         position.x = x;
@@ -76,24 +51,6 @@ public class Enemy extends Entity implements Steerable<Vector2> {
         updateBBox();
     }
 
-    private void applySteering(float delta) {
-        boolean anyAcclerations = false;
-
-        if (!steerOutput.linear.isZero()) {
-            acceleration = steerOutput.linear.scl(delta);
-            Gdx.app.log("acceleration", acceleration.toString());
-            velocity.x += acceleration.x;
-            velocity.y += acceleration.y;
-            Gdx.app.log("velocity", velocity.toString());
-
-            position.mulAdd(velocity, delta);
-        }
-
-        if (!velocity.isZero()) {
-            rotation = velocity.angleDeg() + 90;
-        }
-    }
-
     private void updateBBox() {
         bbox.x = position.x + Constants.PLAYER_CENTER.x * 1.25f;
         bbox.y = position.y + Constants.PLAYER_CENTER.y * 1.25f;
@@ -110,110 +67,5 @@ public class Enemy extends Entity implements Steerable<Vector2> {
         }
     }
 
-    @Override
-    public Vector2 getLinearVelocity() {
-        return velocity;
-    }
 
-    @Override
-    public float getAngularVelocity() {
-        return 0;
-    }
-
-    @Override
-    public float getBoundingRadius() {
-        return Constants.PLAYER_CENTER.x / 2;
-    }
-
-    @Override
-    public boolean isTagged() {
-        return tagged;
-    }
-
-    @Override
-    public void setTagged(boolean tagged) {
-        this.tagged = tagged;
-    }
-
-    @Override
-    public float getZeroLinearSpeedThreshold() {
-        return zeroLinearSpeedThreshold;
-    }
-
-    @Override
-    public void setZeroLinearSpeedThreshold(float value) {
-        zeroLinearSpeedThreshold = value;
-    }
-
-    @Override
-    public float getMaxLinearSpeed() {
-        return maxLinearSpeed;
-    }
-
-    @Override
-    public void setMaxLinearSpeed(float maxLinearSpeed) {
-        this.maxLinearSpeed = maxLinearSpeed;
-    }
-
-    @Override
-    public float getMaxLinearAcceleration() {
-        return maxLinearAcceleration;
-    }
-
-    @Override
-    public void setMaxLinearAcceleration(float maxLinearAcceleration) {
-        this.maxLinearAcceleration = maxLinearAcceleration;
-    }
-
-    @Override
-    public float getMaxAngularSpeed() {
-        return maxAngularSpeed;
-    }
-
-    @Override
-    public void setMaxAngularSpeed(float maxAngularSpeed) {
-        this.maxAngularSpeed = maxAngularSpeed;
-    }
-
-    @Override
-    public float getMaxAngularAcceleration() {
-        return maxAngularAcceleration;
-    }
-
-    @Override
-    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-        this.maxAngularAcceleration = maxAngularAcceleration;
-    }
-
-    @Override
-    public Vector2 getPosition() {
-        return new Vector2(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
-    }
-
-    @Override
-    public float getOrientation() {
-        return rotation;
-    }
-
-    @Override
-    public void setOrientation(float orientation) {
-        rotation = orientation;
-    }
-
-    @Override
-    public float vectorToAngle(Vector2 vector) {
-        return MathUtils.atan2(-vector.x, vector.y);
-    }
-
-    @Override
-    public Vector2 angleToVector(Vector2 outVector, float angle) {
-        outVector.x = -MathUtils.sin(angle);
-        outVector.y = -MathUtils.cos(angle);
-        return outVector;
-    }
-
-    @Override
-    public Location<Vector2> newLocation() {
-        return this;
-    }
 }

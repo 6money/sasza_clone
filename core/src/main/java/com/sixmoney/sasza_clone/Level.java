@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Level {
+    private static final String TAG = Level.class.getName();
     private World<Entity> world;
     private Viewport viewport;
     private ChaseCam camera;
@@ -112,7 +113,7 @@ public class Level {
 
             Arrive<Vector2> arrive = new Arrive<Vector2>(enemy, player)
                     .setTimeToTarget(0.1f)
-                    .setArrivalTolerance(50f)
+                    .setArrivalTolerance(30f)
                     .setDecelerationRadius(50);
             enemy.setBehavior(arrive);
         }

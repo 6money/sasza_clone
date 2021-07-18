@@ -1,7 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class Player extends Entity implements Steerable<Vector2> {
+public class Player extends Character {
     private static final String TAG = Player.class.getName();
 
     private boolean moveUp;
@@ -31,13 +29,6 @@ public class Player extends Entity implements Steerable<Vector2> {
     private Vector2 bulletOffset;
     private Gun gun;
 
-    private boolean tagged;
-    private float zeroLinearSpeedThreshold;
-    private float maxLinearSpeed;
-    private float maxLinearAcceleration;
-    private float maxAngularSpeed;
-    private float maxAngularAcceleration;
-
     public Player(float x, float y) {
         super();
         position = new Vector2(x, y);
@@ -47,7 +38,6 @@ public class Player extends Entity implements Steerable<Vector2> {
         moveLeft = false;
         moveRight = false;
         item = new Item<>(this);
-        rotation = 0;
         textureRegion = Assets.get_instance().playerAssets.player;
         lazerVector = new Vector2();
         bulletOffset = new Vector2( -3, -18);
@@ -210,111 +200,6 @@ public class Player extends Entity implements Steerable<Vector2> {
             if (!(item.userData instanceof FloorTile)) return Response.touch;
             else return null;
         }
-    }
-
-    @Override
-    public Vector2 getLinearVelocity() {
-        return velocity;
-    }
-
-    @Override
-    public float getAngularVelocity() {
-        return 0;
-    }
-
-    @Override
-    public float getBoundingRadius() {
-        return Constants.PLAYER_CENTER.x / 2;
-    }
-
-    @Override
-    public boolean isTagged() {
-        return tagged;
-    }
-
-    @Override
-    public void setTagged(boolean tagged) {
-        this.tagged = tagged;
-    }
-
-    @Override
-    public float getZeroLinearSpeedThreshold() {
-        return zeroLinearSpeedThreshold;
-    }
-
-    @Override
-    public void setZeroLinearSpeedThreshold(float value) {
-        zeroLinearSpeedThreshold = value;
-    }
-
-    @Override
-    public float getMaxLinearSpeed() {
-        return maxLinearSpeed;
-    }
-
-    @Override
-    public void setMaxLinearSpeed(float maxLinearSpeed) {
-        this.maxLinearSpeed = maxLinearSpeed;
-    }
-
-    @Override
-    public float getMaxLinearAcceleration() {
-        return maxLinearAcceleration;
-    }
-
-    @Override
-    public void setMaxLinearAcceleration(float maxLinearAcceleration) {
-        this.maxLinearAcceleration = maxLinearAcceleration;
-    }
-
-    @Override
-    public float getMaxAngularSpeed() {
-        return maxAngularSpeed;
-    }
-
-    @Override
-    public void setMaxAngularSpeed(float maxAngularSpeed) {
-        this.maxAngularSpeed = maxAngularSpeed;
-    }
-
-    @Override
-    public float getMaxAngularAcceleration() {
-        return maxAngularAcceleration;
-    }
-
-    @Override
-    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-        this.maxAngularAcceleration = maxAngularAcceleration;
-    }
-
-    @Override
-    public Vector2 getPosition() {
-        return new Vector2(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
-    }
-
-    @Override
-    public float getOrientation() {
-        return rotation;
-    }
-
-    @Override
-    public void setOrientation(float orientation) {
-        rotation = orientation;
-    }
-
-    @Override
-    public float vectorToAngle(Vector2 vector) {
-        return 0;
-    }
-
-    @Override
-    public Vector2 angleToVector(Vector2 outVector, float angle) {
-        return null;
-    }
-
-    @Override
-    public Location<Vector2> newLocation() {
-        return this;
     }
 }
 
