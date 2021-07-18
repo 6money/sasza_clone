@@ -24,7 +24,7 @@ public class ChaseCam extends OrthographicCamera {
     }
 
     public void update() {
-        position.set(player.getPosition().x + Constants.PLAYER_CENTER.x, player.getPosition().y + Constants.PLAYER_CENTER.x, 0);
+        position.set(player.getPosition().x, player.getPosition().y, 0);
         super.update();
     }
 }
