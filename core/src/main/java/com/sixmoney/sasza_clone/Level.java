@@ -144,7 +144,7 @@ public class Level {
 
         bullets.begin();
         for (Bullet bullet: bullets) {
-            bullet.update();
+            bullet.update(delta);
             if (bullet.getDead()) {
                 bullets.removeValue(bullet, true);
             }

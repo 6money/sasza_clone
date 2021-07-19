@@ -17,6 +17,6 @@ public class FloorTile extends Entity {
 
     @Override
     public String toString() {
-        return "tile located at x: %s, y: %s, width: %s, height: %s".formatted(position.x, position.y, textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+        return "tile located at x: " + position.x + ", y: " + position.y + ", width: " + textureRegion.getRegionWidth() + ", height: " + textureRegion.getRegionHeight();
     }
 }

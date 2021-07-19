@@ -44,7 +44,7 @@ dependencies {
 	implementation "com.crashinvaders.vfx:gdx-vfx-gwt:$gdxVfxCoreVersion:sources"
 	implementation "com.crashinvaders.vfx:gdx-vfx-effects:$gdxVfxEffectsVersion:sources"
 	implementation "com.github.tommyettinger:jbump:$jbumpVersion:sources"
-
+	implementation "space.earlygrey:shapedrawer:$shapedrawerVersion:sources"
 }
 
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask

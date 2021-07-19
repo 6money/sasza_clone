@@ -25,7 +25,7 @@ public class Bullet extends Entity {
         return dead;
     }
 
-    public void update() {
+    public void update(float delta) {
         if (firstUpdate) {
             firstUpdate = false;
             return;
@@ -41,7 +41,7 @@ public class Bullet extends Entity {
             return;
         }
 
-        temp.setLength(Math.min(remainingDistance, speed));
+        temp.setLength(Math.min(remainingDistance, speed * delta));
         position.add(temp);
     }
 }

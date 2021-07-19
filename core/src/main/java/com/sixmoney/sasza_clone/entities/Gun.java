@@ -17,7 +17,7 @@ public class Gun {
         maxAmmo = 240;
         currentAmmo = maxAmmo;
         currentMagazineAmmo = magazineSize;
-        projectileSpeed = 10;
+        projectileSpeed = 400;
         damage = 10f;
     }
 
