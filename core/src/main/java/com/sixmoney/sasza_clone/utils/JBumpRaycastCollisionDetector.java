@@ -48,7 +48,7 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
 
         if (items.size() > 0) {
             Vector2 collisionPoint = new Vector2(items.get(0).x1, items.get(0).y1);
-            Vector2 collisionPointNor = new Vector2(items.get(0).x1, items.get(0).y1).nor();
+            Vector2 collisionPointNor = findCollisionNormal(items.get(0));
             Gdx.app.log("POINT", collisionPoint.toString() + ", " + collisionPointNor.toString());
             outputCollision.point = collisionPoint;
             outputCollision.normal = collisionPointNor;
@@ -57,6 +57,23 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
         }
 
         return collided;
+    }
+
+    private Vector2 findCollisionNormal(ItemInfo itemInfo) {
+        Vector2 collisionNormal = new Vector2(0, 0);
+        Entity entity = (Entity) itemInfo.item.userData;
+
+        if (itemInfo.x1 == entity.bbox.x) {
+            collisionNormal.set(-1, 0);
+        } else if (itemInfo.x1 == entity.bbox.x + entity.bbox.width) {
+            collisionNormal.set(1, 0);
+        } else if (itemInfo.y1 == entity.bbox.y) {
+            collisionNormal.set(0, -1);
+        } else if (itemInfo.y1 == entity.bbox.y + entity.bbox.height) {
+            collisionNormal.set(0, 1);
+        }
+
+        return collisionNormal;
     }
 
     public static class RayCastCollisionFilter implements CollisionFilter {

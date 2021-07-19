@@ -4,9 +4,15 @@ import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.PrioritySteering;
+import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
 import com.badlogic.gdx.ai.utils.Location;
+import com.badlogic.gdx.ai.utils.Ray;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.Constants;
+
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public abstract class Character extends Entity implements Steerable<Vector2> {
     private static final String TAG = Character.class.getName();
@@ -17,7 +23,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected float maxLinearAcceleration;
     protected float maxAngularSpeed;
     protected float maxAngularAcceleration;
-    protected SteeringBehavior<Vector2> behavior;
+    protected RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance;
     protected SteeringAcceleration<Vector2> steerOutput;
     protected PrioritySteering<Vector2> prioritySteering;
 
@@ -25,7 +31,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         super();
         steerOutput = new SteeringAcceleration<Vector2>(new Vector2());
         maxLinearSpeed = 120;
-        maxLinearAcceleration = 5000f;
+        maxLinearAcceleration = 200f;
         maxAngularSpeed = 10f;
         maxAngularAcceleration = 5f;
         tagged = false;
@@ -51,8 +57,24 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         }
     }
 
+    @Override
+    public void renderDebug(ShapeDrawer drawer) {
+        super.renderDebug(drawer);
+
+        if (raycastObstacleAvoidance != null) {
+            CentralRayWithWhiskersConfig config = (CentralRayWithWhiskersConfig) raycastObstacleAvoidance.getRayConfiguration();
+
+            for (Ray<Vector2> ray : config.getRays())
+                drawer.line(ray.start, ray.end, Color.CYAN);
+        }
+    }
+
     public void addBehavior(SteeringBehavior<Vector2> behavior) {
         prioritySteering.add(behavior);
+
+        if (behavior instanceof RaycastObstacleAvoidance) {
+            raycastObstacleAvoidance = (RaycastObstacleAvoidance<Vector2>) behavior;
+        }
     }
 
     @Override
@@ -67,7 +89,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public float getBoundingRadius() {
-        return Constants.PLAYER_CENTER.x / 2;
+        return Constants.PLAYER_CENTER.x;
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.JBumpRaycastCollisionDetector;
+import com.sixmoney.sasza_clone.utils.RaycastObstacleAvoidanceImpl;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import java.util.ArrayList;
@@ -116,9 +117,9 @@ public class Level {
         for (Enemy enemy: enemyEntities) {
             world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
 
-            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 50, 25, 30);
+            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 40, 15, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
-            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 32);
+            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidanceImpl(enemy, rayConfiguration, raycastCollisionDetector, 0);
             enemy.addBehavior(raycastObstacleAvoidance);
 
             Arrive<Vector2> arrive = new Arrive<>(enemy, player)
