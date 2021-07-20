@@ -15,6 +15,8 @@ public class ControllerInputHandler implements ControllerListener {
     private Level level;
     private ChaseCam camera;
     private Vector2 aimingVector;
+    private Vector2 velocity;
+    private Vector2 velocityNormal;
     private Array<Float> axisValues;
 
     public ControllerInputHandler(GameWorldScreen gameWorldScreen, ChaseCam cam) {
@@ -23,6 +25,8 @@ public class ControllerInputHandler implements ControllerListener {
         camera = cam;
         deadzone = 0.4f;
         aimingVector = new Vector2(0, 0);
+        velocity = new Vector2(0, 0);
+        velocityNormal = new Vector2(0, 0);
         axisValues = new Array<>(5);
         for (int i = 0; i < 5; i++){
             axisValues.add(0f);
@@ -68,35 +72,33 @@ public class ControllerInputHandler implements ControllerListener {
         }
 
         if (axisCode == 0) {
-            if (value > deadzone) {
-                level.getPlayer().startMove("RIGHT");
-            } else if (value < deadzone) {
-                level.getPlayer().stopMove("RIGHT");
+            axisValues.set(0, value);
+            if (value > deadzone || value < -deadzone) {
+                velocity.x = value;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
+                return true;
+            } else {
+                velocity.x = 0;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
+                return true;
             }
-
-            if (value < -deadzone) {
-                level.getPlayer().startMove("LEFT");
-            } else if (value > -deadzone) {
-                level.getPlayer().stopMove("LEFT");
-            }
-
-            return true;
         }
 
         if (axisCode == 1) {
-            if (value > deadzone) {
-                level.getPlayer().startMove("DOWN");
-            } else if (value < deadzone) {
-                level.getPlayer().stopMove("DOWN");
+            axisValues.set(1, value);
+            if (value > deadzone || value < -deadzone) {
+                velocity.y = -value;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
+                return true;
+            } else {
+                velocity.y = 0;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
+                return true;
             }
-
-            if (value < -deadzone) {
-                level.getPlayer().startMove("UP");
-            } else if (value > -deadzone) {
-                level.getPlayer().stopMove("UP");
-            }
-
-            return true;
         }
 
         if (axisCode == 2) {

@@ -8,14 +8,18 @@ import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 
 public class InputHandler extends InputAdapter {
-    GameWorldScreen gameWorldScreen;
-    Level level;
-    ChaseCam camera;
+    private GameWorldScreen gameWorldScreen;
+    private Level level;
+    private ChaseCam camera;
+    private Vector2 velocity;
+    private Vector2 velocityNormal;
 
     public InputHandler(GameWorldScreen gameWorldScreen, ChaseCam camera) {
         this.gameWorldScreen = gameWorldScreen;
         level = gameWorldScreen.level;
         this.camera = camera;
+        velocity = new Vector2(0, 0);
+        velocityNormal = new Vector2(0, 0);
     }
 
 
@@ -23,16 +27,24 @@ public class InputHandler extends InputAdapter {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.W:
-                level.getPlayer().startMove("UP");
+                velocity.y += 1;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
                 return true;
             case Input.Keys.S:
-                level.getPlayer().startMove("DOWN");
+                velocity.y -= 1;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
                 return true;
             case Input.Keys.A:
-                level.getPlayer().startMove("LEFT");
+                velocity.x -= 1;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
                 return true;
             case Input.Keys.D:
-                level.getPlayer().startMove("RIGHT");
+                velocity.x += 1;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
                 return true;
             case Input.Keys.ESCAPE:
                 gameWorldScreen.setPaused();
@@ -44,16 +56,24 @@ public class InputHandler extends InputAdapter {
     public boolean keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.W:
-                level.getPlayer().stopMove("UP");
+                velocity.y -= 1;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
                 return true;
             case Input.Keys.S:
-                level.getPlayer().stopMove("DOWN");
+                velocity.y += 1;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
                 return true;
             case Input.Keys.A:
-                level.getPlayer().stopMove("LEFT");
+                velocity.x += 1;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
                 return true;
             case Input.Keys.D:
-                level.getPlayer().stopMove("RIGHT");
+                velocity.x -= 1;
+                velocityNormal.set(velocity).nor();
+                level.getPlayer().setVelocity(velocityNormal);
                 return true;
         }
         return false;

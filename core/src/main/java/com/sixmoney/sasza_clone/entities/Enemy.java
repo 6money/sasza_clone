@@ -26,7 +26,6 @@ public class Enemy extends Character {
     }
 
 
-
     public void setPosition(float x, float y) {
         position.x = x;
         position.y = y;
