@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.utils.Collision;
 import com.badlogic.gdx.ai.utils.Ray;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
@@ -49,10 +48,8 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
         if (items.size() > 0) {
             Vector2 collisionPoint = new Vector2(items.get(0).x1, items.get(0).y1);
             Vector2 collisionPointNor = findCollisionNormal(items.get(0));
-            Gdx.app.log("POINT", collisionPoint.toString() + ", " + collisionPointNor.toString());
             outputCollision.point = collisionPoint;
             outputCollision.normal = collisionPointNor;
-            Gdx.app.log(TAG, outputCollision.point.toString() + ", " + outputCollision.normal.toString());
             collided = true;
         }
 
