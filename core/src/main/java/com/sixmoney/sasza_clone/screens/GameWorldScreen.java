@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.GdxAI;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +16,7 @@ import com.sixmoney.sasza_clone.overlays.PauseOverlay;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.ControllerInputHandler;
 import com.sixmoney.sasza_clone.utils.InputHandler;
 import com.sixmoney.sasza_clone.utils.LevelLoader;
 
@@ -52,6 +54,8 @@ public class GameWorldScreen implements Screen {
         paused = false;
 
         Gdx.input.setInputProcessor(inputHandler);
+        ControllerInputHandler controllerInputHandler = new ControllerInputHandler(this, camera);
+        Controllers.addListener(controllerInputHandler);
     }
 
     @Override
@@ -115,6 +119,11 @@ public class GameWorldScreen implements Screen {
     public void setPaused() {
         paused = true;
         Gdx.input.setInputProcessor(pauseOverlay.inputProcessor);
+    }
+
+    public void setUnpaused() {
+        paused = false;
+        Gdx.input.setInputProcessor(inputHandler);
     }
 
     public void quit() {
