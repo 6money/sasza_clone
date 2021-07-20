@@ -4,22 +4,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 
 public class ControllerInputHandler implements ControllerListener {
     private static final String TAG = ControllerInputHandler.class.getName();
-
+    private final float deadzone;
     private GameWorldScreen gameWorldScreen;
     private Level level;
     private ChaseCam camera;
     private Vector2 aimingVector;
+    private Array<Float> axisValues;
 
     public ControllerInputHandler(GameWorldScreen gameWorldScreen, ChaseCam cam) {
         this.gameWorldScreen = gameWorldScreen;
         level = gameWorldScreen.level;
         camera = cam;
+        deadzone = 0.4f;
         aimingVector = new Vector2(0, 0);
+        axisValues = new Array<>(5);
+        for (int i = 0; i < 5; i++){
+            axisValues.add(0f);
+        }
+
     }
 
     @Override
@@ -55,20 +63,20 @@ public class ControllerInputHandler implements ControllerListener {
 
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
-        if (value < -0.1 || value > 0.1) {
+        if (value < -deadzone / 2 || value > deadzone / 2) {
             Gdx.app.log(TAG, "Moved stick: " + axisCode + " by: " + value);
         }
 
         if (axisCode == 0) {
-            if (value > 0.2) {
+            if (value > deadzone) {
                 level.getPlayer().startMove("RIGHT");
-            } else if (value < 0.2) {
+            } else if (value < deadzone) {
                 level.getPlayer().stopMove("RIGHT");
             }
 
-            if (value < -0.2) {
+            if (value < -deadzone) {
                 level.getPlayer().startMove("LEFT");
-            } else if (value > -0.2) {
+            } else if (value > -deadzone) {
                 level.getPlayer().stopMove("LEFT");
             }
 
@@ -76,39 +84,45 @@ public class ControllerInputHandler implements ControllerListener {
         }
 
         if (axisCode == 1) {
-            if (value > 0.2) {
+            if (value > deadzone) {
                 level.getPlayer().startMove("DOWN");
-            } else if (value < 0.2) {
+            } else if (value < deadzone) {
                 level.getPlayer().stopMove("DOWN");
             }
 
-            if (value < -0.2) {
+            if (value < -deadzone) {
                 level.getPlayer().startMove("UP");
-            } else if (value > -0.2) {
+            } else if (value > -deadzone) {
                 level.getPlayer().stopMove("UP");
             }
 
             return true;
         }
 
-        if (axisCode == 2 && (value < -0.2 || value > 0.2)) {
-            aimingVector.x = value;
-            aimingVector.nor();
-            level.getPlayer().rotation = aimingVector.angleDeg() + 90;
-            return true;
+        if (axisCode == 2) {
+            axisValues.set(2, value);
+            if ((axisValues.get(3) > deadzone || axisValues.get(3) < -deadzone) || (value > deadzone || value < -deadzone)) {
+                aimingVector.x = value;
+                aimingVector.nor();
+                level.getPlayer().rotation = aimingVector.angleDeg() + 90;
+                return true;
+            }
         }
 
-        if (axisCode == 3 && (value < -0.2 || value > 0.2)) {
-            aimingVector.y = -value;
-            aimingVector.nor();
-            level.getPlayer().rotation = aimingVector.angleDeg() + 90;
-            return true;
+        if (axisCode == 3) {
+            axisValues.set(3, value);
+            if ((axisValues.get(2) > deadzone || axisValues.get(2) < -deadzone) || (value > deadzone || value < -deadzone)) {
+                aimingVector.y = -value;
+                aimingVector.nor();
+                level.getPlayer().rotation = aimingVector.angleDeg() + 90;
+                return true;
+            }
         }
 
-        if (axisCode == 5 && value > 0.2) {
+        if (axisCode == 5 && value > deadzone) {
             level.shooting = true;
             return true;
-        } else if (axisCode == 5 && value < 0.2) {
+        } else if (axisCode == 5 && value < deadzone) {
             level.shooting = false;
             return true;
         }
