@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.Collision;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Collisions;
@@ -31,12 +32,15 @@ public class Player extends Character {
         position = new Vector2(x, y);
         bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 3 / 4, position.y + Constants.PLAYER_CENTER.y * 3 / 4, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
         item = new Item<>(this);
-        textureRegion = Assets.get_instance().playerAssets.player;
+        enitiyTextureRegion = Assets.get_instance().playerAssets.player;
+        entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
+        characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
         lazerVector = new Vector2();
         bulletOffset = new Vector2( -3, -18);
         gun = new Gun();
         health = 200f;
         destructible = true;
+        legsOffset = Constants.PLAYER_CENTER.x / 2;
     }
 
 
@@ -72,8 +76,15 @@ public class Player extends Character {
 
 
     public void setVelocity(Vector2 newVelocityNormal) {
+        oldVelocity.set(velocity);
         velocity.set(newVelocityNormal);
         velocity.setLength(Constants.PLAYER_SPEED);
+
+        if (velocity.isZero() && velocity != oldVelocity) {
+            animationStartTime = 0;
+        } else if (oldVelocity.isZero() && !velocity.isZero()) {
+            animationStartTime = TimeUtils.nanoTime();
+        }
     }
 
 
@@ -115,6 +126,8 @@ public class Player extends Character {
 
 
     public void render(Batch batch, ShapeDrawer drawer) {
+
+
         super.render(batch);
 
 
@@ -129,9 +142,9 @@ public class Player extends Character {
         @Override
         public Response filter(Item item, Item other) {
             if(other == null) return null;
-            if (other.userData instanceof Crate) return Response.slide;
-            if (other.userData instanceof FloorTile) return Response.slide;
-            if (other.userData instanceof Enemy) return Response.slide;
+            else if (other.userData instanceof Crate) return Response.slide;
+            else if (other.userData instanceof FloorTile) return Response.slide;
+            else if (other.userData instanceof Enemy) return Response.slide;
             else return null;
         }
     }

@@ -77,8 +77,8 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
         @Override
         public Response filter(Item item, Item other) {
             if(item == null) return null;
-            if (item.userData instanceof Crate) return Response.touch;
-            if (item.userData instanceof FloorTile) return Response.touch;
+            else if (item.userData instanceof Crate) return Response.touch;
+            else if (item.userData instanceof FloorTile) return Response.touch;
             else return null;
         }
     }

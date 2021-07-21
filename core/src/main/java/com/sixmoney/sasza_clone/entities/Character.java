@@ -8,9 +8,12 @@ import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.ai.utils.Ray;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.Utils;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -23,9 +26,12 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected float maxLinearAcceleration;
     protected float maxAngularSpeed;
     protected float maxAngularAcceleration;
+    protected float legsOffset;
     protected RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance;
     protected SteeringAcceleration<Vector2> steerOutput;
     protected PrioritySteering<Vector2> prioritySteering;
+    protected TextureRegion characterIdleLegTexture;
+    protected Vector2 oldVelocity;
 
     public Character() {
         super();
@@ -36,6 +42,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         maxAngularAcceleration = 5f;
         tagged = false;
         prioritySteering = new PrioritySteering<>(this, 0.0001f);
+        oldVelocity = new Vector2(velocity);
     }
 
     protected void applySteering(float delta) {
@@ -50,11 +57,29 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
                 velocity.setLength(maxLinearSpeed);
             }
             position.mulAdd(velocity, delta);
+
+            if (!velocity.isZero()) {
+                rotation = velocity.angleDeg() + 90;
+            }
+        } else {
+            velocity.set(0, 0);
         }
 
-        if (!velocity.isZero()) {
-            rotation = velocity.angleDeg() + 90;
+
+    }
+
+    @Override
+    public void render(Batch batch) {
+        if (entityAnimation != null) {
+            if (animationStartTime == 0) {
+                Utils.drawTextureRegion(batch, characterIdleLegTexture, position.x - legsOffset, position.y - legsOffset, rotation);
+            } else {
+                float animationTime = Utils.secondsSince(animationStartTime);
+                Utils.drawTextureRegion(batch, entityAnimation.getKeyFrame(animationTime), position.x - legsOffset, position.y - legsOffset, rotation);
+            }
         }
+
+        super.render(batch);
     }
 
     @Override

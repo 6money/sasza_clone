@@ -10,9 +10,9 @@ public class Crate extends Entity {
 
     public Crate(float x, float y) {
         super();
-        textureRegion = Assets.get_instance().envronmentAssets.box2;
+        enitiyTextureRegion = Assets.get_instance().envronmentAssets.box2;
         position = new Vector2(x, y);
-        bbox = new Rectangle(position.x, position.y, textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+        bbox = new Rectangle(position.x, position.y, enitiyTextureRegion.getRegionWidth(), enitiyTextureRegion.getRegionHeight());
         item = new Item<>(this);
         health = 100;
         destructible = true;

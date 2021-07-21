@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -99,13 +100,37 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public class PlayerAssets {
         public TextureRegion player;
+        public TextureRegion playerShooting;
+        public TextureRegion playerStand;
         public TextureRegion playerPlaceholder;
         public TextureRegion rifleProjectile;
+        public Animation<TextureRegion> playerWalkingAnimation;
 
         public PlayerAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             player = atlasPrivate.findRegion(Constants.PLAYER);
+            playerShooting = atlasPrivate.findRegion(Constants.PLAYER_SHOOTING);
+            playerStand = atlasPrivate.findRegion(Constants.PLAYER_STAND);
             playerPlaceholder = atlas.findRegion(Constants.PLAYER_PLACEHOLDER);
             rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
+            playerWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.PLAYER_WALK), Animation.PlayMode.LOOP);
+        }
+    }
+
+    public class EnemyAssets {
+        public TextureRegion enemy;
+        public TextureRegion enemyShooting;
+        public TextureRegion enemyStand;
+        public TextureRegion rifleProjectile;
+        public Animation<TextureRegion> enemyWalkingAnimation;
+        public Animation<TextureRegion> enemyDyingAnimation;
+
+        public EnemyAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
+            enemy = atlasPrivate.findRegion(Constants.ENEMY);
+            enemyShooting = atlasPrivate.findRegion(Constants.ENEMY_SHOOTING);
+            enemyStand = atlasPrivate.findRegion(Constants.ENEMY_STAND);
+            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
+            enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.ENEMY_WALK), Animation.PlayMode.LOOP);
+            enemyDyingAnimation = new Animation<>(0.20f, atlasPrivate.findRegions(Constants.ENEMY_DEAD), Animation.PlayMode.NORMAL);
         }
     }
 
@@ -134,16 +159,6 @@ public class Assets implements Disposable, AssetErrorListener {
             dirt = atlasPrivate.findRegion(Constants.DIRT);
             sand = atlasPrivate.findRegion(Constants.SAND);
             water = atlasPrivate.findRegion(Constants.WATER);
-        }
-    }
-
-    public class EnemyAssets {
-        public TextureRegion enemy;
-        public TextureRegion rifleProjectile;
-
-        public EnemyAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
-            enemy = atlasPrivate.findRegion(Constants.ENEMY);
-            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
         }
     }
 }

@@ -30,12 +30,19 @@ public class Constants {
     public static final Vector2 PLAYER_CENTER = new Vector2(32, 32);
 
     // player sprites
-    public static final String PLAYER = "Hero_Rifle";
+    public static final String PLAYER = "player_rifle";
+    public static final String PLAYER_SHOOTING = "player_rifle_fire";
+    public static final String PLAYER_WALK = "player_walk";
+    public static final String PLAYER_STAND = "player_stand";
     public static final String PLAYER_PLACEHOLDER = "particle_pixel";
-    public static final String RIFLE_PROJECTILE = "GunnerBullet";
+    public static final String RIFLE_PROJECTILE = "player_bullet";
 
     // enemy sprites
-    public static final String ENEMY = "Shot";
+    public static final String ENEMY = "sniper_base";
+    public static final String ENEMY_WALK = "sniper_walk";
+    public static final String ENEMY_DEAD = "sniper_die";
+    public static final String ENEMY_STAND = "sniper_stand";
+    public static final String ENEMY_SHOOTING = "sniper_shot";
 
     // environment sprites
     public static final String BOX_2 = "TDS04_0013_Box-02";
