@@ -69,6 +69,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         }
     }
 
+    @Override
     public void update(float delta, World<Entity> world) {
         legsRotation = velocity.angleDeg() + 90;
     }

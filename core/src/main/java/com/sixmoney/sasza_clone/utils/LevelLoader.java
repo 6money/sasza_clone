@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
+import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
@@ -21,7 +22,9 @@ public class LevelLoader {
 
     public static Level load(String levelName, Viewport viewport) {
         Array<JsonValue> tiles = new Array<>();
-        Array<JsonValue> other = new Array<>();
+        Array<JsonValue> characters = new Array<>();
+        Array<JsonValue> canopy = new Array<>();
+        Array<JsonValue> environment = new Array<>();
         Level level = new Level(viewport);
         String path = Constants.LEVEL_DIR + File.separator + levelName + Constants.LEVEL_FILE_EXTENSION;
 
@@ -34,16 +37,26 @@ public class LevelLoader {
 
             for (JsonValue jsonObject : sImages) {
                 final String layer = jsonObject.getString(Constants.LEVEL_LAYER_NAME, "Default");
-
-                if (layer.equals("Default")) {
-                    other.add(jsonObject);
-                } else {
-                    tiles.add(jsonObject);
+                switch (layer) {
+                    case "Characters":
+                        characters.add(jsonObject);
+                        break;
+                    case "Environment":
+                        environment.add(jsonObject);
+                        break;
+                    case "Canopy":
+                        canopy.add(jsonObject);
+                        break;
+                    default:
+                        tiles.add(jsonObject);
+                        break;
                 }
             }
 
             loadTiles(tiles, level);
-            loadOthers(other, level);
+            loadCharacters(characters, level);
+            loadEnvironment(environment, level);
+            loadCanopy(canopy, level);
         } catch (Exception ex) {
             Gdx.app.error(TAG, ex.getMessage());
             Gdx.app.log(TAG, Constants.LEVEL_ERROR_MESSAGE);
@@ -95,8 +108,7 @@ public class LevelLoader {
         level.setWaterTiles(waterTileArray);
     }
 
-    private static void loadOthers(Array<JsonValue> objects, Level level) {
-        Array<Entity> environmentArray = new Array<>();
+    private static void loadCharacters(Array<JsonValue> objects, Level level) {
         Array<Enemy> enemyArray = new Array<>();
 
         for (JsonValue object : objects) {
@@ -113,16 +125,41 @@ public class LevelLoader {
                     Enemy enemy = new Enemy(x, y);
                     enemyArray.add(enemy);
                     break;
-                default:
-                    if (textureName.startsWith("TDS04")) {
-                        Crate crate = new Crate(x, y, textureName);
-                        environmentArray.add(crate);
-                    }
-                    break;
             }
         }
 
-        level.setEnvironmentEntities(environmentArray);
         level.setEnemyEntities(enemyArray);
+    }
+
+    private static void loadEnvironment(Array<JsonValue> objects, Level level) {
+        Array<Entity> environmentArray = new Array<>();
+
+        for (JsonValue object : objects) {
+            final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
+            final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
+            final String textureName = object.getString(Constants.LEVEL_IMAGENAME_KEY);
+
+            Crate crate = new Crate(x, y, textureName);
+            environmentArray.add(crate);
+            Gdx.app.log(TAG, crate.toString());
+        }
+
+        level.setEnvironmentEntities(environmentArray);
+    }
+
+    private static void loadCanopy(Array<JsonValue> objects, Level level) {
+        Array<Entity> canopyArray = new Array<>();
+
+        for (JsonValue object : objects) {
+            final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
+            final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
+            final String textureName = object.getString(Constants.LEVEL_IMAGENAME_KEY);
+
+            Canopy canopy = new Canopy(x, y, textureName);
+            canopyArray.add(canopy);
+            Gdx.app.log(TAG, canopy.toString());
+        }
+
+        level.setCanopyEntities(canopyArray);
     }
 }

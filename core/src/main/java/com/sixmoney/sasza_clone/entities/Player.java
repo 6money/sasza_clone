@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
@@ -99,7 +98,6 @@ public class Player extends Character {
         for (int i = 0; i < projectedCollisions.size(); i++) {
             Collision collision = projectedCollisions.get(i);
             if (collision.type == Response.slide) {
-                Gdx.app.log(TAG, "Hit");
                 Rect newPos = world.getRect(this.item);
                 setPosition(newPos.x - (bbox.x - position.x), newPos.y - (bbox.y - position.y));
                 break;
@@ -159,8 +157,9 @@ public class Player extends Character {
     public static class LazerCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
-            if (!(item.userData instanceof FloorTile)) return Response.touch;
-            else return null;
+            if ((item.userData instanceof FloorTile)) return null;
+            if ((item.userData instanceof Canopy)) return null;
+            else return Response.touch;
         }
     }
 }

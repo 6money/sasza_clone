@@ -17,6 +17,7 @@ import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
+import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
@@ -44,6 +45,7 @@ public class Level {
     private Array<FloorTile> sandTiles;
     private Array<FloorTile> waterTiles;
     private Array<Entity> environmentEntities;
+    private Array<Entity> canopyEntities;
     private Array<Enemy> enemyEntities;
     private final DelayedRemovalArray<Bullet> bullets;
     private BulletCollisionFilter bulletCollisionFilter;
@@ -62,6 +64,7 @@ public class Level {
         sandTiles = new Array<>();
         waterTiles = new Array<>();
         environmentEntities = new Array<>();
+        canopyEntities = new Array<>();
         enemyEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
         bulletCollisionFilter = new BulletCollisionFilter();
@@ -113,6 +116,15 @@ public class Level {
         }
     }
 
+    public void setCanopyEntities(Array<Entity> entities) {
+        this.canopyEntities = entities;
+        for (Entity entity: canopyEntities) {
+            world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
+//            world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
+        }
+    }
+
+
     public void setEnemyEntities(Array<Enemy> entities) {
         this.enemyEntities = entities;
         for (Enemy enemy: enemyEntities) {
@@ -141,6 +153,10 @@ public class Level {
             enemy.update(delta, world);
         }
 
+        for (Entity entity: canopyEntities) {
+            entity.update(delta, world);
+        }
+
         player.update(delta, world);
 
         bullets.begin();
@@ -154,10 +170,10 @@ public class Level {
     }
 
     public void render(Batch batch, ShapeDrawer drawer) {
-        for (FloorTile tile: grassTiles) {
+        for (FloorTile tile: dirtTiles) {
             tile.render(batch);
         }
-        for (FloorTile tile: dirtTiles) {
+        for (FloorTile tile: grassTiles) {
             tile.render(batch);
         }
         for (FloorTile tile: sandTiles) {
@@ -182,6 +198,10 @@ public class Level {
         for (Bullet bullet: bullets) {
             bullet.render(batch);
         }
+
+        for (Entity entity: canopyEntities) {
+            entity.render(batch);
+        }
     }
 
     public void renderDebug(ShapeDrawer drawer) {
@@ -196,6 +216,9 @@ public class Level {
             }
         }
         for (Entity entity: enemyEntities) {
+            entity.renderDebug(drawer);
+        }
+        for (Entity entity: canopyEntities) {
             entity.renderDebug(drawer);
         }
         player.renderDebug(drawer);
@@ -261,8 +284,9 @@ public class Level {
     public static class BulletCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
-            if (!(item.userData instanceof FloorTile)) return Response.touch;
-            else return null;
+            if ((item.userData instanceof FloorTile)) return null;
+            if ((item.userData instanceof Canopy)) return null;
+            else return Response.touch;
         }
     }
 }

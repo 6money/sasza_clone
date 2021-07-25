@@ -46,12 +46,24 @@ public class Constants {
     public static final String ENEMY_SHOOTING = "sniper_shot";
 
     // environment sprites
-    public static final String BOX_1 = "TDS04_0018_Box1";
-    public static final String BOX_2 = "TDS04_0013_Box-02";
-    public static final String BOX_1_MINI = "TDS04_0017_Box1-mini";
-    public static final String BOX_2_MINI = "TDS04_0014_Box-02-mini";
-    public static final String BARREL = "TDS04_0016_Barrel";
-    public static final String BARREL_OIL = "TDS04_0015_Barrel-oil";
+    public static final String BOX_1 = "environment_box1";
+    public static final String BOX_2 = "environment_box2";
+    public static final String BOX_1_MINI = "environment_box1_mini";
+    public static final String BOX_2_MINI = "environment_box2_mini";
+    public static final String BARREL = "environment_barrel";
+    public static final String BARREL_OIL = "environment_barrel_oil";
+    public static final String ROCK_1 = "environment_rock1";
+    public static final String ROCK_2 = "environment_rock2";
+    public static final String ROCK_3 = "environment_rock3";
+    public static final String STUMP_1 = "environment_tree5";
+    public static final String STUMP_2 = "environment_tree6";
+    public static final String STUMP_3 = "environment_tree7";
+
+    // canopy sprites
+    public static final String TREE_1 = "canopy_tree1";
+    public static final String TREE_2 = "canopy_tree2";
+    public static final String TREE_3 = "canopy_tree3";
+    public static final String TREE_4 = "canopy_tree4";
 
     // tile sprites
     public static final String GRASS_TO_ROAD = "_0006_GrassToRoad";

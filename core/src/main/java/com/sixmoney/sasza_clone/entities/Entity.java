@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.Item;
+import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Utils;
 
@@ -30,18 +31,22 @@ public abstract class Entity {
     protected Entity() {
         rotation = 0;
         health = 0;
+        position = new Vector2(0, 0);
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
+        bbox = new Rectangle(0, 0, 0, 0);
         destructible = false;
+        rotation = 0;
         enitiyTextureRegion = Assets.get_instance().playerAssets.playerPlaceholder;
         animationStartTime = 0;
         item = new Item<>(this);
     }
 
+    public void update(float delta, World<Entity> world) {
+    }
+
     public void render(Batch batch) {
-        if (enitiyTextureRegion != null) {
-            Utils.drawTextureRegion(batch, enitiyTextureRegion, position.x, position.y, rotation);
-        }
+        Utils.drawTextureRegion(batch, enitiyTextureRegion, position.x, position.y, rotation);
     }
 
     public void renderSecondary(Batch batch) {
@@ -58,5 +63,10 @@ public abstract class Entity {
     public void decrementHealth(float value) {
         Gdx.app.log("ENTITY", health + "");
         health -= value;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName() + " loaded at x: " + position.x + ", y: " + position.y;
     }
 }
