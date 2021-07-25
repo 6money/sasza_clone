@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.sixmoney.sasza_clone.utils.Assets;
@@ -20,6 +21,11 @@ public class Crate extends Entity {
         );
         health = 100;
         destructible = true;
+        if (MathUtils.random(0, 1) == 0) {
+            rotation = 0;
+        } else {
+            rotation = 90;
+        }
         bulletCollisionSubObject = new BulletCollisionSubObject(this);
     }
 }

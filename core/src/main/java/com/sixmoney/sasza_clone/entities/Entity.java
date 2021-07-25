@@ -44,6 +44,9 @@ public abstract class Entity {
         }
     }
 
+    public void renderSecondary(Batch batch) {
+    }
+
     public void renderDebug(ShapeDrawer drawer) {
         drawer.rectangle(bbox, Color.MAGENTA);
     }

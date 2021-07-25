@@ -166,6 +166,10 @@ public class Level {
         for (FloorTile tile: waterTiles) {
             tile.render(batch);
         }
+        for (Entity entity: enemyEntities) {
+            entity.renderSecondary(batch);
+        }
+        player.renderSecondary(batch);
         for (Entity entity: environmentEntities) {
             entity.render(batch);
         }

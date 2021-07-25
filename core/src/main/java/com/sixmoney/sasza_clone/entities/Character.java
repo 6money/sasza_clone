@@ -74,7 +74,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     }
 
     @Override
-    public void render(Batch batch) {
+    public void renderSecondary(Batch batch) {
         if (entityAnimation != null) {
             if (animationStartTime == 0) {
                 Utils.drawTextureRegion(batch, characterIdleLegTexture, position.x - legsOffset, position.y - legsOffset, legsRotation);
@@ -83,8 +83,6 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
                 Utils.drawTextureRegion(batch, entityAnimation.getKeyFrame(animationTime), position.x - legsOffset, position.y - legsOffset, legsRotation);
             }
         }
-
-        super.render(batch);
     }
 
     @Override
