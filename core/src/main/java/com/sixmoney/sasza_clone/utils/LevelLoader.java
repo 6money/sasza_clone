@@ -75,28 +75,16 @@ public class LevelLoader {
         for (JsonValue tileObjects : tiles) {
             final float x = tileObjects.getFloat(Constants.LEVEL_X_KEY, 0);
             final float y = tileObjects.getFloat(Constants.LEVEL_Y_KEY, 0);
+            String textureName = tileObjects.getString(Constants.LEVEL_IMAGENAME_KEY);
 
             FloorTile floorTile;
 
-            switch (tileObjects.getString(Constants.LEVEL_IMAGENAME_KEY)) {
-                case Constants.GRASS:
-                    floorTile = new FloorTile(x, y, Constants.GRASS);
-                    grassTileArray.add(floorTile);
-                    break;
-                case Constants.DIRT:
-                    floorTile = new FloorTile(x, y, Constants.DIRT);
-                    dirtTileArray.add(floorTile);
-                    break;
-                case Constants.SAND:
-                    floorTile = new FloorTile(x, y, Constants.SAND);
-                    sandTileArray.add(floorTile);
-                    break;
-                case Constants.WATER:
-                    floorTile = new FloorTile(x, y, Constants.WATER);
-                    waterTileArray.add(floorTile);
-                    break;
-                default:
-                    continue;
+            if (Constants.WATER.equals(textureName)) {
+                floorTile = new FloorTile(x, y, textureName);
+                waterTileArray.add(floorTile);
+            } else {
+                floorTile = new FloorTile(x, y, textureName);
+                grassTileArray.add(floorTile);
             }
 
             Gdx.app.log(TAG, floorTile.toString());
