@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -35,6 +34,8 @@ public class Enemy extends Character {
         updateBBox();
     }
 
+
+    @Override
     public void update(float delta, World<Entity> world) {
         if (prioritySteering.isEnabled()) {
             prioritySteering.calculateSteering(steerOutput);
@@ -47,17 +48,19 @@ public class Enemy extends Character {
             Collision collision = projectedCollisions.get(i);
             if (collision.type == Response.slide) {
                 setPosition(collision.touch.x - (bbox.x - position.x), collision.touch.y - (bbox.y - position.y));
+                break;
             }
         }
 
         updateBBox();
 
-        Gdx.app.log(TAG, velocity.len() + "");
         if (velocity.len() < 5) {
             animationStartTime = 0;
         } else if (velocity.len() >= 5 && animationStartTime == 0) {
             animationStartTime = TimeUtils.nanoTime();
         }
+
+        super.update(delta, world);
     }
 
     private void updateBBox() {

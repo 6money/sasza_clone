@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
@@ -30,7 +31,7 @@ public class Player extends Character {
     public Player(float x, float y) {
         super();
         position = new Vector2(x, y);
-        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 3 / 4, position.y + Constants.PLAYER_CENTER.y * 3 / 4, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
+        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 0.75f, position.y + Constants.PLAYER_CENTER.y * 0.75f, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
         item = new Item<>(this);
         enitiyTextureRegion = Assets.get_instance().playerAssets.player;
         entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
@@ -52,8 +53,8 @@ public class Player extends Character {
 
 
     private void updateBBox() {
-        bbox.x = position.x + Constants.PLAYER_CENTER.x * 3 / 4;
-        bbox.y = position.y + Constants.PLAYER_CENTER.y * 3 / 4;
+        bbox.x = position.x + Constants.PLAYER_CENTER.x * 0.75f;
+        bbox.y = position.y + Constants.PLAYER_CENTER.y * 0.75f;
     }
 
 
@@ -87,7 +88,7 @@ public class Player extends Character {
         }
     }
 
-
+    @Override
     public void update(float delta, World<Entity> world) {
         position.mulAdd(velocity, delta);
         updateBBox();
@@ -97,7 +98,9 @@ public class Player extends Character {
         for (int i = 0; i < projectedCollisions.size(); i++) {
             Collision collision = projectedCollisions.get(i);
             if (collision.type == Response.slide) {
+                Gdx.app.log(TAG, "Hit");
                 setPosition(collision.touch.x - (bbox.x - position.x), collision.touch.y - (bbox.y - position.y));
+                break;
             }
         }
 
@@ -122,6 +125,8 @@ public class Player extends Character {
         if (items.size() > 0) {
             lazerVector.set(items.get(0).x1, items.get(0).y1);
         }
+
+        super.update(delta, world);
     }
 
 

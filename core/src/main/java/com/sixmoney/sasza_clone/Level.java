@@ -116,14 +116,14 @@ public class Level {
         for (Enemy enemy: enemyEntities) {
             world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
 
-            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 40, 15, 40);
+            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
             RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 0);
             enemy.addBehavior(raycastObstacleAvoidance);
 
             Arrive<Vector2> arrive = new Arrive<>(enemy, player)
                     .setTimeToTarget(0.1f)
-                    .setArrivalTolerance(30f)
+                    .setArrivalTolerance(50f)
                     .setDecelerationRadius(50);
             enemy.addBehavior(arrive);
         }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.Utils;
@@ -27,6 +28,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected float maxAngularSpeed;
     protected float maxAngularAcceleration;
     protected float legsOffset;
+    protected float legsRotation;
     protected RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance;
     protected SteeringAcceleration<Vector2> steerOutput;
     protected PrioritySteering<Vector2> prioritySteering;
@@ -43,6 +45,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         tagged = false;
         prioritySteering = new PrioritySteering<>(this, 0.0001f);
         oldVelocity = new Vector2(velocity);
+        legsRotation = 0;
     }
 
     protected void applySteering(float delta) {
@@ -64,18 +67,20 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         } else {
             velocity.set(0, 0);
         }
+    }
 
-
+    public void update(float delta, World<Entity> world) {
+        legsRotation = velocity.angleDeg() + 90;
     }
 
     @Override
     public void render(Batch batch) {
         if (entityAnimation != null) {
             if (animationStartTime == 0) {
-                Utils.drawTextureRegion(batch, characterIdleLegTexture, position.x - legsOffset, position.y - legsOffset, rotation);
+                Utils.drawTextureRegion(batch, characterIdleLegTexture, position.x - legsOffset, position.y - legsOffset, legsRotation);
             } else {
                 float animationTime = Utils.secondsSince(animationStartTime);
-                Utils.drawTextureRegion(batch, entityAnimation.getKeyFrame(animationTime), position.x - legsOffset, position.y - legsOffset, rotation);
+                Utils.drawTextureRegion(batch, entityAnimation.getKeyFrame(animationTime), position.x - legsOffset, position.y - legsOffset, legsRotation);
             }
         }
 
