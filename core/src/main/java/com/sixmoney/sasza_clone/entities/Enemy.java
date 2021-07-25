@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -18,8 +19,7 @@ public class Enemy extends Character {
     public Enemy(float x, float y) {
         super();
         position = new Vector2(x, y);
-        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 1.25f, position.y + Constants.PLAYER_CENTER.y * 1.25f, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
-        item = new Item<>(this);
+        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 1.30f, position.y + Constants.PLAYER_CENTER.y * 1.30f, MathUtils.round(Constants.PLAYER_CENTER.x / 2.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 2.5f));
         enitiyTextureRegion = Assets.get_instance().enemyAssets.enemy;
         destructible = true;
         health = 200;

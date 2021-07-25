@@ -16,6 +16,7 @@ import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.entities.Bullet;
+import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
 import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
@@ -54,7 +55,7 @@ public class Level {
         this.viewport = viewport;
 
         world = new World<>();
-        world.setTileMode(false);
+        world.setTileMode(true);
 
         grassTiles = new Array<>();
         dirtTiles = new Array<>();
@@ -108,6 +109,7 @@ public class Level {
         this.environmentEntities = entities;
         for (Entity entity: environmentEntities) {
             world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
+            world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
         }
     }
 
@@ -184,6 +186,10 @@ public class Level {
         }
         for (Entity entity: environmentEntities) {
             entity.renderDebug(drawer);
+
+            if (entity.bulletCollisionSubObject != null) {
+                entity.bulletCollisionSubObject.renderDebug(drawer);
+            }
         }
         for (Entity entity: enemyEntities) {
             entity.renderDebug(drawer);
@@ -224,14 +230,22 @@ public class Level {
             Item item = items.get(0).item;
 
             if (((Entity) item.userData).destructible) {
-                ((Entity) item.userData).health -= player.getGun().getDamage();
-                if (((Entity) item.userData).health <= 0) {
+                ((Entity) item.userData).decrementHealth(player.getGun().getDamage());
+                if (((Entity) item.userData).getHealth() <= 0) {
                     if (item.userData instanceof Enemy) {
+                        world.remove(item);
                         enemyEntities.removeValue((Enemy) item.userData, true);
                     } else if (item.userData instanceof Crate) {
+                        world.remove(item);
                         environmentEntities.removeValue((Entity) item.userData, true);
+                        if (((Crate) item.userData).bulletCollisionSubObject != null) {
+                            world.remove(((Crate) item.userData).bulletCollisionSubObject.item);
+                        }
+                    } else if (item.userData instanceof BulletCollisionSubObject) {
+                        world.remove(item);
+                        world.remove(((BulletCollisionSubObject) item.userData).parent.item);
+                        environmentEntities.removeValue(((BulletCollisionSubObject) item.userData).parent, true);
                     }
-                    world.remove(item);
                 }
             }
         }

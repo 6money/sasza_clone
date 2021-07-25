@@ -135,10 +135,20 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     public class EnvronmentAssets {
+        public TextureRegion box1;
         public TextureRegion box2;
+        public TextureRegion box1Mini;
+        public TextureRegion box2Mini;
+        public TextureRegion barrel;
+        public TextureRegion barrelOil;
 
         public EnvronmentAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
+            box1 = atlasPrivate.findRegion(Constants.BOX_1);
             box2 = atlasPrivate.findRegion(Constants.BOX_2);
+            box1Mini = atlasPrivate.findRegion(Constants.BOX_1_MINI);
+            box2Mini = atlasPrivate.findRegion(Constants.BOX_2_MINI);
+            barrel = atlasPrivate.findRegion(Constants.BARREL);
+            barrelOil = atlasPrivate.findRegion(Constants.BARREL_OIL);
         }
     }
 

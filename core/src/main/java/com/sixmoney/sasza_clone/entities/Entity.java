@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,6 +16,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 public abstract class Entity {
     public Vector2 position;
     public Rectangle bbox;
+    public BulletCollisionSubObject bulletCollisionSubObject;
     public Vector2 velocity;
     public Vector2 acceleration;
     public float rotation;
@@ -33,13 +35,25 @@ public abstract class Entity {
         destructible = false;
         enitiyTextureRegion = Assets.get_instance().playerAssets.playerPlaceholder;
         animationStartTime = 0;
+        item = new Item<>(this);
     }
 
     public void render(Batch batch) {
-        Utils.drawTextureRegion(batch, enitiyTextureRegion, position.x, position.y, rotation);
+        if (enitiyTextureRegion != null) {
+            Utils.drawTextureRegion(batch, enitiyTextureRegion, position.x, position.y, rotation);
+        }
     }
 
     public void renderDebug(ShapeDrawer drawer) {
         drawer.rectangle(bbox, Color.MAGENTA);
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void decrementHealth(float value) {
+        Gdx.app.log("ENTITY", health + "");
+        health -= value;
     }
 }

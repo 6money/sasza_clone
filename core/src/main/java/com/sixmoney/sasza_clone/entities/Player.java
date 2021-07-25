@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -11,6 +12,7 @@ import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Collisions;
 import com.dongbat.jbump.Item;
 import com.dongbat.jbump.ItemInfo;
+import com.dongbat.jbump.Rect;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
@@ -31,8 +33,7 @@ public class Player extends Character {
     public Player(float x, float y) {
         super();
         position = new Vector2(x, y);
-        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 0.75f, position.y + Constants.PLAYER_CENTER.y * 0.75f, Constants.PLAYER_CENTER.x / 2, Constants.PLAYER_CENTER.y / 2);
-        item = new Item<>(this);
+        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 0.80f, position.y + Constants.PLAYER_CENTER.y * 0.80f, MathUtils.round(Constants.PLAYER_CENTER.x / 2.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 2.5f));
         enitiyTextureRegion = Assets.get_instance().playerAssets.player;
         entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
         characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
@@ -53,8 +54,8 @@ public class Player extends Character {
 
 
     private void updateBBox() {
-        bbox.x = position.x + Constants.PLAYER_CENTER.x * 0.75f;
-        bbox.y = position.y + Constants.PLAYER_CENTER.y * 0.75f;
+        bbox.x = position.x + Constants.PLAYER_CENTER.x * 0.80f;
+        bbox.y = position.y + Constants.PLAYER_CENTER.y * 0.80f;
     }
 
 
@@ -99,7 +100,8 @@ public class Player extends Character {
             Collision collision = projectedCollisions.get(i);
             if (collision.type == Response.slide) {
                 Gdx.app.log(TAG, "Hit");
-                setPosition(collision.touch.x - (bbox.x - position.x), collision.touch.y - (bbox.y - position.y));
+                Rect newPos = world.getRect(this.item);
+                setPosition(newPos.x - (bbox.x - position.x), newPos.y - (bbox.y - position.y));
                 break;
             }
         }

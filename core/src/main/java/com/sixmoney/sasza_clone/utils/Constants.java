@@ -7,20 +7,21 @@ public class Constants {
     // world/window
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
-//    public static final int WORLD_WIDTH = 960;
+//    public static final int WORLD_WIDTH_2 = 960;
     public static final int WORLD_WIDTH = 640;
-//    public static final int WORLD_HEIGHT = 540;
+//    public static final int WORLD_HEIGHT_2 = 540;
     public static final int WORLD_HEIGHT = 360;
     public static final Color BG_COLOR = Color.SKY;
-    public static final int CHASE_CAM_SPEED = 200;
     public static final int BACKGROUND_FPS = 30;
     public static final int FORGROUND_FPS = 144;
     public static final boolean V_SYNC = false;
+    public static final int BBOX_BUFFER = 5;
     public static final String SKIN_PATH = "ui/uiskin.json";
     public static final String PREFERENCES_NAME = "sasza_clone";
     public static final String TEXTURE_ATLAS = "packaged/sasza_clone.pack.atlas";
     public static final String TEXTURE_ATLAS_PRIVATE = "packagedPrivate/sasza_clone_private.atlas";
     public static final String VERSION = "0.0.1-alpha";
+
 
     // debug sprites
     public static final String BBOX_OUTLINE = "bbox_pixel";
@@ -45,7 +46,12 @@ public class Constants {
     public static final String ENEMY_SHOOTING = "sniper_shot";
 
     // environment sprites
+    public static final String BOX_1 = "TDS04_0018_Box1";
     public static final String BOX_2 = "TDS04_0013_Box-02";
+    public static final String BOX_1_MINI = "TDS04_0017_Box1-mini";
+    public static final String BOX_2_MINI = "TDS04_0014_Box-02-mini";
+    public static final String BARREL = "TDS04_0016_Barrel";
+    public static final String BARREL_OIL = "TDS04_0015_Barrel-oil";
 
     // tile sprites
     public static final String GRASS_TO_ROAD = "_0006_GrassToRoad";

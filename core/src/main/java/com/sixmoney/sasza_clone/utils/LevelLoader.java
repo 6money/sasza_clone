@@ -102,19 +102,22 @@ public class LevelLoader {
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
             final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
+            final String textureName = object.getString(Constants.LEVEL_IMAGENAME_KEY);
 
-            switch (object.getString(Constants.LEVEL_IMAGENAME_KEY)) {
+            switch (textureName) {
                 case Constants.PLAYER:
                     Player player = new Player(x, y);
                     level.setPlayer(player);
                     break;
-                case Constants.BOX_2:
-                    Crate crate = new Crate(x, y);
-                    environmentArray.add(crate);
-                    break;
                 case Constants.ENEMY:
                     Enemy enemy = new Enemy(x, y);
                     enemyArray.add(enemy);
+                    break;
+                default:
+                    if (textureName.startsWith("TDS04")) {
+                        Crate crate = new Crate(x, y, textureName);
+                        environmentArray.add(crate);
+                    }
                     break;
             }
         }
