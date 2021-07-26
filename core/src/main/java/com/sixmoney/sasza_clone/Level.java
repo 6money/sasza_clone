@@ -46,6 +46,7 @@ public class Level {
     private Array<FloorTile> waterTiles;
     private Array<Entity> environmentEntities;
     private Array<Entity> canopyEntities;
+    private Array<Entity> wallEntities;
     private Array<Enemy> enemyEntities;
     private final DelayedRemovalArray<Bullet> bullets;
     private BulletCollisionFilter bulletCollisionFilter;
@@ -120,7 +121,16 @@ public class Level {
         this.canopyEntities = entities;
         for (Entity entity: canopyEntities) {
             world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
-//            world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
+        }
+    }
+
+    public void setWallEntities(Array<Entity> entities) {
+        this.wallEntities = entities;
+        for (Entity entity: wallEntities) {
+            if (entity.collidable) {
+                world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
+                world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
+            }
         }
     }
 
@@ -182,6 +192,9 @@ public class Level {
         for (FloorTile tile: waterTiles) {
             tile.render(batch);
         }
+        for (Entity entity: wallEntities) {
+            entity.render(batch);
+        }
         for (Entity entity: enemyEntities) {
             entity.renderSecondary(batch);
         }
@@ -198,7 +211,9 @@ public class Level {
         for (Bullet bullet: bullets) {
             bullet.render(batch);
         }
-
+        for (Entity entity: wallEntities) {
+            entity.renderSecondary(batch);
+        }
         for (Entity entity: canopyEntities) {
             entity.render(batch);
         }
@@ -217,6 +232,13 @@ public class Level {
         }
         for (Entity entity: enemyEntities) {
             entity.renderDebug(drawer);
+        }
+        for (Entity entity: wallEntities) {
+            entity.renderDebug(drawer);
+
+            if (entity.bulletCollisionSubObject != null) {
+                entity.bulletCollisionSubObject.renderDebug(drawer);
+            }
         }
         for (Entity entity: canopyEntities) {
             entity.renderDebug(drawer);

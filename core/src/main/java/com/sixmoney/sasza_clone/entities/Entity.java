@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -22,11 +21,12 @@ public abstract class Entity {
     public Vector2 acceleration;
     public float rotation;
     public Item<Entity> item;
-    public TextureRegion enitiyTextureRegion;
+    public TextureRegion entityTextureRegion;
     public Animation<TextureRegion> entityAnimation;
     public long animationStartTime;
     public float health;
     public boolean destructible;
+    public boolean collidable;
 
     protected Entity() {
         rotation = 0;
@@ -37,7 +37,8 @@ public abstract class Entity {
         bbox = new Rectangle(0, 0, 0, 0);
         destructible = false;
         rotation = 0;
-        enitiyTextureRegion = Assets.get_instance().playerAssets.playerPlaceholder;
+        collidable = true;
+        entityTextureRegion = Assets.get_instance().playerAssets.playerPlaceholder;
         animationStartTime = 0;
         item = new Item<>(this);
     }
@@ -46,7 +47,7 @@ public abstract class Entity {
     }
 
     public void render(Batch batch) {
-        Utils.drawTextureRegion(batch, enitiyTextureRegion, position.x, position.y, rotation);
+        Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
     }
 
     public void renderSecondary(Batch batch) {
@@ -61,12 +62,11 @@ public abstract class Entity {
     }
 
     public void decrementHealth(float value) {
-        Gdx.app.log("ENTITY", health + "");
         health -= value;
     }
 
     @Override
     public String toString() {
-        return this.getClass().getName() + " loaded at x: " + position.x + ", y: " + position.y;
+        return this.getClass().getSimpleName() + " loaded at x: " + position.x + ", y: " + position.y;
     }
 }

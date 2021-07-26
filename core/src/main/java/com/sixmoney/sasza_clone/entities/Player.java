@@ -33,7 +33,7 @@ public class Player extends Character {
         super();
         position = new Vector2(x, y);
         bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 0.80f, position.y + Constants.PLAYER_CENTER.y * 0.80f, MathUtils.round(Constants.PLAYER_CENTER.x / 2.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 2.5f));
-        enitiyTextureRegion = Assets.get_instance().playerAssets.player;
+        entityTextureRegion = Assets.get_instance().playerAssets.player;
         entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
         characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
         lazerVector = new Vector2();
@@ -150,6 +150,7 @@ public class Player extends Character {
             else if (other.userData instanceof Crate) return Response.slide;
             else if (other.userData instanceof FloorTile) return Response.slide;
             else if (other.userData instanceof Enemy) return Response.slide;
+            else if (other.userData instanceof Wall) return Response.slide;
             else return null;
         }
     }

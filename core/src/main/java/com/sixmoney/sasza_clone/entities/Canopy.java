@@ -22,8 +22,8 @@ public class Canopy extends Entity {
     public Canopy(float x, float y, String textureName) {
         super();
         position.set(x, y);
-        enitiyTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
-        bbox.set(x, y, enitiyTextureRegion.getRegionWidth(), enitiyTextureRegion.getRegionHeight());
+        entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
+        bbox.set(x, y, entityTextureRegion.getRegionWidth(), entityTextureRegion.getRegionHeight());
         rotation = MathUtils.random(0, 360);
         transparent = false;
         collisionItems = new ArrayList<>();
@@ -42,7 +42,7 @@ public class Canopy extends Entity {
             batch.setColor(1, 1, 1, 0.5f);
         }
 
-        Utils.drawTextureRegion(batch, enitiyTextureRegion, position.x, position.y, rotation);
+        Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
 
         if (transparent) {
             batch.setColor(1, 1, 1, 1);

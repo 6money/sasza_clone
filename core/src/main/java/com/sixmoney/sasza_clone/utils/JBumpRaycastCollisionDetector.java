@@ -12,6 +12,7 @@ import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
+import com.sixmoney.sasza_clone.entities.Wall;
 
 import java.util.ArrayList;
 
@@ -79,6 +80,7 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
             if(item == null) return null;
             else if (item.userData instanceof Crate) return Response.touch;
             else if (item.userData instanceof FloorTile) return Response.touch;
+            else if (item.userData instanceof Wall) return Response.touch;
             else return null;
         }
     }

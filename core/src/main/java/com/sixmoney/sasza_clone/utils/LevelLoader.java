@@ -13,6 +13,7 @@ import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
+import com.sixmoney.sasza_clone.entities.Wall;
 
 import java.io.File;
 
@@ -25,6 +26,7 @@ public class LevelLoader {
         Array<JsonValue> characters = new Array<>();
         Array<JsonValue> canopy = new Array<>();
         Array<JsonValue> environment = new Array<>();
+        Array<JsonValue> walls = new Array<>();
         Level level = new Level(viewport);
         String path = Constants.LEVEL_DIR + File.separator + levelName + Constants.LEVEL_FILE_EXTENSION;
 
@@ -47,6 +49,9 @@ public class LevelLoader {
                     case "Canopy":
                         canopy.add(jsonObject);
                         break;
+                    case "Walls":
+                        walls.add(jsonObject);
+                        break;
                     default:
                         tiles.add(jsonObject);
                         break;
@@ -57,6 +62,7 @@ public class LevelLoader {
             loadCharacters(characters, level);
             loadEnvironment(environment, level);
             loadCanopy(canopy, level);
+            loadWalls(walls, level);
         } catch (Exception ex) {
             Gdx.app.error(TAG, ex.getMessage());
             Gdx.app.log(TAG, Constants.LEVEL_ERROR_MESSAGE);
@@ -149,5 +155,26 @@ public class LevelLoader {
         }
 
         level.setCanopyEntities(canopyArray);
+    }
+
+    private static void loadWalls(Array<JsonValue> objects, Level level) {
+        Array<Entity> wallArray = new Array<>();
+
+        for (JsonValue object : objects) {
+            final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
+            final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
+            final String textureName = object.getString(Constants.LEVEL_IMAGENAME_KEY);
+            boolean isDoor = false;
+
+            if (textureName.contains("door")) {
+                isDoor = true;
+            }
+
+            Wall wall = new Wall(x, y, textureName, isDoor);
+            wallArray.add(wall);
+            Gdx.app.log(TAG, wall.toString());
+        }
+
+        level.setWallEntities(wallArray);
     }
 }

@@ -20,7 +20,7 @@ public class Enemy extends Character {
         super();
         position = new Vector2(x, y);
         bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 1.30f, position.y + Constants.PLAYER_CENTER.y * 1.30f, MathUtils.round(Constants.PLAYER_CENTER.x / 2.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 2.5f));
-        enitiyTextureRegion = Assets.get_instance().enemyAssets.enemy;
+        entityTextureRegion = Assets.get_instance().enemyAssets.enemy;
         destructible = true;
         health = 200;
         entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
@@ -76,6 +76,7 @@ public class Enemy extends Character {
             else if (other.userData instanceof FloorTile) return Response.slide;
             else if (other.userData instanceof Player) return Response.slide;
             else if (other.userData instanceof Enemy) return Response.slide;
+            else if (other.userData instanceof Wall) return Response.slide;
             else return null;
         }
     }

@@ -15,7 +15,8 @@ public class Constants {
     public static final int BACKGROUND_FPS = 30;
     public static final int FORGROUND_FPS = 144;
     public static final boolean V_SYNC = false;
-    public static final int BBOX_BUFFER = 5;
+    public static final int BBOX_BUFFER_ENVIRONMENT = 5;
+    public static final int BBOX_BUFFER_WALL = 2;
     public static final String SKIN_PATH = "ui/uiskin.json";
     public static final String PREFERENCES_NAME = "sasza_clone";
     public static final String TEXTURE_ATLAS = "packaged/sasza_clone.pack.atlas";

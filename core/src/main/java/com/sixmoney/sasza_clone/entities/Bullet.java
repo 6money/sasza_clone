@@ -15,7 +15,7 @@ public class Bullet extends Entity {
         position = new Vector2(x, y);
         this.rotation = rotation;
         target = new Vector2(targetX, targetY);
-        enitiyTextureRegion = Assets.get_instance().playerAssets.rifleProjectile;
+        entityTextureRegion = Assets.get_instance().playerAssets.rifleProjectile;
         this.speed = speed;
         dead = false;
         firstUpdate = true;

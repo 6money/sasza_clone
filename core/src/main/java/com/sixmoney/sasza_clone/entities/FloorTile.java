@@ -8,13 +8,13 @@ public class FloorTile extends Entity {
 
     public FloorTile(float x, float y, String textureName) {
         super();
-        enitiyTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
+        entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
         position = new Vector2(x, y);
-        bbox = new Rectangle(position.x, position.y, enitiyTextureRegion.getRegionWidth(), enitiyTextureRegion.getRegionHeight());
+        bbox = new Rectangle(position.x, position.y, entityTextureRegion.getRegionWidth(), entityTextureRegion.getRegionHeight());
     }
 
     @Override
     public String toString() {
-        return "tile located at x: " + position.x + ", y: " + position.y + ", width: " + enitiyTextureRegion.getRegionWidth() + ", height: " + enitiyTextureRegion.getRegionHeight();
+        return "tile located at x: " + position.x + ", y: " + position.y + ", width: " + entityTextureRegion.getRegionWidth() + ", height: " + entityTextureRegion.getRegionHeight();
     }
 }
