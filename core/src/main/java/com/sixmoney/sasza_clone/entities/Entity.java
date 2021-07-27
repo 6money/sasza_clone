@@ -54,7 +54,9 @@ public abstract class Entity {
     }
 
     public void renderDebug(ShapeDrawer drawer) {
-        drawer.rectangle(bbox, Color.MAGENTA);
+        if (collidable) {
+            drawer.rectangle(bbox, Color.MAGENTA);
+        }
     }
 
     public float getHealth() {

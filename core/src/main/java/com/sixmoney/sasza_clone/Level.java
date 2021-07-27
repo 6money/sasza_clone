@@ -40,10 +40,7 @@ public class Level {
     private ChaseCam camera;
     private Player player;
 
-    private Array<FloorTile> grassTiles;
-    private Array<FloorTile> dirtTiles;
-    private Array<FloorTile> sandTiles;
-    private Array<FloorTile> waterTiles;
+    private Array<Entity> tiles;
     private Array<Entity> environmentEntities;
     private Array<Entity> canopyEntities;
     private Array<Entity> wallEntities;
@@ -60,10 +57,7 @@ public class Level {
         world = new World<>();
         world.setTileMode(true);
 
-        grassTiles = new Array<>();
-        dirtTiles = new Array<>();
-        sandTiles = new Array<>();
-        waterTiles = new Array<>();
+        tiles = new Array<>();
         environmentEntities = new Array<>();
         canopyEntities = new Array<>();
         enemyEntities = new Array<>();
@@ -86,26 +80,12 @@ public class Level {
         viewport.setCamera(camera);
     }
 
-    public void setGrassTiles(Array<FloorTile> grassTiles) {
-        this.grassTiles = grassTiles;
-    }
-
-    public void setDirtTiles(Array<FloorTile> dirtTiles) {
-        this.dirtTiles = dirtTiles;
-    }
-
-    public void setSandTiles(Array<FloorTile> sandTiles) {
-        this.sandTiles = sandTiles;
-    }
-
-    public void setWaterTiles(Array<FloorTile> waterTiles) {
-        this.waterTiles = waterTiles;
-        for (FloorTile waterTile: waterTiles) {
-            waterTile.bbox.x += 55;
-            waterTile.bbox.y += 55;
-            waterTile.bbox.width -= 110;
-            waterTile.bbox.height -= 110;
-            world.add(waterTile.item, waterTile.bbox.x, waterTile.bbox.y, waterTile.bbox.width, waterTile.bbox.height);
+    public void setTiles(Array<Entity> tiles) {
+        this.tiles = tiles;
+        for (Entity tile: tiles) {
+            if (tile.collidable) {
+                world.add(tile.item, tile.bbox.x, tile.bbox.y, tile.bbox.width, tile.bbox.height);
+            }
         }
     }
 
@@ -180,16 +160,7 @@ public class Level {
     }
 
     public void render(Batch batch, ShapeDrawer drawer) {
-        for (FloorTile tile: dirtTiles) {
-            tile.render(batch);
-        }
-        for (FloorTile tile: grassTiles) {
-            tile.render(batch);
-        }
-        for (FloorTile tile: sandTiles) {
-            tile.render(batch);
-        }
-        for (FloorTile tile: waterTiles) {
+        for (Entity tile: tiles) {
             tile.render(batch);
         }
         for (Entity entity: wallEntities) {
@@ -220,7 +191,7 @@ public class Level {
     }
 
     public void renderDebug(ShapeDrawer drawer) {
-        for (FloorTile tile: waterTiles) {
+        for (Entity tile: tiles) {
             tile.renderDebug(drawer);
         }
         for (Entity entity: environmentEntities) {

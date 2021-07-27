@@ -73,10 +73,7 @@ public class LevelLoader {
 
 
     private static void loadTiles(Array<JsonValue> tiles, Level level) {
-        Array<FloorTile> grassTileArray = new Array<>();
-        Array<FloorTile> dirtTileArray = new Array<>();
-        Array<FloorTile> sandTileArray = new Array<>();
-        Array<FloorTile> waterTileArray = new Array<>();
+        Array<Entity> tileArray = new Array<>();
 
         for (JsonValue tileObjects : tiles) {
             final float x = tileObjects.getFloat(Constants.LEVEL_X_KEY, 0);
@@ -86,20 +83,16 @@ public class LevelLoader {
             FloorTile floorTile;
 
             if (Constants.WATER.equals(textureName)) {
-                floorTile = new FloorTile(x, y, textureName);
-                waterTileArray.add(floorTile);
+                floorTile = new FloorTile(x, y, textureName , true);
             } else {
-                floorTile = new FloorTile(x, y, textureName);
-                grassTileArray.add(floorTile);
+                floorTile = new FloorTile(x, y, textureName, false);
             }
 
+            tileArray.add(floorTile);
             Gdx.app.log(TAG, floorTile.toString());
         }
 
-        level.setGrassTiles(grassTileArray);
-        level.setDirtTiles(dirtTileArray);
-        level.setSandTiles(sandTileArray);
-        level.setWaterTiles(waterTileArray);
+        level.setTiles(tileArray);
     }
 
     private static void loadCharacters(Array<JsonValue> objects, Level level) {
