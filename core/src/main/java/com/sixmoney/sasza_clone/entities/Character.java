@@ -10,6 +10,8 @@ import com.badlogic.gdx.ai.utils.Ray;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
@@ -35,16 +37,18 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected TextureRegion characterIdleLegTexture;
     protected Vector2 oldVelocity;
 
-    public Character() {
+    public Character(float x, float y) {
         super();
-        steerOutput = new SteeringAcceleration<Vector2>(new Vector2());
+        bbox = new Rectangle(x + Constants.PLAYER_CENTER.x * 0.80f, y + Constants.PLAYER_CENTER.y * 0.80f, MathUtils.round(Constants.PLAYER_CENTER.x / 2.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 2.5f));
+        steerOutput = new SteeringAcceleration<>(new Vector2());
         maxLinearSpeed = 120;
         maxLinearAcceleration = 200f;
-        maxAngularSpeed = 10f;
-        maxAngularAcceleration = 5f;
+        maxAngularSpeed = 120f;
+        maxAngularAcceleration = 200f;
         tagged = false;
         prioritySteering = new PrioritySteering<>(this, 0.0001f);
         oldVelocity = new Vector2(velocity);
+        legsOffset = 0;
         legsRotation = 0;
     }
 
@@ -71,7 +75,14 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public void update(float delta, World<Entity> world) {
-        legsRotation = velocity.angleDeg() + 90;
+        if (!velocity.isZero()) {
+            legsRotation = velocity.angleDeg() + 90;
+        }
+    }
+
+    protected void updateBBox() {
+        bbox.x = position.x + Constants.PLAYER_CENTER.x * 0.80f;
+        bbox.y = position.y + Constants.PLAYER_CENTER.y * 0.80f;
     }
 
     @Override

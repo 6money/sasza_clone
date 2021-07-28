@@ -31,6 +31,9 @@ public class Constants {
     public static final float PLAYER_SPEED = 200;
     public static final Vector2 PLAYER_CENTER = new Vector2(32, 32);
 
+    // enemy
+    public static final float ENEMY_ATTACK_SPEED = 0.5f;
+
     // player sprites
     public static final String PLAYER = "player_rifle";
     public static final String PLAYER_SHOOTING = "player_rifle_fire";
@@ -45,6 +48,7 @@ public class Constants {
     public static final String ENEMY_DEAD = "sniper_die";
     public static final String ENEMY_STAND = "sniper_stand";
     public static final String ENEMY_SHOOTING = "sniper_shot";
+    public static final String ZOM1 = "zom1_base";
 
     // environment sprites
     public static final String BOX_1 = "environment_box1";

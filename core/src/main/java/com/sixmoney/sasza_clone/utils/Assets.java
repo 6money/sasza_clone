@@ -123,6 +123,7 @@ public class Assets implements Disposable, AssetErrorListener {
         public TextureRegion rifleProjectile;
         public Animation<TextureRegion> enemyWalkingAnimation;
         public Animation<TextureRegion> enemyDyingAnimation;
+        public TextureRegion zom1;
 
         public EnemyAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             enemy = atlasPrivate.findRegion(Constants.ENEMY);
@@ -131,6 +132,7 @@ public class Assets implements Disposable, AssetErrorListener {
             rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
             enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.ENEMY_WALK), Animation.PlayMode.LOOP);
             enemyDyingAnimation = new Animation<>(0.20f, atlasPrivate.findRegions(Constants.ENEMY_DEAD), Animation.PlayMode.NORMAL);
+            zom1 = atlasPrivate.findRegion(Constants.ZOM1);
         }
     }
 

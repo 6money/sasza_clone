@@ -2,6 +2,7 @@ package com.sixmoney.sasza_clone;
 
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.utils.RayConfiguration;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -23,6 +24,7 @@ import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
+import com.sixmoney.sasza_clone.entities.Zom1;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
@@ -44,7 +46,8 @@ public class Level {
     private Array<Entity> environmentEntities;
     private Array<Entity> canopyEntities;
     private Array<Entity> wallEntities;
-    private Array<Enemy> enemyEntities;
+    private Array<Enemy> characterEntities;
+    private Array<Zom1> enemyEntities;
     private final DelayedRemovalArray<Bullet> bullets;
     private BulletCollisionFilter bulletCollisionFilter;
     private long shootStartTime;
@@ -60,13 +63,12 @@ public class Level {
         tiles = new Array<>();
         environmentEntities = new Array<>();
         canopyEntities = new Array<>();
+        characterEntities = new Array<>();
         enemyEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
         bulletCollisionFilter = new BulletCollisionFilter();
         shooting = false;
         shootStartTime = TimeUtils.nanoTime();
-
-
     }
 
     public Player getPlayer() {
@@ -115,9 +117,9 @@ public class Level {
     }
 
 
-    public void setEnemyEntities(Array<Enemy> entities) {
-        this.enemyEntities = entities;
-        for (Enemy enemy: enemyEntities) {
+    public void setCharacterEntities(Array<Enemy> entities) {
+        this.characterEntities = entities;
+        for (Enemy enemy: characterEntities) {
             world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
 
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
@@ -133,16 +135,34 @@ public class Level {
         }
     }
 
+
+    public void setEnemyEntities(Array<Zom1> entities) {
+        this.enemyEntities = entities;
+        for (Zom1 zom: enemyEntities) {
+            world.add(zom.item, zom.bbox.x, zom.bbox.y, zom.bbox.width, zom.bbox.height);
+
+            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(zom, 30, 12, 40);
+            RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
+            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(zom, rayConfiguration, raycastCollisionDetector, 0);
+            zom.addBehavior(raycastObstacleAvoidance);
+
+            Seek<Vector2> seek = new Seek<>(zom, player);
+            zom.addBehavior(seek);
+        }
+    }
+
     public void update(float delta) {
         if (shooting && Utils.secondsSince(shootStartTime) > 1 / player.getGun().getFireRate()) {
             shootStartTime = TimeUtils.nanoTime();
             shoot();
         }
 
-        for (Enemy enemy: enemyEntities) {
+        for (Zom1 zom: enemyEntities) {
+            zom.update(delta, world);
+        }
+        for (Enemy enemy: characterEntities) {
             enemy.update(delta, world);
         }
-
         for (Entity entity: canopyEntities) {
             entity.update(delta, world);
         }
@@ -166,14 +186,20 @@ public class Level {
         for (Entity entity: wallEntities) {
             entity.render(batch);
         }
-        for (Entity entity: enemyEntities) {
+        for (Zom1 zom: enemyEntities) {
+            zom.renderSecondary(batch);
+        }
+        for (Entity entity: characterEntities) {
             entity.renderSecondary(batch);
         }
         player.renderSecondary(batch);
         for (Entity entity: environmentEntities) {
             entity.render(batch);
         }
-        for (Entity entity: enemyEntities) {
+        for (Zom1 zom: enemyEntities) {
+            zom.render(batch);
+        }
+        for (Entity entity: characterEntities) {
             entity.render(batch);
         }
 
@@ -201,7 +227,10 @@ public class Level {
                 entity.bulletCollisionSubObject.renderDebug(drawer);
             }
         }
-        for (Entity entity: enemyEntities) {
+        for (Zom1 zom: enemyEntities) {
+            zom.renderDebug(drawer);
+        }
+        for (Entity entity: characterEntities) {
             entity.renderDebug(drawer);
         }
         for (Entity entity: wallEntities) {
@@ -254,7 +283,10 @@ public class Level {
                 if (((Entity) item.userData).getHealth() <= 0) {
                     if (item.userData instanceof Enemy) {
                         world.remove(item);
-                        enemyEntities.removeValue((Enemy) item.userData, true);
+                        characterEntities.removeValue((Enemy) item.userData, true);
+                    } else if (item.userData instanceof Zom1) {
+                        world.remove(item);
+                        enemyEntities.removeValue((Zom1) item.userData, true);
                     } else if (item.userData instanceof Crate) {
                         world.remove(item);
                         environmentEntities.removeValue((Entity) item.userData, true);

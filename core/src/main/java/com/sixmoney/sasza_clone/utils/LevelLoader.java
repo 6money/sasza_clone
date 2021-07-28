@@ -14,6 +14,7 @@ import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.entities.Wall;
+import com.sixmoney.sasza_clone.entities.Zom1;
 
 import java.io.File;
 
@@ -24,6 +25,7 @@ public class LevelLoader {
     public static Level load(String levelName, Viewport viewport) {
         Array<JsonValue> tiles = new Array<>();
         Array<JsonValue> characters = new Array<>();
+        Array<JsonValue> enemies = new Array<>();
         Array<JsonValue> canopy = new Array<>();
         Array<JsonValue> environment = new Array<>();
         Array<JsonValue> walls = new Array<>();
@@ -43,6 +45,9 @@ public class LevelLoader {
                     case "Characters":
                         characters.add(jsonObject);
                         break;
+                    case "Enemies":
+                        enemies.add(jsonObject);
+                        break;
                     case "Environment":
                         environment.add(jsonObject);
                         break;
@@ -60,6 +65,7 @@ public class LevelLoader {
 
             loadTiles(tiles, level);
             loadCharacters(characters, level);
+            loadEnemies(enemies, level);
             loadEnvironment(environment, level);
             loadCanopy(canopy, level);
             loadWalls(walls, level);
@@ -107,12 +113,29 @@ public class LevelLoader {
                 case Constants.PLAYER:
                     Player player = new Player(x, y);
                     level.setPlayer(player);
+                    Gdx.app.log(TAG, player.toString());
                     break;
                 case Constants.ENEMY:
                     Enemy enemy = new Enemy(x, y);
                     enemyArray.add(enemy);
+                    Gdx.app.log(TAG, enemy.toString());
                     break;
             }
+        }
+
+        level.setCharacterEntities(enemyArray);
+    }
+
+    private static void loadEnemies(Array<JsonValue> objects, Level level) {
+        Array<Zom1> enemyArray = new Array<>();
+
+        for (JsonValue object : objects) {
+            final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
+            final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
+
+            Zom1 zom = new Zom1(x, y);
+            enemyArray.add(zom);
+            Gdx.app.log(TAG, zom.toString());
         }
 
         level.setEnemyEntities(enemyArray);

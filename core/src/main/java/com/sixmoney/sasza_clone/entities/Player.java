@@ -2,8 +2,6 @@ package com.sixmoney.sasza_clone.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.Collision;
@@ -30,9 +28,8 @@ public class Player extends Character {
 
 
     public Player(float x, float y) {
-        super();
+        super(x, y);
         position = new Vector2(x, y);
-        bbox = new Rectangle(position.x + Constants.PLAYER_CENTER.x * 0.80f, position.y + Constants.PLAYER_CENTER.y * 0.80f, MathUtils.round(Constants.PLAYER_CENTER.x / 2.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 2.5f));
         entityTextureRegion = Assets.get_instance().playerAssets.player;
         entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
         characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
@@ -41,7 +38,6 @@ public class Player extends Character {
         gun = new Gun();
         health = 200f;
         destructible = true;
-        legsOffset = Constants.PLAYER_CENTER.x / 2;
     }
 
 
@@ -49,12 +45,6 @@ public class Player extends Character {
         position.x = x;
         position.y = y;
         updateBBox();
-    }
-
-
-    private void updateBBox() {
-        bbox.x = position.x + Constants.PLAYER_CENTER.x * 0.80f;
-        bbox.y = position.y + Constants.PLAYER_CENTER.y * 0.80f;
     }
 
 
@@ -149,7 +139,7 @@ public class Player extends Character {
             if(other == null) return null;
             else if (other.userData instanceof Crate) return Response.slide;
             else if (other.userData instanceof FloorTile) return Response.slide;
-            else if (other.userData instanceof Enemy) return Response.slide;
+            else if (other.userData instanceof Character) return Response.slide;
             else if (other.userData instanceof Wall) return Response.slide;
             else return null;
         }
