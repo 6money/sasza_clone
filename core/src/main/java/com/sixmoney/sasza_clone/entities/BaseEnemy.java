@@ -13,13 +13,13 @@ import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.Utils;
 
-public class Zom1 extends Character {
-    private static final String TAG = Zom1.class.getName();
+public class BaseEnemy extends Character {
+    private static final String TAG = BaseEnemy.class.getName();
 
     private float damage;
     private long attackDelayTimer;
 
-    public Zom1(float x, float y) {
+    public BaseEnemy(float x, float y) {
         super(x, y);
         position = new Vector2(x, y);
         entityTextureRegion = Assets.get_instance().enemyAssets.zom1;
@@ -55,7 +55,8 @@ public class Zom1 extends Character {
                 setPosition(collision.touch.x - (bbox.x - position.x), collision.touch.y - (bbox.y - position.y));
             }
 
-            if (collision.other.userData instanceof Player) {
+            if (collision.other.userData instanceof Player ||
+                    collision.other.userData instanceof BaseNPC) {
                 attack((Entity) collision.other.userData);
             }
         }

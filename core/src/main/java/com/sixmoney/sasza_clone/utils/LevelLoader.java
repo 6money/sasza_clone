@@ -7,14 +7,14 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
+import com.sixmoney.sasza_clone.entities.BaseEnemy;
+import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.Crate;
-import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.entities.Wall;
-import com.sixmoney.sasza_clone.entities.Zom1;
 
 import java.io.File;
 
@@ -102,7 +102,7 @@ public class LevelLoader {
     }
 
     private static void loadCharacters(Array<JsonValue> objects, Level level) {
-        Array<Enemy> enemyArray = new Array<>();
+        Array<BaseNPC> enemyArray = new Array<>();
 
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
@@ -116,9 +116,9 @@ public class LevelLoader {
                     Gdx.app.log(TAG, player.toString());
                     break;
                 case Constants.ENEMY:
-                    Enemy enemy = new Enemy(x, y);
-                    enemyArray.add(enemy);
-                    Gdx.app.log(TAG, enemy.toString());
+                    BaseNPC baseNPC = new BaseNPC(x, y);
+                    enemyArray.add(baseNPC);
+                    Gdx.app.log(TAG, baseNPC.toString());
                     break;
             }
         }
@@ -127,13 +127,13 @@ public class LevelLoader {
     }
 
     private static void loadEnemies(Array<JsonValue> objects, Level level) {
-        Array<Zom1> enemyArray = new Array<>();
+        Array<BaseEnemy> enemyArray = new Array<>();
 
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
             final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
 
-            Zom1 zom = new Zom1(x, y);
+            BaseEnemy zom = new BaseEnemy(x, y);
             enemyArray.add(zom);
             Gdx.app.log(TAG, zom.toString());
         }

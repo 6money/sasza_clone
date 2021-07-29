@@ -16,15 +16,15 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
+import com.sixmoney.sasza_clone.entities.BaseEnemy;
+import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
 import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.Crate;
-import com.sixmoney.sasza_clone.entities.Enemy;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
-import com.sixmoney.sasza_clone.entities.Zom1;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
@@ -46,8 +46,8 @@ public class Level {
     private Array<Entity> environmentEntities;
     private Array<Entity> canopyEntities;
     private Array<Entity> wallEntities;
-    private Array<Enemy> characterEntities;
-    private Array<Zom1> enemyEntities;
+    private DelayedRemovalArray<BaseNPC> characterEntities;
+    private Array<BaseEnemy> enemyEntities;
     private final DelayedRemovalArray<Bullet> bullets;
     private BulletCollisionFilter bulletCollisionFilter;
     private long shootStartTime;
@@ -63,7 +63,7 @@ public class Level {
         tiles = new Array<>();
         environmentEntities = new Array<>();
         canopyEntities = new Array<>();
-        characterEntities = new Array<>();
+        characterEntities = new DelayedRemovalArray<>();
         enemyEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
         bulletCollisionFilter = new BulletCollisionFilter();
@@ -117,28 +117,28 @@ public class Level {
     }
 
 
-    public void setCharacterEntities(Array<Enemy> entities) {
-        this.characterEntities = entities;
-        for (Enemy enemy: characterEntities) {
-            world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
+    public void setCharacterEntities(Array<BaseNPC> entities) {
+        this.characterEntities = new DelayedRemovalArray<>(entities);
+        for (BaseNPC baseNPC : characterEntities) {
+            world.add(baseNPC.item, baseNPC.bbox.x, baseNPC.bbox.y, baseNPC.bbox.width, baseNPC.bbox.height);
 
-            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
+            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(baseNPC, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
-            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 0);
-            enemy.addBehavior(raycastObstacleAvoidance);
+            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(baseNPC, rayConfiguration, raycastCollisionDetector, 0);
+            baseNPC.addBehavior(raycastObstacleAvoidance);
 
-            Arrive<Vector2> arrive = new Arrive<>(enemy, player)
+            Arrive<Vector2> arrive = new Arrive<>(baseNPC, player)
                     .setTimeToTarget(0.1f)
                     .setArrivalTolerance(50f)
                     .setDecelerationRadius(50);
-            enemy.addBehavior(arrive);
+            baseNPC.addBehavior(arrive);
         }
     }
 
 
-    public void setEnemyEntities(Array<Zom1> entities) {
+    public void setEnemyEntities(Array<BaseEnemy> entities) {
         this.enemyEntities = entities;
-        for (Zom1 zom: enemyEntities) {
+        for (BaseEnemy zom: enemyEntities) {
             world.add(zom.item, zom.bbox.x, zom.bbox.y, zom.bbox.width, zom.bbox.height);
 
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(zom, 30, 12, 40);
@@ -152,22 +152,28 @@ public class Level {
     }
 
     public void update(float delta) {
+        player.update(delta, world);
+
         if (shooting && Utils.secondsSince(shootStartTime) > 1 / player.getGun().getFireRate()) {
             shootStartTime = TimeUtils.nanoTime();
             shoot();
         }
 
-        for (Zom1 zom: enemyEntities) {
+        for (BaseEnemy zom: enemyEntities) {
             zom.update(delta, world);
         }
-        for (Enemy enemy: characterEntities) {
-            enemy.update(delta, world);
+        characterEntities.begin();
+        for (BaseNPC baseNPC : characterEntities) {
+            baseNPC.update(delta, world);
+            if (baseNPC.getHealth() <= 0) {
+                world.remove(baseNPC.item);
+                characterEntities.removeValue(baseNPC, true);
+            }
         }
+        characterEntities.end();
         for (Entity entity: canopyEntities) {
             entity.update(delta, world);
         }
-
-        player.update(delta, world);
 
         bullets.begin();
         for (Bullet bullet: bullets) {
@@ -186,7 +192,7 @@ public class Level {
         for (Entity entity: wallEntities) {
             entity.render(batch);
         }
-        for (Zom1 zom: enemyEntities) {
+        for (BaseEnemy zom: enemyEntities) {
             zom.renderSecondary(batch);
         }
         for (Entity entity: characterEntities) {
@@ -196,7 +202,7 @@ public class Level {
         for (Entity entity: environmentEntities) {
             entity.render(batch);
         }
-        for (Zom1 zom: enemyEntities) {
+        for (BaseEnemy zom: enemyEntities) {
             zom.render(batch);
         }
         for (Entity entity: characterEntities) {
@@ -227,7 +233,7 @@ public class Level {
                 entity.bulletCollisionSubObject.renderDebug(drawer);
             }
         }
-        for (Zom1 zom: enemyEntities) {
+        for (BaseEnemy zom: enemyEntities) {
             zom.renderDebug(drawer);
         }
         for (Entity entity: characterEntities) {
@@ -281,12 +287,12 @@ public class Level {
             if (((Entity) item.userData).destructible) {
                 ((Entity) item.userData).decrementHealth(player.getGun().getDamage());
                 if (((Entity) item.userData).getHealth() <= 0) {
-                    if (item.userData instanceof Enemy) {
+                    if (item.userData instanceof BaseNPC) {
                         world.remove(item);
-                        characterEntities.removeValue((Enemy) item.userData, true);
-                    } else if (item.userData instanceof Zom1) {
+                        characterEntities.removeValue((BaseNPC) item.userData, true);
+                    } else if (item.userData instanceof BaseEnemy) {
                         world.remove(item);
-                        enemyEntities.removeValue((Zom1) item.userData, true);
+                        enemyEntities.removeValue((BaseEnemy) item.userData, true);
                     } else if (item.userData instanceof Crate) {
                         world.remove(item);
                         environmentEntities.removeValue((Entity) item.userData, true);

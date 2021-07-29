@@ -10,10 +10,10 @@ import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
 
-public class Enemy extends Character {
-    private static final String TAG = Enemy.class.getName();
+public class BaseNPC extends Character {
+    private static final String TAG = BaseNPC.class.getName();
 
-    public Enemy(float x, float y) {
+    public BaseNPC(float x, float y) {
         super(x, y);
         position = new Vector2(x, y);
         entityTextureRegion = Assets.get_instance().enemyAssets.enemy;
@@ -38,7 +38,7 @@ public class Enemy extends Character {
             applySteering(delta);
         }
 
-        Response.Result result = world.move(item, bbox.x, bbox.y, new Enemy.EnemyCollisionFilter());
+        Response.Result result = world.move(item, bbox.x, bbox.y, new BaseNPC.EnemyCollisionFilter());
         Collisions projectedCollisions = result.projectedCollisions;
         for (int i = 0; i < projectedCollisions.size(); i++) {
             Collision collision = projectedCollisions.get(i);
