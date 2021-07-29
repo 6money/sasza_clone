@@ -28,6 +28,7 @@ public class BaseEnemy extends Character {
         entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
         characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
         maxLinearAcceleration = 800f;
+        maxLinearSpeed = 250f;
         damage = 10;
         attackDelayTimer = 0;
     }

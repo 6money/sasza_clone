@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.Collision;
@@ -10,8 +11,14 @@ import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
 
+import space.earlygrey.shapedrawer.ShapeDrawer;
+
 public class BaseNPC extends Character {
     private static final String TAG = BaseNPC.class.getName();
+
+    public NPCDetectionObject detectionObject;
+    public Vector2 targetLocation;
+    public boolean shooting;
 
     public BaseNPC(float x, float y) {
         super(x, y);
@@ -21,6 +28,8 @@ public class BaseNPC extends Character {
         health = 200;
         entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
         characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
+        detectionObject = new NPCDetectionObject(this);
+        shooting = false;
     }
 
 
@@ -36,6 +45,9 @@ public class BaseNPC extends Character {
         if (prioritySteering.isEnabled()) {
             prioritySteering.calculateSteering(steerOutput);
             applySteering(delta);
+            if (!velocity.isZero() && !shooting) {
+                rotation = velocity.angleDeg() + 90;
+            }
         }
 
         Response.Result result = world.move(item, bbox.x, bbox.y, new BaseNPC.EnemyCollisionFilter());
@@ -57,6 +69,21 @@ public class BaseNPC extends Character {
         }
 
         super.update(delta, world);
+
+        targetLocation = detectionObject.update(world);
+
+        if (targetLocation != null) {
+            shooting = true;
+            rotation = new Vector2(targetLocation).sub(getPosition()).angleDeg() + 90;
+        } else {
+            shooting = false;
+        }
+    }
+
+    @Override
+    public void renderDebug(ShapeDrawer drawer) {
+        super.renderDebug(drawer);
+        drawer.rectangle(detectionObject.bbox, Color.ORANGE);
     }
 
 

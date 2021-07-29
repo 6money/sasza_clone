@@ -23,8 +23,6 @@ public class Player extends Character {
     private static final String TAG = Player.class.getName();
 
     private Vector2 lazerVector;
-    private Vector2 bulletOffset;
-    private Gun gun;
 
 
     public Player(float x, float y) {
@@ -34,8 +32,6 @@ public class Player extends Character {
         entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
         characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
         lazerVector = new Vector2();
-        bulletOffset = new Vector2( -3, -18);
-        gun = new Gun();
         health = 200f;
         destructible = true;
     }
@@ -53,16 +49,6 @@ public class Player extends Character {
         Vector2 vec = pointerPosition.sub(playerCenter);
         vec.nor();
         rotation = vec.angleDeg() + 90;
-    }
-
-
-    public Vector2 getBulletOffset() {
-        return bulletOffset;
-    }
-
-
-    public Gun getGun() {
-        return gun;
     }
 
 
@@ -94,7 +80,6 @@ public class Player extends Character {
             }
         }
 
-
         ArrayList<ItemInfo> items = new ArrayList<>();
         Vector2 bulletOffsetTemp = new Vector2(bulletOffset);
         bulletOffsetTemp.rotateDeg(rotation);
@@ -121,10 +106,7 @@ public class Player extends Character {
 
 
     public void render(Batch batch, ShapeDrawer drawer) {
-
-
         super.render(batch);
-
 
         Vector2 bulletOffsetTemp = new Vector2(bulletOffset);
         bulletOffsetTemp.rotateDeg(rotation);
@@ -150,6 +132,7 @@ public class Player extends Character {
         public Response filter(Item item, Item other) {
             if ((item.userData instanceof FloorTile)) return null;
             if ((item.userData instanceof Canopy)) return null;
+            if ((item.userData instanceof NPCDetectionObject)) return null;
             else return Response.touch;
         }
     }

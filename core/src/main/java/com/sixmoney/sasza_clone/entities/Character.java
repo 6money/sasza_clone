@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.Constants;
@@ -36,6 +37,10 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected PrioritySteering<Vector2> prioritySteering;
     protected TextureRegion characterIdleLegTexture;
     protected Vector2 oldVelocity;
+    protected Vector2 bulletOffset;
+    protected Gun gun;
+
+    public long shootStartTime;
 
     public Character(float x, float y) {
         super();
@@ -50,7 +55,20 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         oldVelocity = new Vector2(velocity);
         legsOffset = 0;
         legsRotation = 0;
+        bulletOffset = new Vector2( -3, -18);
+        gun = new Gun();
+        shootStartTime = TimeUtils.nanoTime();
     }
+
+
+    public Vector2 getBulletOffset() {
+        return bulletOffset;
+    }
+
+    public Gun getGun() {
+        return gun;
+    }
+
 
     protected void applySteering(float delta) {
         if (!steerOutput.linear.isZero()) {
@@ -64,10 +82,6 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
                 velocity.setLength(maxLinearSpeed);
             }
             position.mulAdd(velocity, delta);
-
-            if (!velocity.isZero()) {
-                rotation = velocity.angleDeg() + 90;
-            }
         } else {
             velocity.set(0, 0);
         }
@@ -192,6 +206,10 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         this.maxAngularAcceleration = maxAngularAcceleration;
     }
 
+    /*
+    Returns the center point of the character, not the bottom left which is what the position
+    attribute defines
+    */
     @Override
     public Vector2 getPosition() {
         return new Vector2(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);

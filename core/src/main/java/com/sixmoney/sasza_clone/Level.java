@@ -21,9 +21,11 @@ import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
 import com.sixmoney.sasza_clone.entities.Canopy;
+import com.sixmoney.sasza_clone.entities.Character;
 import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.FloorTile;
+import com.sixmoney.sasza_clone.entities.NPCDetectionObject;
 import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
@@ -121,6 +123,7 @@ public class Level {
         this.characterEntities = new DelayedRemovalArray<>(entities);
         for (BaseNPC baseNPC : characterEntities) {
             world.add(baseNPC.item, baseNPC.bbox.x, baseNPC.bbox.y, baseNPC.bbox.width, baseNPC.bbox.height);
+            world.add(baseNPC.detectionObject.item, baseNPC.detectionObject.bbox.x, baseNPC.detectionObject.bbox.y, baseNPC.detectionObject.bbox.width, baseNPC.detectionObject.bbox.height);
 
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(baseNPC, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
@@ -156,7 +159,7 @@ public class Level {
 
         if (shooting && Utils.secondsSince(shootStartTime) > 1 / player.getGun().getFireRate()) {
             shootStartTime = TimeUtils.nanoTime();
-            shoot();
+            shoot(player);
         }
 
         for (BaseEnemy zom: enemyEntities) {
@@ -167,7 +170,12 @@ public class Level {
             baseNPC.update(delta, world);
             if (baseNPC.getHealth() <= 0) {
                 world.remove(baseNPC.item);
+                world.remove(baseNPC.detectionObject.item);
                 characterEntities.removeValue(baseNPC, true);
+            }
+            if (baseNPC.shooting && Utils.secondsSince(baseNPC.shootStartTime) > 1 / baseNPC.getGun().getFireRate()) {
+                baseNPC.shootStartTime = TimeUtils.nanoTime();
+                shoot(baseNPC);
             }
         }
         characterEntities.end();
@@ -228,10 +236,6 @@ public class Level {
         }
         for (Entity entity: environmentEntities) {
             entity.renderDebug(drawer);
-
-            if (entity.bulletCollisionSubObject != null) {
-                entity.bulletCollisionSubObject.renderDebug(drawer);
-            }
         }
         for (BaseEnemy zom: enemyEntities) {
             zom.renderDebug(drawer);
@@ -241,10 +245,6 @@ public class Level {
         }
         for (Entity entity: wallEntities) {
             entity.renderDebug(drawer);
-
-            if (entity.bulletCollisionSubObject != null) {
-                entity.bulletCollisionSubObject.renderDebug(drawer);
-            }
         }
         for (Entity entity: canopyEntities) {
             entity.renderDebug(drawer);
@@ -252,27 +252,27 @@ public class Level {
         player.renderDebug(drawer);
     }
 
-    public void shoot() {
-        if (player.getGun().getCurrentAmmo() == 0 && player.getGun().getCurrentMagazineAmmo() == 0) {
+    public void shoot(Character character) {
+        if (character.getGun().getCurrentAmmo() == 0 && character.getGun().getCurrentMagazineAmmo() == 0) {
             return;
         }
 
-        if (player.getGun().getCurrentMagazineAmmo() <= 0) {
-            player.getGun().reload();
+        if (character.getGun().getCurrentMagazineAmmo() <= 0) {
+            character.getGun().reload();
         }
 
         ArrayList<ItemInfo> items = new ArrayList<>();
-        float rotation = player.rotation;
-        Vector2 bulletOffsetTemp = new Vector2(player.getBulletOffset());
+        float rotation = character.rotation;
+        Vector2 bulletOffsetTemp = new Vector2(character.getBulletOffset());
         bulletOffsetTemp.rotateDeg(rotation);
         Vector2 bulletVector = new Vector2(0, -1);
         bulletVector.rotateDeg(rotation);
-        bulletVector.setLength(player.getGun().getRange());
-        bulletVector.add(player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
+        bulletVector.setLength(character.getGun().getRange());
+        bulletVector.add(character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
 
         world.querySegmentWithCoords(
-                player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x,
-                player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
+                character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x,
+                character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
                 bulletVector.x,
                 bulletVector.y,
                 bulletCollisionFilter,
@@ -285,10 +285,11 @@ public class Level {
             Item item = items.get(0).item;
 
             if (((Entity) item.userData).destructible) {
-                ((Entity) item.userData).decrementHealth(player.getGun().getDamage());
+                ((Entity) item.userData).decrementHealth(character.getGun().getDamage());
                 if (((Entity) item.userData).getHealth() <= 0) {
                     if (item.userData instanceof BaseNPC) {
                         world.remove(item);
+                        world.remove(((BaseNPC) item.userData).detectionObject.item);
                         characterEntities.removeValue((BaseNPC) item.userData, true);
                     } else if (item.userData instanceof BaseEnemy) {
                         world.remove(item);
@@ -308,8 +309,8 @@ public class Level {
             }
         }
 
-        bullets.add(new Bullet(player.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, player.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, player.rotation, bulletVector.x, bulletVector.y, player.getGun().getProjectileSpeed()));
-        player.getGun().decrementCurrentMagazineAmmo();
+        bullets.add(new Bullet(character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, character.rotation, bulletVector.x, bulletVector.y, character.getGun().getProjectileSpeed()));
+        character.getGun().decrementCurrentMagazineAmmo();
     }
 
     public static class BulletCollisionFilter implements CollisionFilter {
@@ -317,6 +318,8 @@ public class Level {
         public Response filter(Item item, Item other) {
             if ((item.userData instanceof FloorTile)) return null;
             if ((item.userData instanceof Canopy)) return null;
+            if ((item.userData instanceof NPCDetectionObject)) return null;
+            if ((item.userData instanceof BaseNPC)) return null;
             else return Response.touch;
         }
     }

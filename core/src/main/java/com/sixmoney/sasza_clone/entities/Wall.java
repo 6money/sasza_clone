@@ -1,11 +1,14 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.Utils;
+
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Wall extends Entity {
     private TextureRegion upperTextureRegion;
@@ -38,6 +41,15 @@ public class Wall extends Entity {
     public void renderSecondary(Batch batch) {
         if (isDoor) {
             Utils.drawTextureRegion(batch, upperTextureRegion, position.x, position.y, rotation);
+        }
+    }
+
+
+    @Override
+    public void renderDebug(ShapeDrawer drawer) {
+        super.renderDebug(drawer);
+        if (bulletCollisionSubObject != null) {
+            drawer.rectangle(bulletCollisionSubObject.bbox, Color.ORANGE);
         }
     }
 

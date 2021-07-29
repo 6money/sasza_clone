@@ -1,9 +1,12 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
+
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 
 public class Crate extends Entity {
@@ -32,5 +35,13 @@ public class Crate extends Entity {
             );
         }
         bulletCollisionSubObject = new BulletCollisionSubObject(this, true, Constants.BBOX_BUFFER_ENVIRONMENT);
+    }
+
+    @Override
+    public void renderDebug(ShapeDrawer drawer) {
+        super.renderDebug(drawer);
+        if (bulletCollisionSubObject != null) {
+            drawer.rectangle(bulletCollisionSubObject.bbox, Color.ORANGE);
+        }
     }
 }
