@@ -12,7 +12,8 @@
 	<inherits name="com.dongbat.jbump" />
 	<inherits name="com.ray3k.tenpatch.tenpatch" />
 	<inherits name="space.earlygrey.shapedrawer"/>
-	<inherits name="com.sixmoney.sasza_clone.Sasza" />
+	<inherits name="com.strongjoshua.console"/>
+	<inherits name="Sasza" />
 	<entry-point class="com.sixmoney.sasza_clone.gwt.GwtLauncher" />
 	<set-configuration-property name="gdx.assetpath" value="../assets" />
 	<set-configuration-property name="xsiframe.failIfScriptTag" value="FALSE"/>
@@ -20,4 +21,6 @@
 	<set-property name="user.agent" value="gecko1_8, safari"/>
 	<collapse-property name="user.agent" values="*" />
 	<!-- Remove the "user.agent" lines above if you encounter issues with Safari or other Gecko browsers. -->
+	<extend-configuration-property name="gdx.reflect.include" value="com.strongjoshua.console" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.sixmoney.sasza_clone.utils.CommandExecutorImpl" />
 </module>

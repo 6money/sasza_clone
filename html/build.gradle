@@ -27,7 +27,7 @@ gwt {
 	compiler.strict = true
 	compiler.disableCastChecking = true
 	//// The next line can be useful to uncomment if you want output that hasn't been obfuscated.
-//	compiler.style = org.wisepersist.gradle.plugins.gwt.Style.DETAILED
+	compiler.style = org.wisepersist.gradle.plugins.gwt.Style.DETAILED
 }
 
 dependencies {
@@ -45,6 +45,8 @@ dependencies {
 	implementation "com.crashinvaders.vfx:gdx-vfx-effects:$gdxVfxEffectsVersion:sources"
 	implementation "com.github.tommyettinger:jbump:$jbumpVersion:sources"
 	implementation "space.earlygrey:shapedrawer:$shapedrawerVersion:sources"
+//	implementation "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion:sources"
+	implementation files("libs/libgdx-inGameConsole-1.0.0-sources.jar")
 }
 
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask

@@ -1,6 +1,7 @@
 package com.sixmoney.sasza_clone.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.controllers.Controllers;
@@ -15,10 +16,13 @@ import com.sixmoney.sasza_clone.overlays.HUD;
 import com.sixmoney.sasza_clone.overlays.PauseOverlay;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
+import com.sixmoney.sasza_clone.utils.CommandExecutorImpl;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.ControllerInputHandler;
 import com.sixmoney.sasza_clone.utils.InputHandler;
 import com.sixmoney.sasza_clone.utils.LevelLoader;
+import com.strongjoshua.console.Console;
+import com.strongjoshua.console.GUIConsole;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -32,6 +36,9 @@ public class GameWorldScreen implements Screen {
     private ShapeDrawer drawer;
     private HUD hud;
     private PauseOverlay pauseOverlay;
+    private Console console;
+
+
 
     public Level level;
     public InputHandler inputHandler;
@@ -56,6 +63,13 @@ public class GameWorldScreen implements Screen {
         Gdx.input.setInputProcessor(inputHandler);
         ControllerInputHandler controllerInputHandler = new ControllerInputHandler(this, camera);
         Controllers.addListener(controllerInputHandler);
+
+        console = new GUIConsole(Assets.get_instance().skinAssets.skinConsole);
+        console.setCommandExecutor(new CommandExecutorImpl());
+        console.setDisplayKeyID(Input.Keys.GRAVE);
+        console.setNoHoverAlpha(0.7f);
+        console.setHoverAlpha(0.7f);
+        console.setPosition(0, 0);
     }
 
     @Override
@@ -85,6 +99,8 @@ public class GameWorldScreen implements Screen {
         if (paused) {
             pauseOverlay.render();
         }
+
+        console.draw();
     }
 
     @Override
@@ -114,6 +130,7 @@ public class GameWorldScreen implements Screen {
         batch.dispose();
         pauseOverlay.dispose();
         hud.dispose();
+        console.dispose();
     }
 
     public void setPaused() {

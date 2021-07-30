@@ -8,7 +8,8 @@ dependencies {
 	api "com.github.raeleus.TenPatch:tenpatch:$tenPatchVersion"
 	api "com.crashinvaders.vfx:gdx-vfx-core:$gdxVfxCoreVersion"
 	api "com.crashinvaders.vfx:gdx-vfx-effects:$gdxVfxEffectsVersion"
-	api "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
+//	api "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
 	api "com.github.tommyettinger:jbump:$jbumpVersion"
 	api "space.earlygrey:shapedrawer:$shapedrawerVersion"
+	api files("libs/libgdx-inGameConsole-1.0.0.jar")
 }

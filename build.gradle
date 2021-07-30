@@ -14,6 +14,7 @@ buildscript {
 		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
 		classpath 'com.badlogicgames.gdx:gdx-tools:1.10.0'
 		classpath "space.earlygrey:shapedrawer:$shapedrawerVersion"
+		classpath files("libs/libgdx-inGameConsole-1.0.0.jar")
 	}
 }
 

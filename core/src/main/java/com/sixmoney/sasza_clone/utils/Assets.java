@@ -45,6 +45,7 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.load(Constants.TEXTURE_ATLAS, TextureAtlas.class);
         assetManager.load(Constants.TEXTURE_ATLAS_PRIVATE, TextureAtlas.class);
         assetManager.load(Constants.SKIN_PATH, Skin.class);
+        assetManager.load(Constants.SKIN_CONSOLE_PATH, Skin.class);
         assetManager.finishLoading();
         Gdx.app.log(TAG, "Assets Loaded in " + Utils.secondsSince(startLoad) + " seconds");
         Gdx.app.log(TAG, assetManager.getAssetNames().toString());
@@ -84,9 +85,11 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public class SkinAssets {
         public Skin skin;
+        public Skin skinConsole;
 
         public SkinAssets(AssetManager assetManager) {
             skin = assetManager.get(Constants.SKIN_PATH);
+            skinConsole = assetManager.get(Constants.SKIN_CONSOLE_PATH);
         }
     }
 
