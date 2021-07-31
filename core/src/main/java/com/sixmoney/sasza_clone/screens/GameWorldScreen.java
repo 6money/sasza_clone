@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -38,8 +39,6 @@ public class GameWorldScreen implements Screen {
     private PauseOverlay pauseOverlay;
     private Console console;
 
-
-
     public Level level;
     public InputHandler inputHandler;
     public boolean paused;
@@ -65,8 +64,12 @@ public class GameWorldScreen implements Screen {
         Controllers.addListener(controllerInputHandler);
 
         console = new GUIConsole(Assets.get_instance().skinAssets.skinConsole);
-        console.setCommandExecutor(new CommandExecutorImpl());
-        console.setDisplayKeyID(Input.Keys.GRAVE);
+        console.setCommandExecutor(new CommandExecutorImpl(this));
+        if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
+            console.setDisplayKeyID(Input.Keys.UNKNOWN);
+        } else {
+            console.setDisplayKeyID(Input.Keys.GRAVE);
+        }
         console.setNoHoverAlpha(0.7f);
         console.setHoverAlpha(0.7f);
         console.setPosition(0, 0);

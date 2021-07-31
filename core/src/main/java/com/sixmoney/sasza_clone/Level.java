@@ -313,6 +313,12 @@ public class Level {
         character.getGun().decrementCurrentMagazineAmmo();
     }
 
+
+    public void teleportPlayer(float x, float y) {
+        world.update(player.item, x, y);
+        player.setPosition(x, y);
+    }
+
     public static class BulletCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {

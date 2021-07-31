@@ -39,6 +39,8 @@ public class Sasza extends Game {
 				}
 			}
 		}
+
+//		Gdx.app.setLogLevel(LOG_INFO);
 		Gdx.app.log(TAG, ("debug mode: " + debug));
 		Gdx.input.setCatchKey(Input.Keys.SPACE, true);
 

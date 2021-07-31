@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
@@ -26,7 +25,6 @@ public class InputHandler extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        Gdx.app.log("TAG", keycode + "");
         switch (keycode) {
             case Input.Keys.W:
                 velocity.y += 1;

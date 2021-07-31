@@ -29,7 +29,7 @@ public class Constants {
     public static final String BBOX_OUTLINE = "bbox_pixel";
 
     // player
-    public static final float PLAYER_SPEED = 200;
+    public static final float DEFAULT_PLAYER_SPEED = 200;
     public static final Vector2 PLAYER_CENTER = new Vector2(32, 32);
 
     // enemy

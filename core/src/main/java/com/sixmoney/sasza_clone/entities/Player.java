@@ -22,6 +22,8 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 public class Player extends Character {
     private static final String TAG = Player.class.getName();
 
+    public float playerSpeed = 200;
+
     private Vector2 lazerVector;
 
 
@@ -55,7 +57,7 @@ public class Player extends Character {
     public void setVelocity(Vector2 newVelocityNormal) {
         oldVelocity.set(velocity);
         velocity.set(newVelocityNormal);
-        velocity.setLength(Constants.PLAYER_SPEED);
+        velocity.setLength(playerSpeed);
 
         if (velocity.isZero() && velocity != oldVelocity) {
             animationStartTime = 0;
