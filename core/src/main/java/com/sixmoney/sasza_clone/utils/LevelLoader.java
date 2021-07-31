@@ -10,8 +10,8 @@ import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.entities.BaseEnemy;
 import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Canopy;
-import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Entity;
+import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.entities.Wall;
@@ -149,9 +149,9 @@ public class LevelLoader {
             final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
             final String textureName = object.getString(Constants.LEVEL_IMAGENAME_KEY);
 
-            Crate crate = new Crate(x, y, textureName);
-            environmentArray.add(crate);
-            Gdx.app.log(TAG, crate.toString());
+            EnvironmentObject environmentObject = new EnvironmentObject(x, y, textureName);
+            environmentArray.add(environmentObject);
+            Gdx.app.log(TAG, environmentObject.toString());
         }
 
         level.setEnvironmentEntities(environmentArray);

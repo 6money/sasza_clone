@@ -32,7 +32,7 @@ public class Wall extends Entity {
                     entityTextureRegion.getRegionWidth() - Constants.BBOX_BUFFER_WALL * 2,
                     entityTextureRegion.getRegionHeight() - Constants.BBOX_BUFFER_WALL * 2
             );
-            bulletCollisionSubObject = new BulletCollisionSubObject(this, false, Constants.BBOX_BUFFER_WALL);
+            bulletCollisionSubObject = new BulletCollisionSubObject(this, destructible, Constants.BBOX_BUFFER_WALL);
         }
     }
 

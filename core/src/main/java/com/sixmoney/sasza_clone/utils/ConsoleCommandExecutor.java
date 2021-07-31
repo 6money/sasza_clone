@@ -4,10 +4,10 @@ import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.strongjoshua.console.CommandExecutor;
 import com.strongjoshua.console.annotation.ConsoleDoc;
 
-public class CommandExecutorImpl extends CommandExecutor {
+public class ConsoleCommandExecutor extends CommandExecutor {
     private GameWorldScreen gameWorld;
 
-    public CommandExecutorImpl(GameWorldScreen gameWorld) {
+    public ConsoleCommandExecutor(GameWorldScreen gameWorld) {
         this.gameWorld = gameWorld;
     }
 

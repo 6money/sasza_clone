@@ -22,5 +22,5 @@
 	<collapse-property name="user.agent" values="*" />
 	<!-- Remove the "user.agent" lines above if you encounter issues with Safari or other Gecko browsers. -->
 	<extend-configuration-property name="gdx.reflect.include" value="com.strongjoshua.console" />
-	<extend-configuration-property name="gdx.reflect.include" value="com.sixmoney.sasza_clone.utils.CommandExecutorImpl" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.sixmoney.sasza_clone.utils.ConsoleCommandExecutor" />
 </module>

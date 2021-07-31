@@ -85,7 +85,7 @@ public class BaseEnemy extends Character {
         @Override
         public Response filter(Item item, Item other) {
             if(other == null) return null;
-            else if (other.userData instanceof Crate) return Response.slide;
+            else if (other.userData instanceof EnvironmentObject) return Response.slide;
             else if (other.userData instanceof FloorTile) return Response.slide;
             else if (other.userData instanceof Character) return Response.slide;
             else if (other.userData instanceof Wall) return Response.slide;

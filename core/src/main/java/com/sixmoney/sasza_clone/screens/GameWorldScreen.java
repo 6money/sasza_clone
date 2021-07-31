@@ -17,7 +17,7 @@ import com.sixmoney.sasza_clone.overlays.HUD;
 import com.sixmoney.sasza_clone.overlays.PauseOverlay;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
-import com.sixmoney.sasza_clone.utils.CommandExecutorImpl;
+import com.sixmoney.sasza_clone.utils.ConsoleCommandExecutor;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.ControllerInputHandler;
 import com.sixmoney.sasza_clone.utils.InputHandler;
@@ -64,7 +64,7 @@ public class GameWorldScreen implements Screen {
         Controllers.addListener(controllerInputHandler);
 
         console = new GUIConsole(Assets.get_instance().skinAssets.skinConsole);
-        console.setCommandExecutor(new CommandExecutorImpl(this));
+        console.setCommandExecutor(new ConsoleCommandExecutor(this));
         if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
             console.setDisplayKeyID(Input.Keys.UNKNOWN);
         } else {

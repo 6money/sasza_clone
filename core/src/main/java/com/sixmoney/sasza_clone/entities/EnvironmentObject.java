@@ -9,14 +9,16 @@ import com.sixmoney.sasza_clone.utils.Constants;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 
-public class Crate extends Entity {
+public class EnvironmentObject extends Entity {
 
-    public Crate(float x, float y, String textureName) {
+    public EnvironmentObject(float x, float y, String textureName) {
         super();
         entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
         position = new Vector2(x, y);
         health = 100;
-        destructible = true;
+        if (textureName.contains("box") || textureName.contains("barrel")) {
+            destructible = true;
+        }
         if (MathUtils.random(0, 1) == 0) {
             rotation = 0;
             bbox.set(
@@ -34,7 +36,7 @@ public class Crate extends Entity {
                     entityTextureRegion.getRegionWidth() - Constants.BBOX_BUFFER_ENVIRONMENT * 2
             );
         }
-        bulletCollisionSubObject = new BulletCollisionSubObject(this, true, Constants.BBOX_BUFFER_ENVIRONMENT);
+        bulletCollisionSubObject = new BulletCollisionSubObject(this, destructible, Constants.BBOX_BUFFER_ENVIRONMENT);
     }
 
     @Override

@@ -22,8 +22,8 @@ import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
 import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.Character;
-import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Entity;
+import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.NPCDetectionObject;
 import com.sixmoney.sasza_clone.entities.Player;
@@ -294,11 +294,11 @@ public class Level {
                     } else if (item.userData instanceof BaseEnemy) {
                         world.remove(item);
                         enemyEntities.removeValue((BaseEnemy) item.userData, true);
-                    } else if (item.userData instanceof Crate) {
+                    } else if (item.userData instanceof EnvironmentObject) {
                         world.remove(item);
                         environmentEntities.removeValue((Entity) item.userData, true);
-                        if (((Crate) item.userData).bulletCollisionSubObject != null) {
-                            world.remove(((Crate) item.userData).bulletCollisionSubObject.item);
+                        if (((EnvironmentObject) item.userData).bulletCollisionSubObject != null) {
+                            world.remove(((EnvironmentObject) item.userData).bulletCollisionSubObject.item);
                         }
                     } else if (item.userData instanceof BulletCollisionSubObject) {
                         world.remove(item);

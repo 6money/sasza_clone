@@ -9,8 +9,8 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
-import com.sixmoney.sasza_clone.entities.Crate;
 import com.sixmoney.sasza_clone.entities.Entity;
+import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.Wall;
 
@@ -78,7 +78,7 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
         @Override
         public Response filter(Item item, Item other) {
             if(item == null) return null;
-            else if (item.userData instanceof Crate) return Response.touch;
+            else if (item.userData instanceof EnvironmentObject) return Response.touch;
             else if (item.userData instanceof FloorTile) return Response.touch;
             else if (item.userData instanceof Wall) return Response.touch;
             else return null;
