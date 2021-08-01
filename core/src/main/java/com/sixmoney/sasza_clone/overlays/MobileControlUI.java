@@ -31,8 +31,8 @@ public class MobileControlUI {
 
         touchpadLeft = new Touchpad(20, skin);
         touchpadRight = new Touchpad(20, skin);
-        table.add(touchpadLeft).fill(0.2f, 0.2f).bottom().left();
-        table.add(touchpadRight).fill(0.2f, 0.2f).bottom().right();
+        table.add(touchpadLeft).bottom().left();
+        table.add(touchpadRight).bottom().right();
 
         stage.addActor(table);
 

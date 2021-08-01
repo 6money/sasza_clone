@@ -17,7 +17,7 @@ public class Constants {
     public static final boolean V_SYNC = false;
     public static final int BBOX_BUFFER_ENVIRONMENT = 5;
     public static final int BBOX_BUFFER_WALL = 2;
-    public static final String SKIN_PATH = "ui/uiskin.json";
+    public static final String SKIN_PATH = "ui/shimmer-ui.json";
     public static final String SKIN_CONSOLE_PATH = "ui/console/uiskin.json";
     public static final String PREFERENCES_NAME = "sasza_clone";
     public static final String TEXTURE_ATLAS = "packaged/sasza_clone.pack.atlas";
