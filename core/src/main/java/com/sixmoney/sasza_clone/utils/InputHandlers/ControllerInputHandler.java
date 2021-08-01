@@ -74,7 +74,7 @@ public class ControllerInputHandler implements ControllerListener {
 
         if (axisCode == 0) {
             axisValues.set(0, value);
-            if (value > deadzone || value < -deadzone) {
+            if ((axisValues.get(1) > deadzone || axisValues.get(1) < -deadzone) || (value > deadzone || value < -deadzone)) {
                 velocity.x = value;
                 velocityNormal.set(velocity).nor();
                 level.getPlayer().setVelocity(velocityNormal);
@@ -89,7 +89,7 @@ public class ControllerInputHandler implements ControllerListener {
 
         if (axisCode == 1) {
             axisValues.set(1, value);
-            if (value > deadzone || value < -deadzone) {
+            if ((axisValues.get(0) > deadzone || axisValues.get(0) < -deadzone) || (value > deadzone || value < -deadzone)) {
                 velocity.y = -value;
                 velocityNormal.set(velocity).nor();
                 level.getPlayer().setVelocity(velocityNormal);
