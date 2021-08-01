@@ -146,11 +146,11 @@ public class GameWorldScreen implements Screen {
 
     @Override
     public void dispose() {
+        console.dispose();
         batch.dispose();
         pauseOverlay.dispose();
         hud.dispose();
         mobileControlUI.dispose();
-        console.dispose();
     }
 
     public void setPaused() {
@@ -164,9 +164,7 @@ public class GameWorldScreen implements Screen {
     }
 
     public void quit() {
-        Gdx.app.postRunnable(() -> {
-            saszaGame.switchScreen("menu");
             dispose();
-        });
+            saszaGame.switchScreen("menu");
     }
 }

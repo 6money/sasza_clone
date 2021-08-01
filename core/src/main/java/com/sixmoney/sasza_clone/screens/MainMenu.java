@@ -37,6 +37,7 @@ public class MainMenu implements Screen {
 		tableMenu.setFillParent(true);
 		tableMenu.pad(5);
 		tableMenu.defaults().space(5).padLeft(50).padRight(50).padTop(30);
+		tableMenu.setBackground(skin.getDrawable("bg-tile-ten"));
 
 		tableMenu.row();
 		Label title = new Label("SAS: ZA Clone", skin);

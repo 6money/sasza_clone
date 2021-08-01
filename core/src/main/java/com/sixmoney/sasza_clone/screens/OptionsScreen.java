@@ -43,8 +43,7 @@ public class OptionsScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        skin = Assets.get_instance().skinAssets.skin;
-        skin.getFont("font").getData().setScale(0.5f);
+        skin = Assets.get_instance().skinAssets.skin;;
 
         buttonBack = new Button(skin);
         buttonBack.add(new Label("Back" ,skin));
@@ -60,7 +59,6 @@ public class OptionsScreen implements Screen {
         });
 
         Label labelVersion = new Label(Constants.VERSION, skin);
-        labelVersion.setFontScale(0.5f);
         labelVersion.setAlignment(Align.left);
         labelVersion.setPosition(stage.getWidth() * 0.01f, stage.getHeight() * 0.01f);
 
