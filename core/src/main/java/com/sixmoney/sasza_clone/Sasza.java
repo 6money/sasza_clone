@@ -40,9 +40,10 @@ public class Sasza extends Game {
 			}
 		}
 
-//		Gdx.app.setLogLevel(LOG_INFO);
+//		Gdx.app.setLogLevel(Application.LOG_INFO);
 		Gdx.app.log(TAG, ("debug mode: " + debug));
 		Gdx.input.setCatchKey(Input.Keys.SPACE, true);
+		Gdx.input.setCatchKey(Input.Keys.TAB, true);
 
 		if (Gdx.app.getType() == Application.ApplicationType.Android) {
 			mobileControls = true;

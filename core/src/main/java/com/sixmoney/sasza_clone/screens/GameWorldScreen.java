@@ -39,8 +39,8 @@ public class GameWorldScreen implements Screen {
     private HUD hud;
     private PauseOverlay pauseOverlay;
     private MobileControlUI mobileControlUI;
-    private Console console;
 
+    public Console console;
     public Level level;
     public KeyboardInputHandler keyboardInputHandler;
     public boolean paused;
@@ -62,17 +62,6 @@ public class GameWorldScreen implements Screen {
         keyboardInputHandler = new KeyboardInputHandler(this, camera);
         paused = false;
 
-        console = new GUIConsole(Assets.get_instance().skinAssets.skinConsole);
-        console.setCommandExecutor(new ConsoleCommandExecutor(this));
-        if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
-            console.setDisplayKeyID(Input.Keys.UNKNOWN);
-        } else {
-            console.setDisplayKeyID(Input.Keys.GRAVE);
-        }
-        console.setNoHoverAlpha(0.7f);
-        console.setHoverAlpha(0.7f);
-        console.setPosition(0, 0);
-
         ControllerInputHandler controllerInputHandler = new ControllerInputHandler(this, camera);
         Controllers.addListener(controllerInputHandler);
 
@@ -81,6 +70,17 @@ public class GameWorldScreen implements Screen {
         } else {
             Gdx.input.setInputProcessor(keyboardInputHandler);
         }
+
+        console = new GUIConsole(Assets.get_instance().skinAssets.skinConsole);
+        console.setCommandExecutor(new ConsoleCommandExecutor(this));
+        if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
+            console.setDisplayKeyID(Input.Keys.BACKSLASH);
+        } else {
+            console.setDisplayKeyID(Input.Keys.GRAVE);
+        }
+        console.setNoHoverAlpha(0.7f);
+        console.setHoverAlpha(0.7f);
+        console.setPosition(0, 0);
     }
 
     @Override
