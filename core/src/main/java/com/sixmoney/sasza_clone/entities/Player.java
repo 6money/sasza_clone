@@ -135,6 +135,7 @@ public class Player extends Character {
             if ((item.userData instanceof FloorTile)) return null;
             if ((item.userData instanceof Canopy)) return null;
             if ((item.userData instanceof NPCDetectionObject)) return null;
+            if ((item.userData instanceof BaseNPC)) return null;
             else return Response.touch;
         }
     }
