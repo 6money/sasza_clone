@@ -52,8 +52,8 @@ public class Level {
     private Array<BaseEnemy> enemyEntities;
     private final DelayedRemovalArray<Bullet> bullets;
     private BulletCollisionFilter bulletCollisionFilter;
-    private long shootStartTime;
 
+    public long shootStartTime;
     public boolean shooting;
 
     public Level(Viewport viewport) {

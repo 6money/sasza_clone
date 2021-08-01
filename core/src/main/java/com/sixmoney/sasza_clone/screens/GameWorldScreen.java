@@ -14,13 +14,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.Sasza;
 import com.sixmoney.sasza_clone.overlays.HUD;
+import com.sixmoney.sasza_clone.overlays.MobileControlUI;
 import com.sixmoney.sasza_clone.overlays.PauseOverlay;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.ConsoleCommandExecutor;
 import com.sixmoney.sasza_clone.utils.Constants;
-import com.sixmoney.sasza_clone.utils.ControllerInputHandler;
-import com.sixmoney.sasza_clone.utils.InputHandler;
+import com.sixmoney.sasza_clone.utils.InputHandlers.ControllerInputHandler;
+import com.sixmoney.sasza_clone.utils.InputHandlers.KeyboardInputHandler;
 import com.sixmoney.sasza_clone.utils.LevelLoader;
 import com.strongjoshua.console.Console;
 import com.strongjoshua.console.GUIConsole;
@@ -37,10 +38,11 @@ public class GameWorldScreen implements Screen {
     private ShapeDrawer drawer;
     private HUD hud;
     private PauseOverlay pauseOverlay;
+    private MobileControlUI mobileControlUI;
     private Console console;
 
     public Level level;
-    public InputHandler inputHandler;
+    public KeyboardInputHandler keyboardInputHandler;
     public boolean paused;
 
     public GameWorldScreen(Sasza game) {
@@ -55,13 +57,10 @@ public class GameWorldScreen implements Screen {
         level = LevelLoader.load("debug", viewport);
         hud = new HUD(level);
         pauseOverlay = new PauseOverlay(this, batch);
+        mobileControlUI = new MobileControlUI(this, batch);
         camera = (ChaseCam) viewport.getCamera();
-        inputHandler = new InputHandler(this, camera);
+        keyboardInputHandler = new KeyboardInputHandler(this, camera);
         paused = false;
-
-        Gdx.input.setInputProcessor(inputHandler);
-        ControllerInputHandler controllerInputHandler = new ControllerInputHandler(this, camera);
-        Controllers.addListener(controllerInputHandler);
 
         console = new GUIConsole(Assets.get_instance().skinAssets.skinConsole);
         console.setCommandExecutor(new ConsoleCommandExecutor(this));
@@ -73,6 +72,15 @@ public class GameWorldScreen implements Screen {
         console.setNoHoverAlpha(0.7f);
         console.setHoverAlpha(0.7f);
         console.setPosition(0, 0);
+
+        ControllerInputHandler controllerInputHandler = new ControllerInputHandler(this, camera);
+        Controllers.addListener(controllerInputHandler);
+
+        if (saszaGame.mobileControls) {
+            Gdx.input.setInputProcessor(mobileControlUI.stage);
+        } else {
+            Gdx.input.setInputProcessor(keyboardInputHandler);
+        }
     }
 
     @Override
@@ -99,6 +107,10 @@ public class GameWorldScreen implements Screen {
 
         hud.render(batch);
 
+        if (saszaGame.mobileControls) {
+            mobileControlUI.render();
+        }
+
         if (paused) {
             pauseOverlay.render();
         }
@@ -111,6 +123,10 @@ public class GameWorldScreen implements Screen {
         viewport.update(width, height, true);
         hud.resize(width, height);
         pauseOverlay.resize(width, height);
+
+        if (saszaGame.mobileControls) {
+            mobileControlUI.resize(width, height);
+        }
     }
 
     @Override
@@ -133,6 +149,7 @@ public class GameWorldScreen implements Screen {
         batch.dispose();
         pauseOverlay.dispose();
         hud.dispose();
+        mobileControlUI.dispose();
         console.dispose();
     }
 
@@ -143,7 +160,7 @@ public class GameWorldScreen implements Screen {
 
     public void setUnpaused() {
         paused = false;
-        Gdx.input.setInputProcessor(inputHandler);
+        Gdx.input.setInputProcessor(keyboardInputHandler);
     }
 
     public void quit() {

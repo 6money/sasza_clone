@@ -1,4 +1,4 @@
-package com.sixmoney.sasza_clone.utils;
+package com.sixmoney.sasza_clone.utils.InputHandlers;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -6,15 +6,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
+import com.sixmoney.sasza_clone.utils.ChaseCam;
 
-public class InputHandler extends InputAdapter {
+public class KeyboardInputHandler extends InputAdapter {
     private GameWorldScreen gameWorldScreen;
     private Level level;
     private ChaseCam camera;
     private Vector2 velocity;
     private Vector2 velocityNormal;
 
-    public InputHandler(GameWorldScreen gameWorldScreen, ChaseCam camera) {
+    public KeyboardInputHandler(GameWorldScreen gameWorldScreen, ChaseCam camera) {
         this.gameWorldScreen = gameWorldScreen;
         level = gameWorldScreen.level;
         this.camera = camera;

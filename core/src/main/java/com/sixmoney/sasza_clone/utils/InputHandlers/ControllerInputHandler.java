@@ -1,4 +1,4 @@
-package com.sixmoney.sasza_clone.utils;
+package com.sixmoney.sasza_clone.utils.InputHandlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
+import com.sixmoney.sasza_clone.utils.ChaseCam;
 
 public class ControllerInputHandler implements ControllerListener {
     private static final String TAG = ControllerInputHandler.class.getName();

@@ -22,9 +22,9 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 public class Player extends Character {
     private static final String TAG = Player.class.getName();
 
-    public float playerSpeed = 200;
-
     private Vector2 lazerVector;
+
+    public float playerSpeed = 200;
 
 
     public Player(float x, float y) {

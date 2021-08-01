@@ -47,7 +47,7 @@ public class PauseOverlay extends InputAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gameWorldScreen.paused = false;
-                Gdx.input.setInputProcessor(gameWorldScreen.inputHandler);
+                Gdx.input.setInputProcessor(gameWorldScreen.keyboardInputHandler);
             }
         });
         table.add(buttonResume).padLeft(300f).padRight(300f).height(100f);
@@ -78,7 +78,7 @@ public class PauseOverlay extends InputAdapter {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
             gameWorldScreen.paused = false;
-            Gdx.input.setInputProcessor(gameWorldScreen.inputHandler);
+            Gdx.input.setInputProcessor(gameWorldScreen.keyboardInputHandler);
             return true;
         }
         return false;
