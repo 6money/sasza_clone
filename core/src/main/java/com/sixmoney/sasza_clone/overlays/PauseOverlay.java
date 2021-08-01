@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,22 +17,31 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.InputHandlers.UIControllerInputHandler;
+
+import de.golfgl.gdx.controllers.ControllerMenuStage;
 
 public class PauseOverlay extends InputAdapter {
     public final static String TAG = PauseOverlay.class.getName();
 
+    private UIControllerInputHandler controllerInputHandler;
     private GameWorldScreen gameWorldScreen;
     private Skin skin;
     private Table table;
-    private Stage stage;
+    private ControllerMenuStage stage;
+    private boolean show;
 
     public InputMultiplexer inputProcessor;
 
     public PauseOverlay(GameWorldScreen gameWorldScreen, Batch batch) {
         this.gameWorldScreen = gameWorldScreen;
-        stage = new Stage(new ScreenViewport(), batch);
+        show = false;
+        stage = new ControllerMenuStage(new ScreenViewport(), batch);
         inputProcessor = new InputMultiplexer(stage, this);
         skin = Assets.get_instance().skinAssets.skin;
+
+        controllerInputHandler = new UIControllerInputHandler(stage);
+
         table = new Table();
         table.setFillParent(true);
         table.setPosition(0, 0);
@@ -46,8 +55,7 @@ public class PauseOverlay extends InputAdapter {
         buttonResume.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameWorldScreen.paused = false;
-                Gdx.input.setInputProcessor(gameWorldScreen.keyboardInputHandler);
+                hide();
             }
         });
         table.add(buttonResume).padLeft(300f).padRight(300f).height(100f);
@@ -61,8 +69,26 @@ public class PauseOverlay extends InputAdapter {
         });
         table.add(buttonQuit).padLeft(300f).padRight(300f).height(100f);
         table.pack();
+        table.validate();
 
         stage.addActor(table);
+        stage.addFocusableActor(buttonResume);
+        stage.addFocusableActor(buttonQuit);
+        stage.setFocusedActor(buttonResume);
+    }
+
+    public void show() {
+        if (!show) {
+            Controllers.addListener(controllerInputHandler);
+        }
+        show = true;
+    }
+
+    public void hide() {
+        show = false;
+        Controllers.removeListener(controllerInputHandler);
+        gameWorldScreen.paused = false;
+        Gdx.input.setInputProcessor(gameWorldScreen.keyboardInputHandler);
     }
 
     public void render() {
@@ -85,6 +111,7 @@ public class PauseOverlay extends InputAdapter {
     }
 
     public void dispose() {
+        Controllers.removeListener(controllerInputHandler);
         stage.dispose();
     }
 }

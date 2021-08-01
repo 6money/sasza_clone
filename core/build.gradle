@@ -11,5 +11,6 @@ dependencies {
 //	api "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
 	api "com.github.tommyettinger:jbump:$jbumpVersion"
 	api "space.earlygrey:shapedrawer:$shapedrawerVersion"
+	api "de.golfgl.gdxcontrollerutils:gdx-controllerutils-scene2d:$gdxControllerutilsScene2d"
 	api files("libs/libgdx-inGameConsole-1.0.0.jar")
 }

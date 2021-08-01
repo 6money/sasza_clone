@@ -12,6 +12,7 @@
 	<inherits name="com.dongbat.jbump" />
 	<inherits name="com.ray3k.tenpatch.tenpatch" />
 	<inherits name="space.earlygrey.shapedrawer"/>
+	<inherits name="de.golfgl.gdx.controllers.controller_scene2d" />
 	<inherits name="com.strongjoshua.console"/>
 	<inherits name="Sasza" />
 	<entry-point class="com.sixmoney.sasza_clone.gwt.GwtLauncher" />

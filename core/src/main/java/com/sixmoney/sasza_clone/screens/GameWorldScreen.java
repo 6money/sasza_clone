@@ -39,6 +39,7 @@ public class GameWorldScreen implements Screen {
     private HUD hud;
     private PauseOverlay pauseOverlay;
     private MobileControlUI mobileControlUI;
+    private  ControllerInputHandler controllerInputHandler;
 
     public Console console;
     public Level level;
@@ -62,7 +63,7 @@ public class GameWorldScreen implements Screen {
         keyboardInputHandler = new KeyboardInputHandler(this, camera);
         paused = false;
 
-        ControllerInputHandler controllerInputHandler = new ControllerInputHandler(this, camera);
+        controllerInputHandler = new ControllerInputHandler(this, camera);
         Controllers.addListener(controllerInputHandler);
 
         if (saszaGame.mobileControls) {
@@ -112,6 +113,7 @@ public class GameWorldScreen implements Screen {
         }
 
         if (paused) {
+            pauseOverlay.show();
             pauseOverlay.render();
         }
 
@@ -164,7 +166,8 @@ public class GameWorldScreen implements Screen {
     }
 
     public void quit() {
-            dispose();
-            saszaGame.switchScreen("menu");
+        Controllers.removeListener(controllerInputHandler);
+        dispose();
+        saszaGame.switchScreen("menu");
     }
 }

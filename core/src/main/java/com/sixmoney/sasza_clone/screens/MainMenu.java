@@ -2,9 +2,9 @@ package com.sixmoney.sasza_clone.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -15,14 +15,18 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sixmoney.sasza_clone.Sasza;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.InputHandlers.UIControllerInputHandler;
+
+import de.golfgl.gdx.controllers.ControllerMenuStage;
 
 public class MainMenu implements Screen {
 	public static final String TAG = MainMenu.class.getName();
 
 	private Sasza saszaGame;
-	private Stage stage;
+	private ControllerMenuStage stage;
 	private Skin skin;
 	private Table tableMenu;
+	private UIControllerInputHandler controllerInputHandler;
 
 	public MainMenu(Sasza game) {
 		saszaGame = game;
@@ -30,8 +34,11 @@ public class MainMenu implements Screen {
 
 	@Override
 	public void show() {
-		stage = new Stage(new ScreenViewport());
+		stage = new ControllerMenuStage(new ScreenViewport());
 		skin = Assets.get_instance().skinAssets.skin;
+
+		controllerInputHandler = new UIControllerInputHandler(stage);
+		Controllers.addListener(controllerInputHandler);
 
 		tableMenu = new Table(skin);
 		tableMenu.setFillParent(true);
@@ -92,8 +99,13 @@ public class MainMenu implements Screen {
 		});
 		tableSubmenu.add(buttonOptions).uniform().spaceLeft(5).minHeight(100f);
 		tableMenu.add(tableSubmenu).minHeight(100f);
+		tableMenu.validate();
 
 		stage.addActor(tableMenu);
+		stage.addFocusableActor(buttonPlay);
+		stage.addFocusableActor(buttonOptions);
+		stage.addFocusableActor(buttonHighScores);
+		stage.setFocusedActor(buttonPlay);
 		Gdx.input.setInputProcessor(stage);
 	}
 
@@ -133,6 +145,7 @@ public class MainMenu implements Screen {
 
 	@Override
 	public void dispose() {
+		Controllers.removeListener(controllerInputHandler);
 		stage.dispose();
 	}
 }
