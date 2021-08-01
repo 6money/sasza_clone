@@ -27,7 +27,7 @@ public class BaseEnemy extends Character {
         health = 100;
         entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
         characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
-        maxLinearAcceleration = 800f;
+        maxLinearAcceleration = 4000f;
         maxLinearSpeed = 250f;
         damage = 10;
         attackDelayTimer = 0;
@@ -46,6 +46,9 @@ public class BaseEnemy extends Character {
         if (prioritySteering.isEnabled()) {
             prioritySteering.calculateSteering(steerOutput);
             applySteering(delta);
+            if (!velocity.isZero()) {
+                rotation = velocity.angleDeg() + 90;
+            }
         }
 
         Response.Result result = world.move(item, bbox.x, bbox.y, new ZomCollisionFilter());
