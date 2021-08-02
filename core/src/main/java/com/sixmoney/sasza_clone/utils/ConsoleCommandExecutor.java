@@ -23,4 +23,8 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     @ConsoleDoc(description = "Resets player movement speed to default") public final void resetPlayerSpeed() {
         gameWorld.level.getPlayer().playerSpeed = Constants.DEFAULT_PLAYER_SPEED;
     }
+
+    @ConsoleDoc(description = "Spawns specified number on enemies at random areas around player") public final void spawnEnemy(float quantity) {
+        gameWorld.level.spawnEnemy(quantity);
+    }
 }

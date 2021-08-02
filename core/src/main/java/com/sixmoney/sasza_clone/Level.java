@@ -6,6 +6,7 @@ import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.utils.RayConfiguration;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
@@ -141,16 +142,16 @@ public class Level {
 
     public void setEnemyEntities(Array<BaseEnemy> entities) {
         this.enemyEntities = entities;
-        for (BaseEnemy zom: enemyEntities) {
-            world.add(zom.item, zom.bbox.x, zom.bbox.y, zom.bbox.width, zom.bbox.height);
+        for (BaseEnemy enemy: enemyEntities) {
+            world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
 
-            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(zom, 30, 12, 40);
+            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
-            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(zom, rayConfiguration, raycastCollisionDetector, 0);
-            zom.addBehavior(raycastObstacleAvoidance);
+            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 0);
+            enemy.addBehavior(raycastObstacleAvoidance);
 
-            Seek<Vector2> seek = new Seek<>(zom, player);
-            zom.addBehavior(seek);
+            Seek<Vector2> seek = new Seek<>(enemy, player);
+            enemy.addBehavior(seek);
         }
     }
 
@@ -318,6 +319,42 @@ public class Level {
         world.update(player.item, x, y);
         player.setPosition(x, y);
     }
+
+
+    public void spawnEnemy(float quantity) {
+        int randClose = 100;
+        int randFar = 400;
+
+        for (int i = 0; i < quantity; i++) {
+            float x;
+            float y;
+            if (MathUtils.random(0, 1) == 1) {
+                x = player.getPosition().x + MathUtils.random(randClose, randFar);
+            } else {
+                x = player.getPosition().x - MathUtils.random(randClose, randFar);
+            }
+            if (MathUtils.random(0, 1) == 1) {
+                y = player.getPosition().y + MathUtils.random(randClose, randFar);
+            } else {
+                y = player.getPosition().y - MathUtils.random(randClose, randFar);
+            }
+
+            BaseEnemy enemy = new BaseEnemy(x, y);
+
+            world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
+
+            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
+            RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
+            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 0);
+            enemy.addBehavior(raycastObstacleAvoidance);
+
+            Seek<Vector2> seek = new Seek<>(enemy, player);
+            enemy.addBehavior(seek);
+
+            enemyEntities.add(enemy);
+        }
+    }
+
 
     public static class BulletCollisionFilter implements CollisionFilter {
         @Override
