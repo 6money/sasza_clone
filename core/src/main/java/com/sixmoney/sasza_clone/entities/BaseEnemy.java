@@ -26,6 +26,7 @@ public class BaseEnemy extends Character {
         destructible = true;
         health = 100;
         entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
+        deathAnimation = Assets.get_instance().enemyAssets.enemyDyingAnimation;
         characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
         maxLinearAcceleration = 4000f;
         maxLinearSpeed = 250f;

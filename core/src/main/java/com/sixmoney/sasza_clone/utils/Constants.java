@@ -44,11 +44,11 @@ public class Constants {
     public static final String RIFLE_PROJECTILE = "player_bullet";
 
     // enemy sprites
-    public static final String ENEMY = "sniper_base";
+    public static final String SNIPER_BASE = "sniper_base";
     public static final String ENEMY_WALK = "sniper_walk";
     public static final String ENEMY_DEAD = "sniper_die";
-    public static final String ENEMY_STAND = "sniper_stand";
-    public static final String ENEMY_SHOOTING = "sniper_shot";
+    public static final String SNIPER_STAND = "sniper_stand";
+    public static final String SNIPER_SHOOTING = "sniper_shot";
     public static final String ZOM1 = "zom1_base";
 
     // environment sprites

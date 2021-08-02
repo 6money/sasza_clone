@@ -8,6 +8,7 @@ import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.ai.utils.Ray;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -41,6 +42,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected Gun gun;
 
     public long shootStartTime;
+    public Animation<TextureRegion> deathAnimation;
 
     public Character(float x, float y) {
         super();

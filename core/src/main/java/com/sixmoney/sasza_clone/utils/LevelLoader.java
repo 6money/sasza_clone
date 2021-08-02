@@ -115,7 +115,7 @@ public class LevelLoader {
                     level.setPlayer(player);
                     Gdx.app.log(TAG, player.toString());
                     break;
-                case Constants.ENEMY:
+                case Constants.SNIPER_BASE:
                     BaseNPC baseNPC = new BaseNPC(x, y);
                     enemyArray.add(baseNPC);
                     Gdx.app.log(TAG, baseNPC.toString());

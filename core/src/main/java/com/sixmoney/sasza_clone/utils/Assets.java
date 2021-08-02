@@ -21,6 +21,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public DebugAssets debugAssets;
     public PlayerAssets playerAssets;
+    public NPCAssets npcAssets;
     public EnemyAssets enemyAssets;
     public EnvronmentAssets envronmentAssets;
     public TileAssets tileAssets;
@@ -56,6 +57,7 @@ public class Assets implements Disposable, AssetErrorListener {
         skinAssets = new SkinAssets(assetManager);
         debugAssets = new DebugAssets(atlas);
         playerAssets = new PlayerAssets(atlas, atlasPrivate);
+        npcAssets = new NPCAssets(atlas, atlasPrivate);
         enemyAssets = new EnemyAssets(atlas, atlasPrivate);
         envronmentAssets = new EnvronmentAssets(atlas, atlasPrivate);
         tileAssets = new TileAssets(atlasPrivate);
@@ -119,23 +121,35 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
 
-    public class EnemyAssets {
-        public TextureRegion enemy;
-        public TextureRegion enemyShooting;
-        public TextureRegion enemyStand;
+    public class NPCAssets {
+        public TextureRegion sniperBase;
+        public TextureRegion sniperShooting;
+        public TextureRegion sniperStand;
         public TextureRegion rifleProjectile;
+        public Animation<TextureRegion> sniperWalkingAnimation;
+        public Animation<TextureRegion> sniperDyingAnimation;
+
+        public NPCAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
+            sniperBase = atlasPrivate.findRegion(Constants.SNIPER_BASE);
+            sniperShooting = atlasPrivate.findRegion(Constants.SNIPER_SHOOTING);
+            sniperStand = atlasPrivate.findRegion(Constants.SNIPER_STAND);
+            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
+            sniperWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.ENEMY_WALK), Animation.PlayMode.LOOP);
+            sniperDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ENEMY_DEAD), Animation.PlayMode.NORMAL);
+        }
+    }
+
+    public class EnemyAssets {
+        public TextureRegion enemyStand;
         public Animation<TextureRegion> enemyWalkingAnimation;
         public Animation<TextureRegion> enemyDyingAnimation;
         public TextureRegion zom1;
 
         public EnemyAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
-            enemy = atlasPrivate.findRegion(Constants.ENEMY);
-            enemyShooting = atlasPrivate.findRegion(Constants.ENEMY_SHOOTING);
-            enemyStand = atlasPrivate.findRegion(Constants.ENEMY_STAND);
-            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
-            enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.ENEMY_WALK), Animation.PlayMode.LOOP);
-            enemyDyingAnimation = new Animation<>(0.20f, atlasPrivate.findRegions(Constants.ENEMY_DEAD), Animation.PlayMode.NORMAL);
             zom1 = atlasPrivate.findRegion(Constants.ZOM1);
+            enemyStand = atlasPrivate.findRegion(Constants.SNIPER_STAND);
+            enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.ENEMY_WALK), Animation.PlayMode.LOOP);
+            enemyDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ENEMY_DEAD), Animation.PlayMode.NORMAL);
         }
     }
 

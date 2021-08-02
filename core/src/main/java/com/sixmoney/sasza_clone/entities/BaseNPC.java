@@ -23,11 +23,11 @@ public class BaseNPC extends Character {
     public BaseNPC(float x, float y) {
         super(x, y);
         position = new Vector2(x, y);
-        entityTextureRegion = Assets.get_instance().enemyAssets.enemy;
+        entityTextureRegion = Assets.get_instance().npcAssets.sniperBase;
         destructible = true;
         health = 200;
-        entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
-        characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
+        entityAnimation = Assets.get_instance().npcAssets.sniperWalkingAnimation;
+        characterIdleLegTexture = Assets.get_instance().npcAssets.sniperStand;
         detectionObject = new NPCDetectionObject(this);
         shooting = false;
     }
