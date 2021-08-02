@@ -88,7 +88,7 @@ public class PauseOverlay extends InputAdapter {
         show = false;
         Controllers.removeListener(controllerInputHandler);
         gameWorldScreen.paused = false;
-        Gdx.input.setInputProcessor(gameWorldScreen.keyboardInputHandler);
+        gameWorldScreen.setInputProcessors();
     }
 
     public void render() {

@@ -66,12 +66,6 @@ public class GameWorldScreen implements Screen {
         controllerInputHandler = new ControllerInputHandler(this, camera);
         Controllers.addListener(controllerInputHandler);
 
-        if (saszaGame.mobileControls) {
-            Gdx.input.setInputProcessor(mobileControlUI.stage);
-        } else {
-            Gdx.input.setInputProcessor(keyboardInputHandler);
-        }
-
         console = new GUIConsole(Assets.get_instance().skinAssets.skinConsole);
         console.setCommandExecutor(new ConsoleCommandExecutor(this));
         if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
@@ -82,6 +76,17 @@ public class GameWorldScreen implements Screen {
         console.setNoHoverAlpha(0.7f);
         console.setHoverAlpha(0.7f);
         console.setPosition(0, 0);
+
+        setInputProcessors();
+    }
+
+    public void setInputProcessors() {
+        if (saszaGame.mobileControls) {
+            Gdx.input.setInputProcessor(mobileControlUI.stage);
+        } else {
+            Gdx.input.setInputProcessor(keyboardInputHandler);
+        }
+        console.resetInputProcessing();
     }
 
     @Override

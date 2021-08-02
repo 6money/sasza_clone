@@ -103,6 +103,7 @@ public class MainMenu implements Screen {
 
 		stage.addActor(tableMenu);
 		stage.addFocusableActor(buttonPlay);
+		stage.addFocusableActor(levelSelectPlay);
 		stage.addFocusableActor(buttonOptions);
 		stage.addFocusableActor(buttonHighScores);
 		stage.setFocusedActor(buttonPlay);

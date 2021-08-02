@@ -38,8 +38,6 @@ public class UIControllerInputHandler implements ControllerListener {
             InputEvent inputEvent = new InputEvent();
             inputEvent.setType(InputEvent.Type.touchDown);
             stage.getFocusedActor().fire(inputEvent);
-            inputEvent.setType(InputEvent.Type.touchUp);
-            stage.getFocusedActor().fire(inputEvent);
             return true;
         }
 
@@ -69,6 +67,14 @@ public class UIControllerInputHandler implements ControllerListener {
     @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
         Gdx.app.log(TAG, "Released: " + buttonCode);
+
+        if (buttonCode == mapping.buttonA) {
+            InputEvent inputEvent = new InputEvent();
+            inputEvent.setType(InputEvent.Type.touchUp);
+            stage.getFocusedActor().fire(inputEvent);
+            return true;
+        }
+
         return false;
     }
 
