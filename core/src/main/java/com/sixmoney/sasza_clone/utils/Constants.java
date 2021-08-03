@@ -45,11 +45,12 @@ public class Constants {
 
     // enemy sprites
     public static final String SNIPER_BASE = "sniper_base";
-    public static final String ENEMY_WALK = "sniper_walk";
-    public static final String ENEMY_DEAD = "sniper_die";
+    public static final String SNIPER_WALK = "sniper_walk";
+    public static final String SNIPER_DEAD = "sniper_die";
     public static final String SNIPER_STAND = "sniper_stand";
     public static final String SNIPER_SHOOTING = "sniper_shot";
     public static final String ZOM1 = "zom1_base";
+    public static final String ZOM1_DEAD = "zom1_die";
 
     // environment sprites
     public static final String BOX_1 = "environment_box1";

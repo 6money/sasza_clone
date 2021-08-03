@@ -17,7 +17,9 @@ public class UIControllerInputHandler implements ControllerListener {
 
     public UIControllerInputHandler(ControllerMenuStage stage) {
         this.stage = stage;
-        mapping = Controllers.getCurrent().getMapping();
+        if (Controllers.getControllers().size > 0) {
+            mapping = Controllers.getCurrent().getMapping();
+        }
     }
 
     @Override

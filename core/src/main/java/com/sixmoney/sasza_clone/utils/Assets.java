@@ -134,8 +134,8 @@ public class Assets implements Disposable, AssetErrorListener {
             sniperShooting = atlasPrivate.findRegion(Constants.SNIPER_SHOOTING);
             sniperStand = atlasPrivate.findRegion(Constants.SNIPER_STAND);
             rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
-            sniperWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.ENEMY_WALK), Animation.PlayMode.LOOP);
-            sniperDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ENEMY_DEAD), Animation.PlayMode.NORMAL);
+            sniperWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.SNIPER_WALK), Animation.PlayMode.LOOP);
+            sniperDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.SNIPER_DEAD), Animation.PlayMode.NORMAL);
         }
     }
 
@@ -148,8 +148,8 @@ public class Assets implements Disposable, AssetErrorListener {
         public EnemyAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             zom1 = atlasPrivate.findRegion(Constants.ZOM1);
             enemyStand = atlasPrivate.findRegion(Constants.SNIPER_STAND);
-            enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.ENEMY_WALK), Animation.PlayMode.LOOP);
-            enemyDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ENEMY_DEAD), Animation.PlayMode.NORMAL);
+            enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.SNIPER_WALK), Animation.PlayMode.LOOP);
+            enemyDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ZOM1_DEAD), Animation.PlayMode.NORMAL);
         }
     }
 

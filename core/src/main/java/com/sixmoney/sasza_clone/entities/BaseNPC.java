@@ -27,6 +27,7 @@ public class BaseNPC extends Character {
         destructible = true;
         health = 200;
         entityAnimation = Assets.get_instance().npcAssets.sniperWalkingAnimation;
+        deathAnimation = Assets.get_instance().npcAssets.sniperDyingAnimation;
         characterIdleLegTexture = Assets.get_instance().npcAssets.sniperStand;
         detectionObject = new NPCDetectionObject(this);
         shooting = false;

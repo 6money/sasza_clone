@@ -181,6 +181,7 @@ public class Level {
                 world.remove(baseNPC.item);
                 world.remove(baseNPC.detectionObject.item);
                 characterEntities.removeValue(baseNPC, true);
+                deadEntities.add(new DeadEntity(baseNPC.position.x, baseNPC.position.y, baseNPC.rotation, baseNPC.deathAnimation));
             }
             if (baseNPC.shooting && Utils.secondsSince(baseNPC.shootStartTime) > 1 / baseNPC.getGun().getFireRate()) {
                 baseNPC.shootStartTime = TimeUtils.nanoTime();
