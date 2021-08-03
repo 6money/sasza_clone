@@ -41,16 +41,16 @@ configure(subprojects - project(':android')) {
 		}
 	}
 
-//	task packPrivateTextures {
-//		def inputDir = "$rootDir/core/assets/sasza_clone_private_assets"
-//		def outputDir = "$rootDir/assets/packagedPrivate"
-//		inputs.dir inputDir
-//		outputs.dir outputDir
-//		doLast {
-//			delete(outputDir)
-//			TexturePacker.process(inputDir, outputDir, "sasza_clone_private.pack")
-//		}
-//	}
+	task packPrivateTextures {
+		def inputDir = "$rootDir/core/assets/sasza_clone_private_assets/sprites2"
+		def outputDir = "$rootDir/assets/packagedPrivate"
+		inputs.dir inputDir
+		outputs.dir outputDir
+		doLast {
+			delete(outputDir)
+			TexturePacker.process(inputDir, outputDir, "sasza_clone_private.atlas")
+		}
+	}
 
 	task copyLevels(type: Copy){
 		from "$rootDir/sasza_clone_levels/scenes"
@@ -59,7 +59,7 @@ configure(subprojects - project(':android')) {
 	}
 
 	project.tasks.compileJava.dependsOn packTextures
-//	project.tasks.compileJava.dependsOn packPrivateTextures
+	project.tasks.compileJava.dependsOn packPrivateTextures
 	project.tasks.compileJava.dependsOn copyLevels
 }
 
