@@ -175,4 +175,13 @@ public class GameWorldScreen implements Screen {
         dispose();
         saszaGame.switchScreen("menu");
     }
+
+    public void toggleDebug() {
+        saszaGame.debug = !saszaGame.debug;
+    }
+
+    public void toggleMobileControls() {
+        saszaGame.mobileControls = !saszaGame.mobileControls;
+        setInputProcessors();
+    }
 }

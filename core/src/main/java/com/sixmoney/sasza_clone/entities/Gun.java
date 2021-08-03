@@ -45,6 +45,26 @@ public class Gun {
         this.currentAmmo = ammoQuantity;
     }
 
+    public void setRange(float range) {
+        this.range = range;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
+
+    public void setFireRate(float fireRate) {
+        this.fireRate = fireRate;
+    }
+
+    public void setMagazineSize(int magazineSize) {
+        this.magazineSize = magazineSize;
+    }
+
+    public void setProjectileSpeed(float projectileSpeed) {
+        this.projectileSpeed = projectileSpeed;
+    }
+
     public void incrementCurrentAmmo(int ammoQuantity) {
         this.currentAmmo += ammoQuantity;
     }

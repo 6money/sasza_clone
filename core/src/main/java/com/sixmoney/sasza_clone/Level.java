@@ -347,6 +347,44 @@ public class Level {
         }
     }
 
+    public void spawnNPC(float quantity) {
+        int randClose = 100;
+        int randFar = 400;
+
+        for (int i = 0; i < quantity; i++) {
+            float x;
+            float y;
+            if (MathUtils.random(0, 1) == 1) {
+                x = player.getPosition().x + MathUtils.random(randClose, randFar);
+            } else {
+                x = player.getPosition().x - MathUtils.random(randClose, randFar);
+            }
+            if (MathUtils.random(0, 1) == 1) {
+                y = player.getPosition().y + MathUtils.random(randClose, randFar);
+            } else {
+                y = player.getPosition().y - MathUtils.random(randClose, randFar);
+            }
+
+            BaseNPC npc = new BaseNPC(x, y);
+
+            world.add(npc.item, npc.bbox.x, npc.bbox.y, npc.bbox.width, npc.bbox.height);
+            world.add(npc.detectionObject.item, npc.detectionObject.bbox.x, npc.detectionObject.bbox.y, npc.detectionObject.bbox.width, npc.detectionObject.bbox.height);
+
+            RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(npc, 30, 12, 40);
+            RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
+            RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(npc, rayConfiguration, raycastCollisionDetector, 0);
+            npc.addBehavior(raycastObstacleAvoidance);
+
+            Arrive<Vector2> arrive = new Arrive<>(npc, player)
+                    .setTimeToTarget(0.1f)
+                    .setArrivalTolerance(50f)
+                    .setDecelerationRadius(50);
+            npc.addBehavior(arrive);
+
+            characterEntities.add(npc);
+        }
+    }
+
 
     public static class BulletCollisionFilter implements CollisionFilter {
         @Override
