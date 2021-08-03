@@ -35,7 +35,7 @@ public class NPCDetectionObject extends Entity {
 
         if (collisions.size() > 0) {
             Collision collision = collisions.get(0);
-            return new Vector2(collision.otherRect.x, collision.otherRect.y);
+            return new Vector2(collision.otherRect.x + (((Entity) collision.other.userData).bbox.width / 2), collision.otherRect.y + (((Entity) collision.other.userData).bbox.height / 2));
         }
 
         return null;
