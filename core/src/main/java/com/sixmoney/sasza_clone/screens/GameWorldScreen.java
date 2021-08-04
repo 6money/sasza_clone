@@ -118,7 +118,6 @@ public class GameWorldScreen implements Screen {
         }
 
         if (paused) {
-            pauseOverlay.show();
             pauseOverlay.render();
         }
 
@@ -162,12 +161,12 @@ public class GameWorldScreen implements Screen {
 
     public void setPaused() {
         paused = true;
-        Gdx.input.setInputProcessor(pauseOverlay.inputProcessor);
+        pauseOverlay.setInputProcessors();
     }
 
     public void setUnpaused() {
         paused = false;
-        Gdx.input.setInputProcessor(keyboardInputHandler);
+        setInputProcessors();
     }
 
     public void quit() {

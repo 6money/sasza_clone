@@ -55,7 +55,8 @@ public class PauseOverlay extends InputAdapter {
         buttonResume.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                hide();
+                Controllers.removeListener(controllerInputHandler);
+                gameWorldScreen.setUnpaused();
             }
         });
         table.add(buttonResume).padLeft(300f).padRight(300f).height(100f);
@@ -77,18 +78,10 @@ public class PauseOverlay extends InputAdapter {
         stage.setFocusedActor(buttonResume);
     }
 
-    public void show() {
-        if (!show) {
-            Controllers.addListener(controllerInputHandler);
-        }
-        show = true;
-    }
-
-    public void hide() {
-        show = false;
-        Controllers.removeListener(controllerInputHandler);
-        gameWorldScreen.paused = false;
-        gameWorldScreen.setInputProcessors();
+    public void setInputProcessors() {
+        Gdx.input.setInputProcessor(inputProcessor);
+        Controllers.addListener(controllerInputHandler);
+        gameWorldScreen.console.resetInputProcessing();
     }
 
     public void render() {
@@ -103,8 +96,8 @@ public class PauseOverlay extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
-            gameWorldScreen.paused = false;
-            Gdx.input.setInputProcessor(gameWorldScreen.keyboardInputHandler);
+            Controllers.removeListener(controllerInputHandler);
+            gameWorldScreen.setUnpaused();
             return true;
         }
         return false;
