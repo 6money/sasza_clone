@@ -22,14 +22,14 @@ public class LevelLoader {
     public static final String TAG = LevelLoader.class.toString();
 
 
-    public static Level load(String levelName, Viewport viewport) {
+    public static Level load(String levelName, Viewport viewport, ChaseCam camera) {
         Array<JsonValue> tiles = new Array<>();
         Array<JsonValue> characters = new Array<>();
         Array<JsonValue> enemies = new Array<>();
         Array<JsonValue> canopy = new Array<>();
         Array<JsonValue> environment = new Array<>();
         Array<JsonValue> walls = new Array<>();
-        Level level = new Level(viewport);
+        Level level = new Level(viewport, camera);
         String path = Constants.LEVEL_DIR + File.separator + levelName + Constants.LEVEL_FILE_EXTENSION;
 
 

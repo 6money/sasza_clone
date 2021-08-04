@@ -20,6 +20,7 @@ import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.entities.BaseEnemy;
 import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Bullet;
+import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
 import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.Character;
 import com.sixmoney.sasza_clone.entities.DeadEntity;
@@ -57,8 +58,9 @@ public class Level {
     public long shootStartTime;
     public boolean shooting;
 
-    public Level(Viewport viewport) {
+    public Level(Viewport viewport, ChaseCam camera) {
         this.viewport = viewport;
+        this.camera = camera;
 
         world = new World<>();
         world.setTileMode(true);
@@ -82,8 +84,7 @@ public class Level {
     public void setPlayer(Player player) {
         this.player = player;
         world.add(player.item, player.bbox.x, player.bbox.y, player.bbox.width, player.bbox.height);
-        camera = new ChaseCam(player);
-        viewport.setCamera(camera);
+        camera.setPlayer(player);
     }
 
     public void setTiles(Array<Entity> tiles) {
@@ -386,6 +387,18 @@ public class Level {
     }
 
 
+    public Entity queryPoint(Vector2 pointCoords) {
+        ArrayList<Item> items = new ArrayList<>();
+        world.queryPoint(pointCoords.x, pointCoords.y, new QueryCollisionFilter(), items);
+
+        if (items.size() > 0) {
+            return (Entity) items.get(0).userData;
+        }
+
+        return null;
+    }
+
+
     public static class BulletCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
@@ -394,6 +407,17 @@ public class Level {
             if ((item.userData instanceof NPCDetectionObject)) return null;
             if ((item.userData instanceof BaseNPC)) return null;
             else return Response.touch;
+        }
+    }
+
+    public static class QueryCollisionFilter implements CollisionFilter {
+        @Override
+        public Response filter(Item item, Item other) {
+            if ((item.userData instanceof NPCDetectionObject)) return null;
+            if ((item.userData instanceof BulletCollisionSubObject)) return null;
+            if ((item.userData instanceof FloorTile)) return null;
+            if ((item.userData instanceof Entity)) return Response.touch;
+            else return null;
         }
     }
 }

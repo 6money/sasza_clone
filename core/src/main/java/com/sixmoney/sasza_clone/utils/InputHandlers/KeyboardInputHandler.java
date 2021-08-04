@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
@@ -12,15 +13,19 @@ public class KeyboardInputHandler extends InputAdapter {
     private GameWorldScreen gameWorldScreen;
     private Level level;
     private ChaseCam camera;
+    private Viewport viewport;
     private Vector2 velocity;
     private Vector2 velocityNormal;
+    private Vector2 mouseScreenCoords;
 
-    public KeyboardInputHandler(GameWorldScreen gameWorldScreen, ChaseCam camera) {
+    public KeyboardInputHandler(GameWorldScreen gameWorldScreen, Viewport viewport) {
         this.gameWorldScreen = gameWorldScreen;
         level = gameWorldScreen.level;
-        this.camera = camera;
+        this.camera = (ChaseCam) viewport.getCamera();
+        this.viewport = viewport;
         velocity = new Vector2(0, 0);
         velocityNormal = new Vector2(0, 0);
+        mouseScreenCoords = new Vector2();
     }
 
 
@@ -94,16 +99,20 @@ public class KeyboardInputHandler extends InputAdapter {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
+        Vector3 mouseWorldCoords = viewport.unproject(new Vector3(screenX, screenY, 0));
         level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
         return true;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        mouseScreenCoords.set(screenX, screenY);
+        viewport.unproject(mouseScreenCoords);
+        Vector2 mouseCoords = new Vector2(mouseScreenCoords.x, mouseScreenCoords.y);
+        level.getPlayer().setRotation(mouseCoords);
+
         if (button == 0) {
+            gameWorldScreen.setClickedEntity(mouseScreenCoords);
             level.shooting = true;
             return true;
         }
@@ -112,8 +121,9 @@ public class KeyboardInputHandler extends InputAdapter {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        mouseScreenCoords.set(screenX, screenY);
+        viewport.unproject(mouseScreenCoords);
+        level.getPlayer().setRotation(new Vector2(mouseScreenCoords.x, mouseScreenCoords.y));
         if (button == 0) {
             level.shooting = false;
             return true;
@@ -123,8 +133,9 @@ public class KeyboardInputHandler extends InputAdapter {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Vector3 mouseWorldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-        level.getPlayer().setRotation(new Vector2(mouseWorldCoords.x, mouseWorldCoords.y));
+        mouseScreenCoords.set(screenX, screenY);
+        viewport.unproject(mouseScreenCoords);
+        level.getPlayer().setRotation(new Vector2(mouseScreenCoords.x, mouseScreenCoords.y));
         return true;
     }
 }

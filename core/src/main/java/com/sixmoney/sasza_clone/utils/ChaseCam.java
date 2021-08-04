@@ -6,8 +6,11 @@ import com.sixmoney.sasza_clone.entities.Player;
 public class ChaseCam extends OrthographicCamera {
     public Player player;
 
-    public ChaseCam(Player player) {
-        super();
+    public ChaseCam(float viewportWidth, float viewportHeight) {
+        super(viewportWidth, viewportHeight);
+    }
+
+    public void setPlayer(Player player) {
         this.player = player;
     }
 
@@ -24,7 +27,9 @@ public class ChaseCam extends OrthographicCamera {
     }
 
     public void update() {
-        position.set(player.getPosition().x, player.getPosition().y, 0);
         super.update();
+        if (player != null) {
+            position.set(player.getPosition().x, player.getPosition().y, 0);
+        }
     }
 }

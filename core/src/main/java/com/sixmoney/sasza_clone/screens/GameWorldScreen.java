@@ -9,10 +9,12 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.Sasza;
+import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.overlays.HUD;
 import com.sixmoney.sasza_clone.overlays.MobileControlUI;
 import com.sixmoney.sasza_clone.overlays.PauseOverlay;
@@ -39,7 +41,8 @@ public class GameWorldScreen implements Screen {
     private HUD hud;
     private PauseOverlay pauseOverlay;
     private MobileControlUI mobileControlUI;
-    private  ControllerInputHandler controllerInputHandler;
+    private ControllerInputHandler controllerInputHandler;
+    private Entity clickedEntity;
 
     public Console console;
     public Level level;
@@ -52,15 +55,16 @@ public class GameWorldScreen implements Screen {
 
     @Override
     public void show() {
-        viewport = new ExtendViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+        camera = new ChaseCam(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+        viewport = new ExtendViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
         batch = new SpriteBatch();
         drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
-        level = LevelLoader.load("debug", viewport);
+        level = LevelLoader.load("debug", viewport, camera);
         hud = new HUD(level);
         pauseOverlay = new PauseOverlay(this, batch);
         mobileControlUI = new MobileControlUI(this, batch);
-        camera = (ChaseCam) viewport.getCamera();
-        keyboardInputHandler = new KeyboardInputHandler(this, camera);
+
+        keyboardInputHandler = new KeyboardInputHandler(this, viewport);
         paused = false;
 
         controllerInputHandler = new ControllerInputHandler(this, camera);
@@ -182,5 +186,15 @@ public class GameWorldScreen implements Screen {
     public void toggleMobileControls() {
         saszaGame.mobileControls = !saszaGame.mobileControls;
         setInputProcessors();
+    }
+
+    public void setClickedEntity(Vector2 pointCoords) {
+        clickedEntity = level.queryPoint(pointCoords);
+        Gdx.app.log(TAG, pointCoords.toString());
+        if (clickedEntity != null) {
+            Gdx.app.log(TAG, clickedEntity.toString());
+        } else {
+            Gdx.app.log(TAG, "No Entity Selected");
+        }
     }
 }
