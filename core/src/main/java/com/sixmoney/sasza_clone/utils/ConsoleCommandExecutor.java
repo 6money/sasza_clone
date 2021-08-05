@@ -27,7 +27,7 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     // Player commands
     @ConsoleDoc(description = "Teleports the player to the specified location") public final void teleport(float x, float y) {
         gameWorld.level.teleportPlayer(x, y);
-        console.log("Teleported player speed to " + gameWorld.level.getPlayer().getPosition().toString());
+        console.log("Teleported player to " + gameWorld.level.getPlayer().getPosition().toString());
     }
 
     @ConsoleDoc(description = "Sets player movement speed") public final void setPlayerSpeed(float speed) {
