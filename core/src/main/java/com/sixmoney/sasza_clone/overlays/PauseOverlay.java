@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -30,6 +31,7 @@ public class PauseOverlay extends InputAdapter {
     private Table table;
     private ControllerMenuStage stage;
     private boolean show;
+    private Vector2 mouseScreenCoords;
 
     public InputMultiplexer inputProcessor;
 
@@ -39,6 +41,7 @@ public class PauseOverlay extends InputAdapter {
         stage = new ControllerMenuStage(new ScreenViewport(), batch);
         inputProcessor = new InputMultiplexer(stage, this);
         skin = Assets.get_instance().skinAssets.skin;
+        mouseScreenCoords = new Vector2(0, 0);
 
         controllerInputHandler = new UIControllerInputHandler(stage);
 
@@ -98,6 +101,18 @@ public class PauseOverlay extends InputAdapter {
         if (keycode == Input.Keys.ESCAPE) {
             Controllers.removeListener(controllerInputHandler);
             gameWorldScreen.setUnpaused();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        mouseScreenCoords.set(screenX, screenY);
+        gameWorldScreen.getViewport().unproject(mouseScreenCoords);
+
+        if (button == 0) {
+            gameWorldScreen.setClickedEntity(mouseScreenCoords);
             return true;
         }
         return false;

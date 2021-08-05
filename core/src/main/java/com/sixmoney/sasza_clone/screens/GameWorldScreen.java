@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.Sasza;
+import com.sixmoney.sasza_clone.entities.Character;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.overlays.HUD;
 import com.sixmoney.sasza_clone.overlays.MobileControlUI;
@@ -42,12 +44,12 @@ public class GameWorldScreen implements Screen {
     private PauseOverlay pauseOverlay;
     private MobileControlUI mobileControlUI;
     private ControllerInputHandler controllerInputHandler;
-    private Entity clickedEntity;
 
     public Console console;
     public Level level;
     public KeyboardInputHandler keyboardInputHandler;
     public boolean paused;
+    public Entity clickedEntity;
 
     public GameWorldScreen(Sasza game) {
         saszaGame = game;
@@ -84,6 +86,10 @@ public class GameWorldScreen implements Screen {
         setInputProcessors();
     }
 
+    public Viewport getViewport() {
+        return viewport;
+    }
+
     public void setInputProcessors() {
         if (saszaGame.mobileControls) {
             Gdx.input.setInputProcessor(mobileControlUI.stage);
@@ -111,6 +117,9 @@ public class GameWorldScreen implements Screen {
 
         if (saszaGame.debug) {
             level.renderDebug(drawer);
+            if (clickedEntity != null) {
+                drawer.rectangle(clickedEntity.bbox, Color.GOLD);
+            }
         }
 
         batch.end();
@@ -188,13 +197,15 @@ public class GameWorldScreen implements Screen {
         setInputProcessors();
     }
 
+    public Character getClickedEntity() {
+        if (clickedEntity != null && clickedEntity instanceof Character) {
+            return (Character) clickedEntity;
+        }
+
+        return level.getPlayer();
+    }
+
     public void setClickedEntity(Vector2 pointCoords) {
         clickedEntity = level.queryPoint(pointCoords);
-        Gdx.app.log(TAG, pointCoords.toString());
-        if (clickedEntity != null) {
-            Gdx.app.log(TAG, clickedEntity.toString());
-        } else {
-            Gdx.app.log(TAG, "No Entity Selected");
-        }
     }
 }

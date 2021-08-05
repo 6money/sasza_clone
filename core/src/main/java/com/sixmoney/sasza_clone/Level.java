@@ -309,8 +309,11 @@ public class Level {
 
 
     public void teleportPlayer(float x, float y) {
+        x -= Constants.PLAYER_CENTER.x;
+        y -= Constants.PLAYER_CENTER.y;
         world.update(player.item, x, y);
         player.setPosition(x, y);
+        player.update(0, world);
     }
 
 
