@@ -175,6 +175,7 @@ public class GameWorldScreen implements Screen {
     public void setPaused() {
         paused = true;
         pauseOverlay.setInputProcessors();
+        resetVelocity();
     }
 
     public void setUnpaused() {
@@ -210,5 +211,10 @@ public class GameWorldScreen implements Screen {
         if (clickedEntity != null) {
             console.log(clickedEntity.toString());
         }
+    }
+
+    public void resetVelocity() {
+        keyboardInputHandler.resetVelocity();
+        level.getPlayer().resetVelocity();
     }
 }

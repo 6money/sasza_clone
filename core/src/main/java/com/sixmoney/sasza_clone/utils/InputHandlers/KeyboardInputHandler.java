@@ -29,6 +29,12 @@ public class KeyboardInputHandler extends InputAdapter {
     }
 
 
+    public void resetVelocity() {
+        velocity.set(0, 0);
+        velocityNormal.set(0, 0);
+    }
+
+
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {

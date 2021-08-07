@@ -66,6 +66,11 @@ public class Player extends Character {
         }
     }
 
+    public void resetVelocity() {
+        velocity.set(0, 0);
+        animationStartTime = 0;
+    }
+
     @Override
     public void update(float delta, World<Entity> world) {
         position.mulAdd(velocity, delta);
