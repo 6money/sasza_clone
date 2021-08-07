@@ -64,7 +64,7 @@ public class MobileInputHandler {
             @Override
             public void dragStart (InputEvent event, float x, float y, int pointer) {
                 Gdx.app.log(TAG, "dragstart");
-                gameWorldScreen.level.shooting = true;
+                gameWorldScreen.level.getPlayer().shooting = true;
             }
 
             @Override
@@ -79,7 +79,7 @@ public class MobileInputHandler {
             @Override
             public void dragStop (InputEvent event, float x, float y, int pointer) {
                 Gdx.app.log(TAG, "dragend");
-                    gameWorldScreen.level.shooting = false;
+                    gameWorldScreen.level.getPlayer().shooting = false;
             }
         });
     }

@@ -18,7 +18,7 @@ public class BaseNPC extends Character {
 
     public NPCDetectionObject detectionObject;
     public Vector2 targetLocation;
-    public boolean shooting;
+
 
     public BaseNPC(float x, float y) {
         super(x, y);
@@ -28,9 +28,9 @@ public class BaseNPC extends Character {
         health = 200;
         entityAnimation = Assets.get_instance().npcAssets.sniperWalkingAnimation;
         deathAnimation = Assets.get_instance().npcAssets.sniperDyingAnimation;
+        characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;
         characterIdleLegTexture = Assets.get_instance().npcAssets.sniperStand;
         detectionObject = new NPCDetectionObject(this);
-        shooting = false;
     }
 
 

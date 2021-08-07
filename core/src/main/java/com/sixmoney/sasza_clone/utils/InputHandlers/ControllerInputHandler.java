@@ -123,10 +123,10 @@ public class ControllerInputHandler implements ControllerListener {
         }
 
         if (axisCode == 5 && value > deadzone) {
-            level.shooting = true;
+            level.getPlayer().shooting = true;
             return true;
         } else if (axisCode == 5 && value < deadzone) {
-            level.shooting = false;
+            level.getPlayer().shooting = false;
             return true;
         }
 

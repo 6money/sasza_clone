@@ -55,9 +55,6 @@ public class Level {
     private final DelayedRemovalArray<Bullet> bullets;
     private BulletCollisionFilter bulletCollisionFilter;
 
-    public long shootStartTime;
-    public boolean shooting;
-
     public Level(Viewport viewport, ChaseCam camera) {
         this.viewport = viewport;
         this.camera = camera;
@@ -73,8 +70,6 @@ public class Level {
         deadEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
         bulletCollisionFilter = new BulletCollisionFilter();
-        shooting = false;
-        shootStartTime = TimeUtils.nanoTime();
     }
 
     public Player getPlayer() {
@@ -160,8 +155,8 @@ public class Level {
     public void update(float delta) {
         player.update(delta, world);
 
-        if (shooting && Utils.secondsSince(shootStartTime) > 1 / player.getGun().getFireRate()) {
-            shootStartTime = TimeUtils.nanoTime();
+        if (player.shooting && Utils.secondsSince(player.shootStartTime) > 1 / player.getGun().getFireRate()) {
+            player.shootStartTime = TimeUtils.nanoTime();
             shoot(player);
         }
 

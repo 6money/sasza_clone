@@ -32,6 +32,7 @@ public class Player extends Character {
         position = new Vector2(x, y);
         entityTextureRegion = Assets.get_instance().playerAssets.player;
         entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
+        characterShootingTexture = Assets.get_instance().playerAssets.playerShooting;
         characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
         lazerVector = new Vector2();
         health = 200f;

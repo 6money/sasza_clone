@@ -119,7 +119,7 @@ public class KeyboardInputHandler extends InputAdapter {
 
         if (button == 0) {
             gameWorldScreen.setClickedEntity(mouseScreenCoords);
-            level.shooting = true;
+            level.getPlayer().shooting = true;
             return true;
         }
         return false;
@@ -131,7 +131,7 @@ public class KeyboardInputHandler extends InputAdapter {
         viewport.unproject(mouseScreenCoords);
         level.getPlayer().setRotation(new Vector2(mouseScreenCoords.x, mouseScreenCoords.y));
         if (button == 0) {
-            level.shooting = false;
+            level.getPlayer().shooting = false;
             return true;
         }
         return false;

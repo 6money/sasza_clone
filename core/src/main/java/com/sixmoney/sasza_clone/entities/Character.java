@@ -36,12 +36,15 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance;
     protected SteeringAcceleration<Vector2> steerOutput;
     protected PrioritySteering<Vector2> prioritySteering;
+    protected TextureRegion characterShootingTexture;
     protected TextureRegion characterIdleLegTexture;
     protected Vector2 oldVelocity;
     protected Vector2 bulletOffset;
     protected Gun gun;
 
+    public boolean shooting;
     public long shootStartTime;
+    public long shootSpriteTime;
     public Animation<TextureRegion> deathAnimation;
 
     public Character(float x, float y) {
@@ -59,7 +62,9 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         legsRotation = 0;
         bulletOffset = new Vector2( -3, -18);
         gun = new Gun();
+        shooting = false;
         shootStartTime = TimeUtils.nanoTime();
+        shootSpriteTime = TimeUtils.nanoTime();
     }
 
 
@@ -99,6 +104,23 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected void updateBBox() {
         bbox.x = position.x + Constants.PLAYER_CENTER.x * 0.80f;
         bbox.y = position.y + Constants.PLAYER_CENTER.y * 0.80f;
+    }
+
+    @Override
+    public void render(Batch batch) {
+        if (gun != null && characterShootingTexture != null && shooting) {
+            if (Utils.secondsSince(shootSpriteTime) < Math.max(0.02, Math.min(0.1, 1 / gun.getFireRate()))) {
+                Utils.drawTextureRegion(batch, characterShootingTexture, position.x, position.y, rotation);
+            } else {
+                super.render(batch);
+            }
+
+            if (Utils.secondsSince(shootSpriteTime) > 1 / gun.getFireRate() * 2) {
+                shootSpriteTime = TimeUtils.nanoTime();
+            }
+        } else {
+            super.render(batch);
+        }
     }
 
     @Override
