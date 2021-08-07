@@ -207,5 +207,8 @@ public class GameWorldScreen implements Screen {
 
     public void setClickedEntity(Vector2 pointCoords) {
         clickedEntity = level.queryPoint(pointCoords);
+        if (clickedEntity != null) {
+            console.log(clickedEntity.toString());
+        }
     }
 }

@@ -67,6 +67,20 @@ public abstract class Entity {
         health -= value;
     }
 
+    public String[] getData() {
+        String dataClass = this.getClass().getSimpleName();
+        String dataString = "";
+        dataString = "position: " + position.toString();
+        dataString = dataString + "\nvelocity: " + velocity.toString();
+        dataString = dataString + "\nacceleration: " + acceleration.toString();
+        dataString = dataString + "\nrotation: " + rotation;
+        dataString = dataString + "\nbounding box: " + bbox.toString();
+        dataString = dataString + "\nhealth: " + health;
+        dataString = dataString + "\ndestructible: " + destructible;
+        dataString = dataString + "\ncollidable: " + collidable;
+        return new String[]{dataClass, dataString};
+    }
+
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + " loaded at x: " + position.x + ", y: " + position.y;

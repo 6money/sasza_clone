@@ -21,7 +21,8 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     }
 
     @ConsoleDoc(description = "Display info about the higlighted entity") public final void entityInfo() {
-        console.log(gameWorld.clickedEntity.toString());
+        console.log(gameWorld.clickedEntity.getData()[0]);
+        console.log(gameWorld.clickedEntity.getData()[1]);
     }
 
     // Player commands
