@@ -24,7 +24,6 @@ import com.sixmoney.sasza_clone.entities.BaseEnemy;
 import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
-import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.Character;
 import com.sixmoney.sasza_clone.entities.DeadEntity;
 import com.sixmoney.sasza_clone.entities.Entity;
@@ -56,7 +55,6 @@ public class Level {
     private DelayedRemovalArray<BaseEnemy> enemyEntities;
     private Array<Entity> deadEntities;
     private final DelayedRemovalArray<Bullet> bullets;
-    private BulletCollisionFilter bulletCollisionFilter;
 
     public Level(Viewport viewport, ChaseCam camera) {
         this.viewport = viewport;
@@ -72,7 +70,6 @@ public class Level {
         enemyEntities = new DelayedRemovalArray<>();
         deadEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
-        bulletCollisionFilter = new BulletCollisionFilter();
     }
 
     public Player getPlayer() {
@@ -204,7 +201,7 @@ public class Level {
         }
         bullets.begin();
         for (Bullet bullet: bullets) {
-            bullet.update(delta);
+            bullet.update(delta, world);
             if (bullet.getDead()) {
                 bullets.removeValue(bullet, true);
             }
@@ -292,26 +289,15 @@ public class Level {
         bulletVector.setLength(character.getGun().getRange());
         bulletVector.add(character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
 
-        world.querySegmentWithCoords(
+        bullets.add(new Bullet(
                 character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x,
                 character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
+                character.rotation,
                 bulletVector.x,
                 bulletVector.y,
-                bulletCollisionFilter,
-                items
-        );
-
-        if (items.size() > 0) {
-            bulletVector.set(items.get(0).x1, items.get(0).y1);
-
-            Item item = items.get(0).item;
-
-            if (((Entity) item.userData).destructible) {
-                ((Entity) item.userData).decrementHealth(character.getGun().getDamage());
-            }
-        }
-
-        bullets.add(new Bullet(character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, character.rotation, bulletVector.x, bulletVector.y, character.getGun().getProjectileSpeed()));
+                character.getGun().getProjectileSpeed(),
+                character.getGun().getDamage()
+        ));
         character.getGun().decrementCurrentMagazineAmmo();
     }
 
@@ -417,17 +403,6 @@ public class Level {
         return null;
     }
 
-
-    public static class BulletCollisionFilter implements CollisionFilter {
-        @Override
-        public Response filter(Item item, Item other) {
-            if ((item.userData instanceof FloorTile)) return null;
-            if ((item.userData instanceof Canopy)) return null;
-            if ((item.userData instanceof NPCDetectionObject)) return null;
-            if ((item.userData instanceof BaseNPC)) return null;
-            else return Response.touch;
-        }
-    }
 
     public static class QueryCollisionFilter implements CollisionFilter {
         @Override
