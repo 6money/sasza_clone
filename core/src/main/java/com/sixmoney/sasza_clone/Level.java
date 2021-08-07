@@ -46,7 +46,7 @@ public class Level {
     private Player player;
 
     private Array<Entity> tiles;
-    private Array<Entity> environmentEntities;
+    private DelayedRemovalArray<Entity> environmentEntities;
     private Array<Entity> canopyEntities;
     private Array<Entity> wallEntities;
     private DelayedRemovalArray<BaseNPC> characterEntities;
@@ -66,7 +66,7 @@ public class Level {
         world.setTileMode(true);
 
         tiles = new Array<>();
-        environmentEntities = new Array<>();
+        environmentEntities = new DelayedRemovalArray<>();
         canopyEntities = new Array<>();
         characterEntities = new DelayedRemovalArray<>();
         enemyEntities = new DelayedRemovalArray<>();
@@ -97,7 +97,7 @@ public class Level {
     }
 
     public void setEnvironmentEntities(Array<Entity> entities) {
-        this.environmentEntities = entities;
+        this.environmentEntities = new DelayedRemovalArray<>(entities);
         for (Entity entity: environmentEntities) {
             world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
             world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
@@ -165,6 +165,13 @@ public class Level {
             shoot(player);
         }
 
+        environmentEntities.begin();
+        for (Entity entity: environmentEntities) {
+            if (entity.health <= 0) {
+                environmentEntities.removeValue(entity, true);
+            }
+        }
+        environmentEntities.end();
         enemyEntities.begin();
         for (BaseEnemy enemy: enemyEntities) {
             enemy.update(delta, world);
@@ -193,7 +200,6 @@ public class Level {
         for (Entity entity: canopyEntities) {
             entity.update(delta, world);
         }
-
         bullets.begin();
         for (Bullet bullet: bullets) {
             bullet.update(delta);
