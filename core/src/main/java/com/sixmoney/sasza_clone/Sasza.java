@@ -4,6 +4,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.sixmoney.sasza_clone.screens.MainMenu;
 import com.sixmoney.sasza_clone.screens.OptionsScreen;
@@ -51,6 +53,8 @@ public class Sasza extends Game {
 
 		assets = Assets.get_instance();
 
+		setCursor();
+
 		setScreen(new MainMenu(this));
 	}
 
@@ -75,5 +79,31 @@ public class Sasza extends Game {
 				setScreen(new MainMenu(this));
 				break;
 		}
+	}
+
+	private void setCursor() {
+		Pixmap cursorPixmap = new Pixmap(64, 64, Pixmap.Format.RGBA8888);
+		cursorPixmap.setColor(1, 0, 0, 0.4f);
+		// center
+		cursorPixmap.drawPixel(16, 16);
+		cursorPixmap.drawPixel(16, 17);
+		cursorPixmap.drawPixel(17, 16);
+		cursorPixmap.drawPixel(17, 17);
+		// left
+		cursorPixmap.drawLine(0, 16, 12, 16);
+		cursorPixmap.drawLine(0, 17, 12, 17);
+		// right
+		cursorPixmap.drawLine(21, 16, 32, 16);
+		cursorPixmap.drawLine(21, 17, 32, 17);
+		// bottom
+		cursorPixmap.drawLine(16, 0, 16, 12);
+		cursorPixmap.drawLine(17, 0, 17, 12);
+		// top
+		cursorPixmap.drawLine(16, 21, 16, 32);
+		cursorPixmap.drawLine(17, 21, 17, 32);
+
+		Cursor cursor = Gdx.graphics.newCursor(cursorPixmap, 16, 16);
+		Gdx.graphics.setCursor(cursor);
+		cursorPixmap.dispose();
 	}
 }
