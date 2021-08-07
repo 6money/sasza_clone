@@ -50,7 +50,9 @@ public class Constants {
     public static final String SNIPER_STAND = "sniper_stand";
     public static final String SNIPER_SHOOTING = "sniper_shot";
     public static final String ZOM1 = "zom1_base";
+    public static final String ZOM2 = "zom2_base";
     public static final String ZOM1_DEAD = "zom1_die";
+    public static final String ZOM2_DEAD = "zom2_die";
 
     // environment sprites
     public static final String BOX_1 = "environment_box1";

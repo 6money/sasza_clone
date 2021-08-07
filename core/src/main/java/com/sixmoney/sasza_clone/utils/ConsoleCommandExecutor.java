@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.utils;
 
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.strongjoshua.console.CommandExecutor;
 import com.strongjoshua.console.annotation.ConsoleDoc;
@@ -42,9 +43,24 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     }
 
     // Spawn commands
-    @ConsoleDoc(description = "Spawns specified number of enemies at random areas around player") public final void spawnEnemy(float quantity) {
-        gameWorld.level.spawnEnemy(quantity);
-        console.log("Spawned " + quantity + " enemies");
+    @ConsoleDoc(description = "Spawns specified number of basic enemies at random areas around player") public final void spawnEnemy(float quantity) {
+        try {
+            gameWorld.level.spawnEnemy(quantity);
+            console.log("Spawned " + quantity + " enemies");
+        } catch (ReflectionException e) {
+            console.log("Failed to spawn " + quantity + " enemies");
+        }
+
+    }
+
+    @ConsoleDoc(description = "Spawns specified number of specified enemies at random areas around player") public final void spawnEnemy(float quantity, String type) {
+        try {
+            gameWorld.level.spawnEnemy(quantity, type);
+            console.log("Spawned " + quantity + " enemies of type " + type);
+        } catch (ReflectionException e) {
+            console.log("Failed to spawn " + quantity + " enemies of type " + type);
+        }
+
     }
 
     @ConsoleDoc(description = "Spawns specified number of NPCs at random areas around player") public final void spawnNPC(float quantity) {

@@ -11,6 +11,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Item;
@@ -322,9 +325,17 @@ public class Level {
     }
 
 
-    public void spawnEnemy(float quantity) {
+    public void spawnEnemy(float quantity) throws ReflectionException {
+        spawnEnemy(quantity, "BaseEnemy");
+    }
+
+
+    public void spawnEnemy(float quantity, String type) throws ReflectionException {
         int randClose = 100;
         int randFar = 400;
+
+        Class enemyClass = ClassReflection.forName("com.sixmoney.sasza_clone.entities." + type);
+        Constructor constructor = ClassReflection.getConstructor(enemyClass, float.class, float.class);
 
         for (int i = 0; i < quantity; i++) {
             float x;
@@ -340,7 +351,7 @@ public class Level {
                 y = player.getPosition().y - MathUtils.random(randClose, randFar);
             }
 
-            BaseEnemy enemy = new BaseEnemy(x, y);
+            BaseEnemy enemy = (BaseEnemy) constructor.newInstance(x, y);
 
             world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
 

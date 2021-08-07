@@ -16,7 +16,8 @@ import com.sixmoney.sasza_clone.utils.Utils;
 public class BaseEnemy extends Character {
     private static final String TAG = BaseEnemy.class.getName();
 
-    private float damage;
+    protected float damage;
+
     private long attackDelayTimer;
 
     public BaseEnemy(float x, float y) {
@@ -26,10 +27,10 @@ public class BaseEnemy extends Character {
         destructible = true;
         health = 100;
         entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
-        deathAnimation = Assets.get_instance().enemyAssets.enemyDyingAnimation;
+        deathAnimation = Assets.get_instance().enemyAssets.zom1DyingAnimation;
         characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
         maxLinearAcceleration = 4000f;
-        maxLinearSpeed = 250f;
+        maxLinearSpeed = 150f;
         damage = 10;
         attackDelayTimer = 0;
     }

@@ -10,6 +10,7 @@ import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.entities.BaseEnemy;
 import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Canopy;
+import com.sixmoney.sasza_clone.entities.EnemyTierTwo;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
@@ -132,8 +133,14 @@ public class LevelLoader {
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
             final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
+            final String textureName = object.getString(Constants.LEVEL_IMAGENAME_KEY);
 
-            BaseEnemy zom = new BaseEnemy(x, y);
+            BaseEnemy zom;
+            if (textureName.equals(Constants.ZOM2)) {
+                zom = new EnemyTierTwo(x, y);
+            } else {
+                zom = new BaseEnemy(x, y);
+            }
             enemyArray.add(zom);
             Gdx.app.log(TAG, zom.toString());
         }
