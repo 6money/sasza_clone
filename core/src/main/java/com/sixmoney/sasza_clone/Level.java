@@ -168,6 +168,10 @@ public class Level {
         environmentEntities.begin();
         for (Entity entity: environmentEntities) {
             if (entity.health <= 0) {
+                world.remove(entity.item);
+                if (entity.bulletCollisionSubObject != null) {
+                    world.remove(entity.bulletCollisionSubObject.item);
+                }
                 environmentEntities.removeValue(entity, true);
             }
         }
