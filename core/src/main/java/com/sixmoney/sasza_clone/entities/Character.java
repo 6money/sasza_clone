@@ -108,7 +108,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public void render(Batch batch) {
-        if (gun != null && characterShootingTexture != null && shooting) {
+        if (gun != null && characterShootingTexture != null && shooting && gun.getCurrentMagazineAmmo() > 0) {
             if (Utils.secondsSince(shootSpriteTime) < Math.max(0.02, Math.min(0.1, 1 / gun.getFireRate()))) {
                 Utils.drawTextureRegion(batch, characterShootingTexture, position.x, position.y, rotation);
             } else {
