@@ -111,7 +111,7 @@ public class Player extends Character {
         }
 
         ArrayList<ItemInfo> items = new ArrayList<>();
-        Vector2 bulletOffsetTemp = new Vector2(bulletOffset);
+        Vector2 bulletOffsetTemp = new Vector2(bulletOffset.x, 0);
         bulletOffsetTemp.rotateDeg(rotation);
         lazerVector.set(1, 0);
         lazerVector.rotateDeg(rotation);
