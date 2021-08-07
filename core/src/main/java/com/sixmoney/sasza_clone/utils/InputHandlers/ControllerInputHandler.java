@@ -107,7 +107,7 @@ public class ControllerInputHandler implements ControllerListener {
             if ((axisValues.get(3) > deadzone || axisValues.get(3) < -deadzone) || (value > deadzone || value < -deadzone)) {
                 aimingVector.x = value;
                 aimingVector.nor();
-                level.getPlayer().rotation = aimingVector.angleDeg() + 90;
+                level.getPlayer().rotation = aimingVector.angleDeg();
                 return true;
             }
         }
@@ -117,7 +117,7 @@ public class ControllerInputHandler implements ControllerListener {
             if ((axisValues.get(2) > deadzone || axisValues.get(2) < -deadzone) || (value > deadzone || value < -deadzone)) {
                 aimingVector.y = -value;
                 aimingVector.nor();
-                level.getPlayer().rotation = aimingVector.angleDeg() + 90;
+                level.getPlayer().rotation = aimingVector.angleDeg();
                 return true;
             }
         }

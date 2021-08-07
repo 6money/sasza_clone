@@ -23,19 +23,19 @@ public class CentralRayWithWhiskersConfig extends RayConfigurationBase<Vector2> 
 
         // Update central ray
         rays[0].start.set(ownerPosition);
-        rays[0].end.set(0, -1).setAngleDeg(getOwner().getOrientation() - 90).setLength(rayLength).add(ownerPosition);
+        rays[0].end.set(0, -1).setAngleDeg(getOwner().getOrientation()).setLength(rayLength).add(ownerPosition);
 
         // Update left rays
         rays[1].start.set(ownerPosition);
-        rays[1].end.set(0, -1).setAngleDeg(getOwner().getOrientation() - whiskerAngle - 90).setLength(whiskerLength).add(ownerPosition);
+        rays[1].end.set(0, -1).setAngleDeg(getOwner().getOrientation() - whiskerAngle).setLength(whiskerLength).add(ownerPosition);
         rays[2].start.set(ownerPosition);
-        rays[2].end.set(0, -1).setAngleDeg(getOwner().getOrientation() - (whiskerAngle * 2) - 90).setLength(whiskerLength).add(ownerPosition);
+        rays[2].end.set(0, -1).setAngleDeg(getOwner().getOrientation() - (whiskerAngle * 2)).setLength(whiskerLength).add(ownerPosition);
 
         // Update right rays
         rays[3].start.set(ownerPosition);
-        rays[3].end.set(0, -1).setAngleDeg(getOwner().getOrientation() + whiskerAngle - 90).setLength(whiskerLength).add(ownerPosition);
+        rays[3].end.set(0, -1).setAngleDeg(getOwner().getOrientation() + whiskerAngle).setLength(whiskerLength).add(ownerPosition);
         rays[4].start.set(ownerPosition);
-        rays[4].end.set(0, -1).setAngleDeg(getOwner().getOrientation() + (whiskerAngle * 2) - 90).setLength(whiskerLength).add(ownerPosition);
+        rays[4].end.set(0, -1).setAngleDeg(getOwner().getOrientation() + (whiskerAngle * 2)).setLength(whiskerLength).add(ownerPosition);
 
         return rays;
     }

@@ -51,7 +51,7 @@ public class Player extends Character {
         Vector2 playerCenter = new Vector2(position.x + Constants.PLAYER_CENTER.x, position.y + Constants.PLAYER_CENTER.y);
         Vector2 vec = pointerPosition.sub(playerCenter);
         vec.nor();
-        rotation = vec.angleDeg() + 90;
+        rotation = vec.angleDeg();
     }
 
 
@@ -74,6 +74,28 @@ public class Player extends Character {
 
     @Override
     public void update(float delta, World<Entity> world) {
+        float rotationLower = rotation - Constants.PLAYER_BACK_PEDAL_ANGLE;
+        float rotationUpper = rotation + Constants.PLAYER_BACK_PEDAL_ANGLE;
+
+        if (rotation > 365 - Constants.PLAYER_BACK_PEDAL_ANGLE
+                && velocity.angleDeg() < Constants.PLAYER_BACK_PEDAL_ANGLE) {
+            rotationUpper = Constants.PLAYER_BACK_PEDAL_ANGLE - rotation;
+            if (
+                    (velocity.angleDeg() >= 0 && velocity.angleDeg() < rotationUpper)
+                    || (velocity.angleDeg() <= 365 && velocity.angleDeg() < rotationLower )
+            ) {
+                velocity.setLength(playerSpeed);
+            } else {
+                velocity.setLength(playerSpeed - Constants.PLAYER_BACK_PEDAL_PENALTY);
+            }
+        } else {
+            if (velocity.angleDeg() > rotationLower && velocity.angleDeg() < rotationUpper) {
+                velocity.setLength(playerSpeed);
+            } else {
+                velocity.setLength(playerSpeed - Constants.PLAYER_BACK_PEDAL_PENALTY);
+            }
+        }
+
         position.mulAdd(velocity, delta);
         updateBBox();
 
@@ -91,7 +113,7 @@ public class Player extends Character {
         ArrayList<ItemInfo> items = new ArrayList<>();
         Vector2 bulletOffsetTemp = new Vector2(bulletOffset);
         bulletOffsetTemp.rotateDeg(rotation);
-        lazerVector.set(0, -1);
+        lazerVector.set(1, 0);
         lazerVector.rotateDeg(rotation);
         lazerVector.setLength(gun.getRange());
         lazerVector.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);

@@ -73,7 +73,7 @@ public class MobileInputHandler {
                 aimingVector.x = mobileControlUI.touchpadRight.getKnobPercentX();
                 aimingVector.y = mobileControlUI.touchpadRight.getKnobPercentY();
                 aimingVector.nor();
-                gameWorldScreen.level.getPlayer().rotation = aimingVector.angleDeg() + 90;
+                gameWorldScreen.level.getPlayer().rotation = aimingVector.angleDeg();
             }
 
             @Override

@@ -60,7 +60,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         oldVelocity = new Vector2(velocity);
         legsOffset = 0;
         legsRotation = 0;
-        bulletOffset = new Vector2( -3, -18);
+        bulletOffset = new Vector2( 18, -3);
         gun = new Gun();
         shooting = false;
         shootStartTime = TimeUtils.nanoTime();
@@ -97,7 +97,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     @Override
     public void update(float delta, World<Entity> world) {
         if (!velocity.isZero()) {
-            legsRotation = velocity.angleDeg() + 90;
+            legsRotation = velocity.angleDeg();
         }
     }
 

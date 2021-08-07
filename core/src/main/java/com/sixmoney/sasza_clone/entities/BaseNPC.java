@@ -47,7 +47,7 @@ public class BaseNPC extends Character {
             prioritySteering.calculateSteering(steerOutput);
             applySteering(delta);
             if (!velocity.isZero() && !shooting) {
-                rotation = velocity.angleDeg() + 90;
+                rotation = velocity.angleDeg();
             }
         }
 
@@ -75,7 +75,7 @@ public class BaseNPC extends Character {
 
         if (targetLocation != null) {
             shooting = true;
-            rotation = new Vector2(targetLocation).sub(getPosition()).angleDeg() + 90;
+            rotation = new Vector2(targetLocation).sub(getPosition()).angleDeg();
         } else {
             shooting = false;
         }

@@ -30,6 +30,8 @@ public class Constants {
 
     // player
     public static final float DEFAULT_PLAYER_SPEED = 200;
+    public static final float PLAYER_BACK_PEDAL_PENALTY = 50;
+    public static final float PLAYER_BACK_PEDAL_ANGLE = 70;
     public static final Vector2 PLAYER_CENTER = new Vector2(32, 32);
 
     // enemy

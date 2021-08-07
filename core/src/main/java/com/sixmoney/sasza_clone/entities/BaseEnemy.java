@@ -49,7 +49,7 @@ public class BaseEnemy extends Character {
             prioritySteering.calculateSteering(steerOutput);
             applySteering(delta);
             if (!velocity.isZero()) {
-                rotation = velocity.angleDeg() + 90;
+                rotation = velocity.angleDeg();
             }
         }
 

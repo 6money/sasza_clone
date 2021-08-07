@@ -287,7 +287,7 @@ public class Level {
         float rotation = character.rotation;
         Vector2 bulletOffsetTemp = new Vector2(character.getBulletOffset());
         bulletOffsetTemp.rotateDeg(rotation);
-        Vector2 bulletVector = new Vector2(0, -1);
+        Vector2 bulletVector = new Vector2(1, 0);
         bulletVector.rotateDeg(rotation);
         bulletVector.setLength(character.getGun().getRange());
         bulletVector.add(character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
