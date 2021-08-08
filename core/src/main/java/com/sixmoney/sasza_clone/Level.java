@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Item;
-import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.entities.BaseEnemy;
@@ -203,6 +202,7 @@ public class Level {
         for (Bullet bullet: bullets) {
             bullet.update(delta, world);
             if (bullet.getDead()) {
+                world.remove(bullet.item);
                 bullets.removeValue(bullet, true);
             }
         }
@@ -268,6 +268,9 @@ public class Level {
         for (Entity entity: canopyEntities) {
             entity.renderDebug(drawer);
         }
+        for (Entity entity: bullets) {
+            entity.renderDebug(drawer);
+        }
         player.renderDebug(drawer);
     }
 
@@ -280,7 +283,6 @@ public class Level {
             character.getGun().reload();
         }
 
-        ArrayList<ItemInfo> items = new ArrayList<>();
         float rotation = character.rotation;
         Vector2 bulletOffsetTemp = new Vector2(character.getBulletOffset());
         bulletOffsetTemp.rotateDeg(rotation);
@@ -289,7 +291,7 @@ public class Level {
         bulletVector.setLength(character.getGun().getRange());
         bulletVector.add(character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
 
-        bullets.add(new Bullet(
+        Bullet bullet = new Bullet(
                 character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x,
                 character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
                 character.rotation,
@@ -297,7 +299,10 @@ public class Level {
                 bulletVector.y,
                 character.getGun().getProjectileSpeed(),
                 character.getGun().getDamage()
-        ));
+        );
+
+        bullets.add(bullet);
+        world.add(bullet.item, bullet.bbox.x, bullet.bbox.y, bullet.bbox.width, bullet.bbox.height);
         character.getGun().decrementCurrentMagazineAmmo();
     }
 

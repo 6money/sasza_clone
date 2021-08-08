@@ -99,4 +99,10 @@ public class ConsoleCommandExecutor extends CommandExecutor {
         gameWorld.getClickedEntity().getGun().setProjectileSpeed(speed);
         console.log("Updated weapon projectile speed for " + gameWorld.getClickedEntity().getClass().getSimpleName());
     }
+
+    // Misc
+    @ConsoleDoc(description = "Kills the clicked entity") public final void kill() {
+        gameWorld.getClickedEntity().health = 0;
+        console.log("Killed " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
 }
