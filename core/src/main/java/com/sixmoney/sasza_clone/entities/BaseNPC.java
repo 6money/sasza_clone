@@ -10,6 +10,7 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.GunData;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -30,6 +31,8 @@ public class BaseNPC extends Character {
         deathAnimation = Assets.get_instance().npcAssets.sniperDyingAnimation;
         characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;
         characterIdleLegTexture = Assets.get_instance().npcAssets.sniperStand;
+        currentGun = new Gun(GunData.svd);
+
         detectionObject = new NPCDetectionObject(this);
     }
 

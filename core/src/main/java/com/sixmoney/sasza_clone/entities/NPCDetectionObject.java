@@ -30,6 +30,8 @@ public class NPCDetectionObject extends Entity {
     public Vector2 update(World<Entity> world) {
         bbox.x = parent.getPosition().x - parent.getGun().getRange();
         bbox.y = parent.getPosition().y - parent.getGun().getRange();
+        bbox.width = parent.getGun().getRange() * 2;
+        bbox.height = parent.getGun().getRange() * 2;
         Response.Result result = world.move(item, bbox.x, bbox.y, new NPCDetectionFilter());
         Collisions collisions = result.projectedCollisions;
 
