@@ -64,9 +64,9 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         legsOffset = 0;
         legsRotation = 0;
         bulletOffset = new Vector2( 18, -3);
-        currentGun = new Gun(GunData.mp5);
+        currentGun = new Gun(GunData.m4);
         guns = new Array<Gun>(true, 3);
-        guns.add(currentGun, new Gun(GunData.svd), new Gun(GunData.mp5));
+        guns.add(currentGun, new Gun(GunData.mp5), new Gun(GunData.svd));
         shooting = false;
         shootStartTime = TimeUtils.nanoTime();
         shootSpriteTime = TimeUtils.nanoTime();

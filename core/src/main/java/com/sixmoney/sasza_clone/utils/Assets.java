@@ -18,6 +18,7 @@ public class Assets implements Disposable, AssetErrorListener {
     private AssetManager assetManager;
     private TextureAtlas atlas;
     private TextureAtlas atlasPrivate;
+    private TextureAtlas atlasPrivateWeapons;
 
     public DebugAssets debugAssets;
     public PlayerAssets playerAssets;
@@ -26,6 +27,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public EnvronmentAssets envronmentAssets;
     public TileAssets tileAssets;
     public SkinAssets skinAssets;
+    public WeaponAssets weaponAssets;
 
     private Assets() {
         init();
@@ -45,6 +47,7 @@ public class Assets implements Disposable, AssetErrorListener {
         long startLoad = TimeUtils.nanoTime();
         assetManager.load(Constants.TEXTURE_ATLAS, TextureAtlas.class);
         assetManager.load(Constants.TEXTURE_ATLAS_PRIVATE, TextureAtlas.class);
+        assetManager.load(Constants.TEXTURE_ATLAS_PRIVATE_WEAPONS, TextureAtlas.class);
         assetManager.load(Constants.SKIN_PATH, Skin.class);
         assetManager.load(Constants.SKIN_CONSOLE_PATH, Skin.class);
         assetManager.finishLoading();
@@ -53,6 +56,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
         atlas = assetManager.get(Constants.TEXTURE_ATLAS);
         atlasPrivate = assetManager.get(Constants.TEXTURE_ATLAS_PRIVATE);
+        atlasPrivateWeapons = assetManager.get(Constants.TEXTURE_ATLAS_PRIVATE_WEAPONS);
 
         skinAssets = new SkinAssets(assetManager);
         debugAssets = new DebugAssets(atlas);
@@ -61,6 +65,7 @@ public class Assets implements Disposable, AssetErrorListener {
         enemyAssets = new EnemyAssets(atlas, atlasPrivate);
         envronmentAssets = new EnvronmentAssets(atlas, atlasPrivate);
         tileAssets = new TileAssets(atlasPrivate);
+        weaponAssets = new WeaponAssets(atlasPrivateWeapons);
     }
 
     public AssetManager getAssetManager() {
@@ -73,6 +78,10 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public TextureAtlas getPrivateAtlas() {
         return atlasPrivate;
+    }
+
+    public TextureAtlas getPrivateWeaponAtlas() {
+        return atlasPrivateWeapons;
     }
 
     @Override
@@ -192,6 +201,16 @@ public class Assets implements Disposable, AssetErrorListener {
             dirt = atlasPrivate.findRegion(Constants.DIRT);
             sand = atlasPrivate.findRegion(Constants.SAND);
             water = atlasPrivate.findRegion(Constants.WATER);
+        }
+    }
+
+    public class WeaponAssets {
+        public TextureRegion mp5Base;
+        public TextureRegion svdBase;
+
+        public WeaponAssets(TextureAtlas atlasPrivateWeapons) {
+            mp5Base = atlasPrivate.findRegion(Constants.MP5_BASE);
+            svdBase = atlasPrivate.findRegion(Constants.SVD_BASE);
         }
     }
 }

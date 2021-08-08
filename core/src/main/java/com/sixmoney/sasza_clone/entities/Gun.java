@@ -1,5 +1,7 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.GunData;
 
 public class Gun {
@@ -12,6 +14,7 @@ public class Gun {
     private int currentMagazineAmmo;
     private float projectileSpeed;
     private float damage;
+    private TextureRegion weaponSprite;
 
     public Gun(GunData.GunRecord gunData) {
         name = gunData.name;
@@ -23,6 +26,7 @@ public class Gun {
         currentMagazineAmmo = magazineSize;
         projectileSpeed = gunData.projectileSpeed;
         damage = gunData.damage;
+        weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
     }
 
     public int getMagazineSize() {
@@ -99,5 +103,9 @@ public class Gun {
 
     public float getDamage() {
         return damage;
+    }
+
+    public TextureRegion getWeaponSprite() {
+        return weaponSprite;
     }
 }

@@ -30,14 +30,12 @@ public class PauseOverlay extends InputAdapter {
     private Skin skin;
     private Table table;
     private ControllerMenuStage stage;
-    private boolean show;
     private Vector2 mouseScreenCoords;
 
     public InputMultiplexer inputProcessor;
 
     public PauseOverlay(GameWorldScreen gameWorldScreen, Batch batch) {
         this.gameWorldScreen = gameWorldScreen;
-        show = false;
         stage = new ControllerMenuStage(new ScreenViewport(), batch);
         inputProcessor = new InputMultiplexer(stage, this);
         skin = Assets.get_instance().skinAssets.skin;

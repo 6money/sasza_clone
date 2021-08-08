@@ -43,12 +43,15 @@ configure(subprojects - project(':android')) {
 
 	task packPrivateTextures {
 		def inputDir = "$rootDir/core/assets/sasza_clone_private_assets/sprites2"
+		def inputDir2 = "$rootDir/core/assets/sasza_clone_private_assets/sprites"
 		def outputDir = "$rootDir/assets/packagedPrivate"
 		inputs.dir inputDir
+		inputs.dir inputDir2
 		outputs.dir outputDir
 		doLast {
 			delete(outputDir)
 			TexturePacker.process(inputDir, outputDir, "sasza_clone_private.atlas")
+			TexturePacker.process(inputDir2, outputDir, "sasza_clone_private_weapons.atlas")
 		}
 	}
 

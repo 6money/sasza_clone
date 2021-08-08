@@ -22,6 +22,7 @@ public class Constants {
     public static final String PREFERENCES_NAME = "sasza_clone";
     public static final String TEXTURE_ATLAS = "packaged/sasza_clone.pack.atlas";
     public static final String TEXTURE_ATLAS_PRIVATE = "packagedPrivate/sasza_clone_private.atlas";
+    public static final String TEXTURE_ATLAS_PRIVATE_WEAPONS = "packagedPrivate/sasza_clone_private_weapons.atlas";
     public static final String VERSION = "0.0.1-alpha";
 
 
@@ -84,6 +85,11 @@ public class Constants {
     public static final String DIRT = "_0001_DirtTiles";
     public static final String SAND = "_0002_SandTiles";
     public static final String WATER = "_0000_WTiles";
+
+    // weapon sprites
+    public static final String MP5_BASE = "mp5_base";
+    public static final String SVD_BASE = "svd_base";
+    public static final String M4_BASE = "m4_base";
 
     // HUD
     public static final float HUD_MARGIN = 23;

@@ -62,7 +62,7 @@ public class GameWorldScreen implements Screen {
         batch = new SpriteBatch();
         drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
         level = LevelLoader.load("debug", viewport, camera);
-        hud = new HUD(level);
+        hud = new HUD(level, batch);
         pauseOverlay = new PauseOverlay(this, batch);
         mobileControlUI = new MobileControlUI(this, batch);
 
@@ -124,7 +124,7 @@ public class GameWorldScreen implements Screen {
 
         batch.end();
 
-        hud.render(batch);
+        hud.render();
 
         if (saszaGame.mobileControls) {
             mobileControlUI.render();
@@ -216,5 +216,10 @@ public class GameWorldScreen implements Screen {
     public void resetVelocity() {
         keyboardInputHandler.resetVelocity();
         level.getPlayer().resetVelocity();
+    }
+
+    public void switchWeapon(int index) {
+        level.getPlayer().setGun(index);
+        hud.updateWeaponSprite();
     }
 }
