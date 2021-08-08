@@ -35,7 +35,7 @@ public class Player extends Character {
         characterShootingTexture = Assets.get_instance().playerAssets.playerShooting;
         characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
         lazerVector = new Vector2();
-        health = 200f;
+        health = 2000;
         destructible = true;
     }
 
