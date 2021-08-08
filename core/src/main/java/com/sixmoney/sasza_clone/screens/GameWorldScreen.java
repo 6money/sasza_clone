@@ -70,7 +70,6 @@ public class GameWorldScreen implements Screen {
         paused = false;
 
         controllerInputHandler = new ControllerInputHandler(this, camera);
-        Controllers.addListener(controllerInputHandler);
 
         console = new GUIConsole(Assets.get_instance().skinAssets.skinConsole);
         console.setCommandExecutor(new ConsoleCommandExecutor(this));
@@ -91,6 +90,7 @@ public class GameWorldScreen implements Screen {
     }
 
     public void setInputProcessors() {
+        Controllers.addListener(controllerInputHandler);
         if (saszaGame.mobileControls) {
             Gdx.input.setInputProcessor(mobileControlUI.stage);
         } else {
@@ -174,6 +174,7 @@ public class GameWorldScreen implements Screen {
 
     public void setPaused() {
         paused = true;
+        Controllers.removeListener(controllerInputHandler);
         pauseOverlay.setInputProcessors();
         resetVelocity();
     }

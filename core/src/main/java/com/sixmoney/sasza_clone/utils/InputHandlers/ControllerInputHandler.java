@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.utils.InputHandlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.sixmoney.sasza_clone.Level;
@@ -19,6 +20,7 @@ public class ControllerInputHandler implements ControllerListener {
     private Vector2 velocity;
     private Vector2 velocityNormal;
     private Array<Float> axisValues;
+    private int weaponIndex;
 
     public ControllerInputHandler(GameWorldScreen gameWorldScreen, ChaseCam cam) {
         this.gameWorldScreen = gameWorldScreen;
@@ -32,7 +34,7 @@ public class ControllerInputHandler implements ControllerListener {
         for (int i = 0; i < 5; i++){
             axisValues.add(0f);
         }
-
+        weaponIndex = 0;
     }
 
     @Override
@@ -49,12 +51,17 @@ public class ControllerInputHandler implements ControllerListener {
     public boolean buttonDown(Controller controller, int buttonCode) {
         Gdx.app.log(TAG, "Pressed: " + buttonCode);
 
-        if (buttonCode == 6) {
-            if (!gameWorldScreen.paused) {
-                gameWorldScreen.setPaused();
-            } else {
-                gameWorldScreen.setUnpaused();
-            }
+        if (buttonCode == Controllers.getCurrent().getMapping().buttonStart) {
+            gameWorldScreen.setPaused();
+            return true;
+        } else if (buttonCode == Controllers.getCurrent().getMapping().buttonY) {
+            gameWorldScreen.switchWeapon(nextWeaponIndex());
+            return true;
+        } else if (buttonCode == Controllers.getCurrent().getMapping().buttonDpadUp) {
+            camera.zoomIn(0.1f);
+            return true;
+        } else if (buttonCode == Controllers.getCurrent().getMapping().buttonDpadDown) {
+            camera.zoomOut(0.1f);
             return true;
         }
         return false;
@@ -131,5 +138,14 @@ public class ControllerInputHandler implements ControllerListener {
         }
 
         return false;
+    }
+
+    private int nextWeaponIndex() {
+        weaponIndex += 1;
+        if (weaponIndex >= 3) {
+            weaponIndex = 0;
+        }
+
+        return weaponIndex;
     }
 }
