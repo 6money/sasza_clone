@@ -115,7 +115,7 @@ public class Player extends Character {
         bulletOffsetTemp.rotateDeg(rotation);
         lazerVector.set(1, 0);
         lazerVector.rotateDeg(rotation);
-        lazerVector.setLength(gun.getRange());
+        lazerVector.setLength(currentGun.getRange());
         lazerVector.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
 
         world.querySegmentWithCoords(

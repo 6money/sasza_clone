@@ -1,6 +1,9 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.sixmoney.sasza_clone.utils.GunData;
+
 public class Gun {
+    private String name;
     private int magazineSize;
     private float fireRate;
     private float range;
@@ -10,15 +13,16 @@ public class Gun {
     private float projectileSpeed;
     private float damage;
 
-    public Gun() {
-        magazineSize = 30;
-        fireRate = 12f;
-        range = 200;
-        maxAmmo = 240;
+    public Gun(GunData.GunRecord gunData) {
+        name = gunData.name;
+        magazineSize = gunData.magSize;
+        fireRate = gunData.fireRate;
+        range = gunData.range;
+        maxAmmo = gunData.ammo;
         currentAmmo = maxAmmo;
         currentMagazineAmmo = magazineSize;
-        projectileSpeed = 800;
-        damage = 10f;
+        projectileSpeed = gunData.projectileSpeed;
+        damage = gunData.damage;
     }
 
     public int getMagazineSize() {

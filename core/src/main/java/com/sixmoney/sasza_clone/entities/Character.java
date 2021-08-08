@@ -14,10 +14,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.GunData;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -40,7 +42,8 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected TextureRegion characterIdleLegTexture;
     protected Vector2 oldVelocity;
     protected Vector2 bulletOffset;
-    protected Gun gun;
+    protected Gun currentGun;
+    protected Array<Gun> guns;
 
     public boolean shooting;
     public long shootStartTime;
@@ -61,7 +64,9 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         legsOffset = 0;
         legsRotation = 0;
         bulletOffset = new Vector2( 18, -3);
-        gun = new Gun();
+        currentGun = new Gun(GunData.mp5);
+        guns = new Array<Gun>(true, 3);
+        guns.add(currentGun, new Gun(GunData.svd), new Gun(GunData.mp5));
         shooting = false;
         shootStartTime = TimeUtils.nanoTime();
         shootSpriteTime = TimeUtils.nanoTime();
@@ -73,9 +78,12 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     }
 
     public Gun getGun() {
-        return gun;
+        return currentGun;
     }
 
+    public void setGun(int index) {
+        currentGun = guns.get(index);
+    }
 
     protected void applySteering(float delta) {
         if (!steerOutput.linear.isZero()) {
@@ -108,14 +116,14 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public void render(Batch batch) {
-        if (gun != null && characterShootingTexture != null && shooting && gun.getCurrentMagazineAmmo() > 0) {
-            if (Utils.secondsSince(shootSpriteTime) < Math.max(0.02, Math.min(0.1, 1 / gun.getFireRate()))) {
+        if (currentGun != null && characterShootingTexture != null && shooting && currentGun.getCurrentMagazineAmmo() > 0) {
+            if (Utils.secondsSince(shootSpriteTime) < Math.max(0.02, Math.min(0.1, 1 / currentGun.getFireRate()))) {
                 Utils.drawTextureRegion(batch, characterShootingTexture, position.x, position.y, rotation);
             } else {
                 super.render(batch);
             }
 
-            if (Utils.secondsSince(shootSpriteTime) > 1 / gun.getFireRate() * 2) {
+            if (Utils.secondsSince(shootSpriteTime) > 1 / currentGun.getFireRate() * 2) {
                 shootSpriteTime = TimeUtils.nanoTime();
             }
         } else {
