@@ -284,16 +284,14 @@ public class Level {
         }
 
         float rotation = character.rotation;
-        Vector2 bulletOffsetTemp = new Vector2(character.getBulletOffset());
-        bulletOffsetTemp.rotateDeg(rotation);
         Vector2 bulletVector = new Vector2(1, 0);
         bulletVector.rotateDeg(rotation);
         bulletVector.setLength(character.getGun().getRange());
-        bulletVector.add(character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
+        bulletVector.add(character.position.x + Constants.PLAYER_CENTER.x + character.bulletOffsetReal.x, character.position.y + Constants.PLAYER_CENTER.y + character.bulletOffsetReal.y);
 
         Bullet bullet = new Bullet(
-                character.position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x,
-                character.position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
+                character.position.x + Constants.PLAYER_CENTER.x + character.bulletOffsetReal.x,
+                character.position.y + Constants.PLAYER_CENTER.y + character.bulletOffsetReal.y,
                 character.rotation,
                 bulletVector.x,
                 bulletVector.y,
@@ -304,6 +302,7 @@ public class Level {
         bullets.add(bullet);
         world.add(bullet.item, bullet.bbox.x, bullet.bbox.y, bullet.bbox.width, bullet.bbox.height);
         character.getGun().decrementCurrentMagazineAmmo();
+        character.triggerMuzzleFlash();
     }
 
 

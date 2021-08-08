@@ -90,6 +90,9 @@ public class Constants {
     public static final String MP5_BASE = "mp5_base";
     public static final String SVD_BASE = "svd_base";
     public static final String M4_BASE = "m4_base";
+    public static final String RIFLE_MUZZLE_FLASH = "rifle_muzzle_flash";
+    public static final String PISTOL_MUZZLE_FLASH = "pistol_muzzle_flash";
+    public static final String DRM_MUZZLE_FLASH = "drm_muzzle_flash";
 
     // HUD
     public static final float HUD_MARGIN = 23;

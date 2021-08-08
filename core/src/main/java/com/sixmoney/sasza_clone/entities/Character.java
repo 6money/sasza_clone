@@ -44,11 +44,14 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected Vector2 bulletOffset;
     protected Gun currentGun;
     protected Array<Gun> guns;
+    protected boolean muzzleFlash;
+    protected long muzzleFlashStartTime;
 
     public boolean shooting;
     public long shootStartTime;
     public long shootSpriteTime;
     public Animation<TextureRegion> deathAnimation;
+    public Vector2 bulletOffsetReal;
 
     public Character(float x, float y) {
         super();
@@ -64,12 +67,15 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         legsOffset = 0;
         legsRotation = 0;
         bulletOffset = new Vector2( 18, -3);
+        bulletOffsetReal = new Vector2(bulletOffset);
         currentGun = new Gun(GunData.m4);
         guns = new Array<Gun>(true, 3);
         guns.add(currentGun, new Gun(GunData.mp5), new Gun(GunData.svd));
         shooting = false;
         shootStartTime = TimeUtils.nanoTime();
         shootSpriteTime = TimeUtils.nanoTime();
+        muzzleFlash = false;
+        muzzleFlashStartTime = 0;
     }
 
 
@@ -83,6 +89,11 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     public void setGun(int index) {
         currentGun = guns.get(index);
+    }
+
+    public void triggerMuzzleFlash() {
+        muzzleFlash = true;
+        muzzleFlashStartTime = TimeUtils.nanoTime();
     }
 
     protected void applySteering(float delta) {
@@ -107,6 +118,9 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         if (!velocity.isZero()) {
             legsRotation = velocity.angleDeg();
         }
+
+        bulletOffsetReal.set(bulletOffset);
+        bulletOffsetReal.rotateDeg(rotation);
     }
 
     protected void updateBBox() {
@@ -128,6 +142,23 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
             }
         } else {
             super.render(batch);
+        }
+
+        float muzzleFlahsStartSeconds = Utils.secondsSince(muzzleFlashStartTime);
+
+        if (muzzleFlash && !currentGun.getMuzzleFlashAnimation().isAnimationFinished(muzzleFlahsStartSeconds)) {
+            currentGun.getMuzzleFlashOffsetReal().set(currentGun.getMuzzleFlashOffset());
+            currentGun.getMuzzleFlashOffsetReal().rotateDeg(rotation);
+            Utils.drawTextureRegion(
+                    batch,
+                    (TextureRegion) currentGun.getMuzzleFlashAnimation().getKeyFrame(muzzleFlahsStartSeconds),
+                    position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x,
+                    position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y,
+                    rotation
+            );
+        } else if (muzzleFlash && currentGun.getMuzzleFlashAnimation().isAnimationFinished(muzzleFlahsStartSeconds)) {
+            muzzleFlashStartTime = 0;
+            muzzleFlash = false;
         }
     }
 

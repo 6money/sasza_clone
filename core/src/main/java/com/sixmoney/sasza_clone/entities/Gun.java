@@ -1,8 +1,11 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.GunData;
+import com.sixmoney.sasza_clone.utils.Utils.weaponCategory;
 
 public class Gun {
     private String name;
@@ -15,6 +18,9 @@ public class Gun {
     private float projectileSpeed;
     private float damage;
     private TextureRegion weaponSprite;
+    private Animation muzzleFlashAnimation;
+    private Vector2 muzzleFlashOffset;
+    private Vector2 muzzleFlashOffsetReal;
 
     public Gun(GunData.GunRecord gunData) {
         name = gunData.name;
@@ -27,6 +33,16 @@ public class Gun {
         projectileSpeed = gunData.projectileSpeed;
         damage = gunData.damage;
         weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
+        muzzleFlashOffset = new Vector2(-5, -16);
+        muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
+
+        if (gunData.category == weaponCategory.RIFLE) {
+            muzzleFlashAnimation = Assets.get_instance().weaponAssets.rifleMuzzleFlashAnimation;
+        } else if (gunData.category == weaponCategory.DRM) {
+            muzzleFlashAnimation = Assets.get_instance().weaponAssets.drmMuzzleFlashAnimation;
+        } else {
+            muzzleFlashAnimation = Assets.get_instance().weaponAssets.pistolMuzzleFlashAnimation;
+        }
     }
 
     public int getMagazineSize() {
@@ -107,5 +123,17 @@ public class Gun {
 
     public TextureRegion getWeaponSprite() {
         return weaponSprite;
+    }
+
+    public Animation getMuzzleFlashAnimation() {
+        return muzzleFlashAnimation;
+    }
+
+    public Vector2 getMuzzleFlashOffset() {
+        return muzzleFlashOffset;
+    }
+
+    public Vector2 getMuzzleFlashOffsetReal() {
+        return muzzleFlashOffsetReal;
     }
 }
