@@ -134,9 +134,8 @@ public class Player extends Character {
 
 
     public void render(Batch batch, ShapeDrawer drawer) {
-        super.render(batch);
-
         drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
+        super.render(batch);
     }
 
 

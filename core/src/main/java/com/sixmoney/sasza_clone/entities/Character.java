@@ -45,6 +45,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected Gun currentGun;
     protected Array<Gun> guns;
     protected boolean muzzleFlash;
+    protected boolean muzzleFlashReset;
     protected long muzzleFlashStartTime;
 
     public boolean shooting;
@@ -75,6 +76,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         shootStartTime = TimeUtils.nanoTime();
         shootSpriteTime = TimeUtils.nanoTime();
         muzzleFlash = false;
+        muzzleFlashReset = false;
         muzzleFlashStartTime = 0;
     }
 
@@ -93,6 +95,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     public void triggerMuzzleFlash() {
         muzzleFlash = true;
+        muzzleFlashReset = true;
         muzzleFlashStartTime = TimeUtils.nanoTime();
     }
 
@@ -137,7 +140,15 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
                 super.render(batch);
             }
 
-            if (Utils.secondsSince(shootSpriteTime) > 1 / currentGun.getFireRate() * 2) {
+            float tempResetTime;
+
+            if (currentGun.getFireRate() < 5) {
+                tempResetTime = 1 / currentGun.getFireRate();
+            } else {
+                tempResetTime = 1 / currentGun.getFireRate() * 2;
+            }
+
+            if (Utils.secondsSince(shootSpriteTime) > tempResetTime) {
                 shootSpriteTime = TimeUtils.nanoTime();
             }
         } else {

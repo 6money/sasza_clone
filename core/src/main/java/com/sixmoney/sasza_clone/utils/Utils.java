@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class Utils {
     public static enum weaponCategory {
         RIFLE,
-        PISTOL,
+        SMG,
         DRM
     };
 

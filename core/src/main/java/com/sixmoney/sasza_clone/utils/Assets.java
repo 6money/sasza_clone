@@ -216,8 +216,8 @@ public class Assets implements Disposable, AssetErrorListener {
             mp5Base = atlasPrivate.findRegion(Constants.MP5_BASE);
             svdBase = atlasPrivate.findRegion(Constants.SVD_BASE);
 
-            rifleMuzzleFlashAnimation = new Animation<>(0.025f, atlasPrivate.findRegions(Constants.RIFLE_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
-            pistolMuzzleFlashAnimation = new Animation<>(0.025f, atlasPrivate.findRegions(Constants.PISTOL_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
+            rifleMuzzleFlashAnimation = new Animation<>(0.04f, atlasPrivate.findRegions(Constants.RIFLE_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
+            pistolMuzzleFlashAnimation = new Animation<>(0.035f, atlasPrivate.findRegions(Constants.PISTOL_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
             drmMuzzleFlashAnimation = new Animation<>(0.05f, atlasPrivate.findRegions(Constants.DRM_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
         }
     }

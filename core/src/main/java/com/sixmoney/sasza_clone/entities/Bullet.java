@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Collisions;
@@ -70,13 +69,10 @@ public class Bullet extends Entity {
         if (collisions.size() > 0) {
             Item item = collisions.get(0).other;
 
-            Gdx.app.log(TAG, item.userData.getClass().getSimpleName());
-
             if (((Entity) item.userData).destructible) {
                 ((Entity) item.userData).decrementHealth(damage);
             }
             dead = true;
-            return;
         }
     }
 
