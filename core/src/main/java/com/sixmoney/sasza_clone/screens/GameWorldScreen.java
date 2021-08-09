@@ -142,6 +142,7 @@ public class GameWorldScreen implements Screen {
         viewport.update(width, height, true);
         hud.resize(width, height);
         pauseOverlay.resize(width, height);
+        console.refresh();
 
         if (saszaGame.mobileControls) {
             mobileControlUI.resize(width, height);
