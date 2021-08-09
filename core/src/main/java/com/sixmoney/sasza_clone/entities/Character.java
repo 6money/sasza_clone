@@ -148,13 +148,16 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
         if (muzzleFlash && !currentGun.getMuzzleFlashAnimation().isAnimationFinished(muzzleFlahsStartSeconds)) {
             currentGun.getMuzzleFlashOffsetReal().set(currentGun.getMuzzleFlashOffset());
-            currentGun.getMuzzleFlashOffsetReal().rotateDeg(rotation);
+            currentGun.getMuzzleFlashOffsetReal().set(currentGun.getMuzzleFlashOffsetReal().rotateDeg(rotation));
             Utils.drawTextureRegion(
                     batch,
                     (TextureRegion) currentGun.getMuzzleFlashAnimation().getKeyFrame(muzzleFlahsStartSeconds),
-                    position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x,
-                    position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y,
-                    rotation
+                    position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x - currentGun.getMuzzleFlashOffsetReal().x,
+                    position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y - currentGun.getMuzzleFlashOffsetReal().y,
+                    rotation,
+                    1,
+                    0,
+                    0
             );
         } else if (muzzleFlash && currentGun.getMuzzleFlashAnimation().isAnimationFinished(muzzleFlahsStartSeconds)) {
             muzzleFlashStartTime = 0;

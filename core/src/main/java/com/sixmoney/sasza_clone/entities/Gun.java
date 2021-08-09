@@ -33,7 +33,7 @@ public class Gun {
         projectileSpeed = gunData.projectileSpeed;
         damage = gunData.damage;
         weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
-        muzzleFlashOffset = new Vector2(-5, -16);
+        muzzleFlashOffset = new Vector2(5, 16);
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
 
         if (gunData.category == weaponCategory.RIFLE) {

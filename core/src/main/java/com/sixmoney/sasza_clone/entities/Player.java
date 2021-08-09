@@ -111,16 +111,14 @@ public class Player extends Character {
         }
 
         ArrayList<ItemInfo> items = new ArrayList<>();
-        Vector2 bulletOffsetTemp = new Vector2(bulletOffset.x, 0);
-        bulletOffsetTemp.rotateDeg(rotation);
         lazerVector.set(1, 0);
         lazerVector.rotateDeg(rotation);
         lazerVector.setLength(currentGun.getRange());
-        lazerVector.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y);
+        lazerVector.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y);
 
         world.querySegmentWithCoords(
-                position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x,
-                position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y,
+                position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x,
+                position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y,
                 lazerVector.x,
                 lazerVector.y,
                 new LazerCollisionFilter(),
@@ -138,10 +136,7 @@ public class Player extends Character {
     public void render(Batch batch, ShapeDrawer drawer) {
         super.render(batch);
 
-        Vector2 bulletOffsetTemp = new Vector2(bulletOffset);
-        bulletOffsetTemp.rotateDeg(rotation);
-
-        drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetTemp.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetTemp.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
+        drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
     }
 
 
