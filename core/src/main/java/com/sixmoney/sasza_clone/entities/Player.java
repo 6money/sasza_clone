@@ -158,6 +158,7 @@ public class Player extends Character {
             if ((item.userData instanceof Canopy)) return null;
             if ((item.userData instanceof NPCDetectionObject)) return null;
             if ((item.userData instanceof BaseNPC)) return null;
+            if ((item.userData instanceof Bullet)) return null;
             else return Response.touch;
         }
     }
