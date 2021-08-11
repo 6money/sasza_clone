@@ -28,6 +28,7 @@ public class Constants {
 
     // debug sprites
     public static final String BBOX_OUTLINE = "bbox_pixel";
+    public static final int HEALTH_BAR_WIDTH = 25;
 
     // player
     public static final float DEFAULT_PLAYER_SPEED = 200;

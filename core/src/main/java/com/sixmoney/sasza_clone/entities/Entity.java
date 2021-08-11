@@ -24,6 +24,7 @@ public abstract class Entity {
     public TextureRegion entityTextureRegion;
     public Animation<TextureRegion> entityAnimation;
     public long animationStartTime;
+    public float maxHealth;
     public float health;
     public boolean destructible;
     public boolean collidable;
@@ -31,6 +32,7 @@ public abstract class Entity {
     protected Entity() {
         rotation = 0;
         health = 0;
+        maxHealth = 0;
         position = new Vector2(0, 0);
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);

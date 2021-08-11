@@ -16,6 +16,7 @@ public class EnvironmentObject extends Entity {
         entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
         position = new Vector2(x, y);
         health = 100;
+        maxHealth = 100;
         if (textureName.contains("box") || textureName.contains("barrel")) {
             destructible = true;
         }

@@ -26,6 +26,7 @@ public class BaseEnemy extends Character {
         entityTextureRegion = Assets.get_instance().enemyAssets.zom1;
         destructible = true;
         health = 100;
+        maxHealth = 100;
         entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
         deathAnimation = Assets.get_instance().enemyAssets.zom1DyingAnimation;
         characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;

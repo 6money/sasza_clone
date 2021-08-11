@@ -244,6 +244,12 @@ public class Level {
         for (Entity entity: wallEntities) {
             entity.renderSecondary(batch);
         }
+        for (BaseEnemy zom: enemyEntities) {
+            zom.renderHealthBar(batch);
+        }
+        for (Character entity: characterEntities) {
+            entity.renderHealthBar(batch);
+        }
         for (Entity entity: canopyEntities) {
             entity.render(batch);
         }

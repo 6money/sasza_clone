@@ -27,6 +27,7 @@ public class BaseNPC extends Character {
         entityTextureRegion = Assets.get_instance().npcAssets.sniperBase;
         destructible = true;
         health = 1000;
+        maxHealth = 1000;
         entityAnimation = Assets.get_instance().npcAssets.sniperWalkingAnimation;
         deathAnimation = Assets.get_instance().npcAssets.sniperDyingAnimation;
         characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;

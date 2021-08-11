@@ -36,7 +36,9 @@ public class Player extends Character {
         characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
         lazerVector = new Vector2();
         health = 2000;
+        maxHealth = 2000;
         destructible = true;
+        showHealthBar = false;
     }
 
 

@@ -12,6 +12,7 @@ public class EnemyTierTwo extends BaseEnemy {
         characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
 
         health = 200;
+        maxHealth = 200;
         maxLinearSpeed = 190f;
         damage = 15;
     }

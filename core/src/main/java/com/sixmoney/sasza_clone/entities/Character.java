@@ -17,6 +17,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.World;
+import com.ray3k.tenpatch.TenPatchDrawable;
+import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.GunData;
@@ -47,6 +49,8 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected boolean muzzleFlash;
     protected boolean muzzleFlashReset;
     protected long muzzleFlashStartTime;
+    protected boolean showHealthBar;
+    protected TenPatchDrawable healthBar;
 
     public boolean shooting;
     public long shootStartTime;
@@ -78,6 +82,8 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         muzzleFlash = false;
         muzzleFlashReset = false;
         muzzleFlashStartTime = 0;
+        showHealthBar = true;
+        healthBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("health_bar"));
     }
 
 
@@ -185,6 +191,13 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
                 float animationTime = Utils.secondsSince(animationStartTime);
                 Utils.drawTextureRegion(batch, entityAnimation.getKeyFrame(animationTime), position.x - legsOffset, position.y - legsOffset, legsRotation);
             }
+        }
+    }
+
+    public void renderHealthBar(Batch batch) {
+        if (health < maxHealth && showHealthBar) {
+            float healthBarWidth = Constants.HEALTH_BAR_WIDTH * (health / maxHealth);
+            healthBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH / 2f), position.y + (Constants.PLAYER_CENTER.y * 1.5f), healthBarWidth, 2);
         }
     }
 
