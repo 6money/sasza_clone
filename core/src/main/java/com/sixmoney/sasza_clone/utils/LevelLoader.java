@@ -155,8 +155,31 @@ public class LevelLoader {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
             final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
             final String textureName = object.getString(Constants.LEVEL_IMAGENAME_KEY);
+            float rotation = 0;
+            boolean explicitRotate = false;
+            try {
+                JsonValue tags = object.get(Constants.LEVEL_TAGS_KEY);
+                for (JsonValue tag: tags) {
+                    if (tag.asString().equals(Constants.LEVEL_EXPLICIT_ROTATION_KEY)) {
+                        explicitRotate = true;
+                    }
+                }
+                rotation = object.getFloat(Constants.LEVEL_ROTATION_KEY);
+            } catch (IllegalArgumentException e) {
+                rotation = 0;
+            }
 
-            EnvironmentObject environmentObject = new EnvironmentObject(x, y, textureName);
+            EnvironmentObject environmentObject;
+
+            Gdx.app.log(TAG, explicitRotate + "");
+            Gdx.app.log(TAG, rotation + "");
+
+            if (explicitRotate) {
+                environmentObject = new EnvironmentObject(x, y, textureName, true, rotation);
+            } else {
+                environmentObject = new EnvironmentObject(x, y, textureName);
+            }
+
             environmentArray.add(environmentObject);
             Gdx.app.log(TAG, environmentObject.toString());
         }

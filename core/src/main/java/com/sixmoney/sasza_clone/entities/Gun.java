@@ -38,7 +38,7 @@ public class Gun {
 
         if (gunData.category == weaponCategory.RIFLE) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.rifleMuzzleFlashAnimation;
-        } else if (gunData.category == weaponCategory.DRM) {
+        } else if (gunData.category == weaponCategory.DMR) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.drmMuzzleFlashAnimation;
         } else {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.pistolMuzzleFlashAnimation;

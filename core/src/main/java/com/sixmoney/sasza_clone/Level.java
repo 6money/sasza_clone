@@ -84,7 +84,7 @@ public class Level {
     public void setTiles(Array<Entity> tiles) {
         this.tiles = tiles;
         for (Entity tile: tiles) {
-            if (tile.collidable) {
+            if (tile.charaterCollidable) {
                 world.add(tile.item, tile.bbox.x, tile.bbox.y, tile.bbox.width, tile.bbox.height);
             }
         }
@@ -108,7 +108,7 @@ public class Level {
     public void setWallEntities(Array<Entity> entities) {
         this.wallEntities = entities;
         for (Entity entity: wallEntities) {
-            if (entity.collidable) {
+            if (entity.charaterCollidable) {
                 world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
                 world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
             }

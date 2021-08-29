@@ -16,7 +16,7 @@ public class Wall extends Entity {
 
     public Wall(float x, float y, String textureName, boolean isDoor) {
         super();
-        collidable = !isDoor;
+        charaterCollidable = !isDoor;
         this.isDoor = isDoor;
         position = new Vector2(x, y);
 
@@ -32,7 +32,7 @@ public class Wall extends Entity {
                     entityTextureRegion.getRegionWidth() - Constants.BBOX_BUFFER_WALL * 2,
                     entityTextureRegion.getRegionHeight() - Constants.BBOX_BUFFER_WALL * 2
             );
-            bulletCollisionSubObject = new BulletCollisionSubObject(this, destructible, Constants.BBOX_BUFFER_WALL);
+            bulletCollisionSubObject = new BulletCollisionSubObject(this, Constants.BBOX_BUFFER_WALL);
         }
     }
 
@@ -48,7 +48,7 @@ public class Wall extends Entity {
     @Override
     public void renderDebug(ShapeDrawer drawer) {
         super.renderDebug(drawer);
-        if (bulletCollisionSubObject != null) {
+        if (bulletCollisionSubObject != null && bulletCollidable) {
             drawer.rectangle(bulletCollisionSubObject.bbox, Color.ORANGE);
         }
     }

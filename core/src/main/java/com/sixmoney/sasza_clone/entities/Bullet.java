@@ -35,6 +35,8 @@ public class Bullet extends Entity {
         firstUpdate = true;
         items = new ArrayList<>();
         bulletCollisionFilter = new BulletCollisionFilter();
+        charaterCollidable = false;
+        bulletCollidable = false;
     }
 
     public boolean getDead() {
@@ -79,12 +81,12 @@ public class Bullet extends Entity {
     public static class BulletCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
-            if ((other.userData instanceof FloorTile)) return null;
-            if ((other.userData instanceof Canopy)) return null;
-            if ((other.userData instanceof NPCDetectionObject)) return null;
-            if ((other.userData instanceof BaseNPC)) return null;
-            if ((other.userData instanceof Player)) return null;
-            else return Response.touch;
+            if(other == null) return null;
+            if (((Entity) other.userData).bulletCollidable) {
+                return Response.touch;
+            } else {
+                return null;
+            }
         }
     }
 }

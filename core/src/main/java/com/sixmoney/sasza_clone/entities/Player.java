@@ -145,23 +145,22 @@ public class Player extends Character {
         @Override
         public Response filter(Item item, Item other) {
             if(other == null) return null;
-            else if (other.userData instanceof EnvironmentObject) return Response.slide;
-            else if (other.userData instanceof FloorTile) return Response.slide;
-            else if (other.userData instanceof Character) return Response.slide;
-            else if (other.userData instanceof Wall) return Response.slide;
-            else return null;
+            if (((Entity) other.userData).charaterCollidable) {
+                return Response.slide;
+            } else {
+                return null;
+            }
         }
     }
 
     public static class LazerCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
-            if ((item.userData instanceof FloorTile)) return null;
-            if ((item.userData instanceof Canopy)) return null;
-            if ((item.userData instanceof NPCDetectionObject)) return null;
-            if ((item.userData instanceof BaseNPC)) return null;
-            if ((item.userData instanceof Bullet)) return null;
-            else return Response.touch;
+            if (((Entity) item.userData).bulletCollidable) {
+                return Response.touch;
+            } else {
+                return null;
+            }
         }
     }
 }

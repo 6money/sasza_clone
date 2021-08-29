@@ -12,6 +12,10 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 public class EnvironmentObject extends Entity {
 
     public EnvironmentObject(float x, float y, String textureName) {
+        this(x, y, textureName, false, 0);
+    }
+
+    public EnvironmentObject(float x, float y, String textureName, boolean explicitRotate, float rotation) {
         super();
         entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
         position = new Vector2(x, y);
@@ -20,30 +24,59 @@ public class EnvironmentObject extends Entity {
         if (textureName.contains("box") || textureName.contains("barrel")) {
             destructible = true;
         }
-        if (MathUtils.random(0, 1) == 0) {
-            rotation = 0;
-            bbox.set(
-                    position.x + Constants.BBOX_BUFFER_ENVIRONMENT,
-                    position.y + Constants.BBOX_BUFFER_ENVIRONMENT,
-                    entityTextureRegion.getRegionWidth() - Constants.BBOX_BUFFER_ENVIRONMENT * 2,
-                    entityTextureRegion.getRegionHeight() - Constants.BBOX_BUFFER_ENVIRONMENT * 2
-            );
+
+        if (!explicitRotate) {
+            int randRotation = MathUtils.random(0, 3);
+
+            switch (randRotation) {
+                case 0:
+                    this.rotation = 0;
+                    break;
+                case 1:
+                    this.rotation = 90;
+                    break;
+                case 2:
+                    this.rotation = 180;
+                    break;
+                case 3:
+                    this.rotation = 270;
+                    break;
+            }
         } else {
-            rotation = 90;
-            bbox.set(
-                    position.x + Constants.BBOX_BUFFER_ENVIRONMENT,
-                    position.y + Constants.BBOX_BUFFER_ENVIRONMENT,
-                    entityTextureRegion.getRegionHeight() - Constants.BBOX_BUFFER_ENVIRONMENT * 2,
-                    entityTextureRegion.getRegionWidth() - Constants.BBOX_BUFFER_ENVIRONMENT * 2
-            );
+            this.rotation = rotation;
         }
-        bulletCollisionSubObject = new BulletCollisionSubObject(this, destructible, Constants.BBOX_BUFFER_ENVIRONMENT);
+
+        float width = entityTextureRegion.getRegionWidth();
+        float height = entityTextureRegion.getRegionHeight();
+        float bboxX = x;
+        float bboxY = y;
+
+        if (this.rotation == 90 || this.rotation == 270 ||
+                this.rotation == -90 || this.rotation == -270) {
+            bboxX += width / 2 - height / 2;
+            bboxY -= width / 2 - height / 2;
+            width = entityTextureRegion.getRegionHeight();
+            height = entityTextureRegion.getRegionWidth();
+        }
+
+        bbox.set(
+                bboxX + Constants.BBOX_BUFFER_ENVIRONMENT,
+                bboxY + Constants.BBOX_BUFFER_ENVIRONMENT,
+                width - Constants.BBOX_BUFFER_ENVIRONMENT * 2,
+                height - Constants.BBOX_BUFFER_ENVIRONMENT * 2
+        );
+
+        if (textureName.contains("bush")) {
+            bulletCollidable = false;
+        }
+
+        bulletCollisionSubObject = new BulletCollisionSubObject(this, Constants.BBOX_BUFFER_ENVIRONMENT);
     }
 
     @Override
     public void renderDebug(ShapeDrawer drawer) {
         super.renderDebug(drawer);
-        if (bulletCollisionSubObject != null) {
+        if (bulletCollisionSubObject != null && bulletCollidable) {
             drawer.rectangle(bulletCollisionSubObject.bbox, Color.ORANGE);
         }
     }

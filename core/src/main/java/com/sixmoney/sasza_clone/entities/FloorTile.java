@@ -11,7 +11,8 @@ public class FloorTile extends Entity {
         entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
         position = new Vector2(x, y);
         bbox = new Rectangle(position.x + 55, position.y + 55, entityTextureRegion.getRegionWidth() - 110, entityTextureRegion.getRegionHeight() - 110);
-        this.collidable = collidable;
+        charaterCollidable = collidable;
+        bulletCollidable = false;
     }
 
     @Override

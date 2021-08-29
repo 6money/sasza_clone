@@ -25,6 +25,8 @@ public class NPCDetectionObject extends Entity {
                 parent.getGun().getRange() * 2
         );
         item = new Item<>(this);
+        charaterCollidable = false;
+        bulletCollidable = false;
     }
 
     public Vector2 update(World<Entity> world) {

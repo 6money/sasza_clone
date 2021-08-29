@@ -7,7 +7,7 @@ import com.dongbat.jbump.Item;
 public class BulletCollisionSubObject extends Entity {
     public Entity parent;
 
-    public BulletCollisionSubObject(Entity parent, boolean destructible, float buffer) {
+    public BulletCollisionSubObject(Entity parent, float buffer) {
         super();
         this.parent = parent;
         position = new Vector2(parent.bbox.x - buffer, parent.bbox.y - buffer);
@@ -18,7 +18,9 @@ public class BulletCollisionSubObject extends Entity {
                 parent.bbox.height + buffer * 2
         );
         item = new Item<>(this);
-        this.destructible = destructible;
+        destructible = parent.destructible;
+        charaterCollidable = false;
+        bulletCollidable = parent.bulletCollidable;
     }
 
     @Override

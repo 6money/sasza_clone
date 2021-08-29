@@ -33,6 +33,7 @@ public class BaseNPC extends Character {
         characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;
         characterIdleLegTexture = Assets.get_instance().npcAssets.sniperStand;
         currentGun = new Gun(GunData.svd);
+        bulletCollidable = false;
 
         detectionObject = new NPCDetectionObject(this);
     }
@@ -96,11 +97,11 @@ public class BaseNPC extends Character {
         @Override
         public Response filter(Item item, Item other) {
             if(other == null) return null;
-            else if (other.userData instanceof EnvironmentObject) return Response.slide;
-            else if (other.userData instanceof FloorTile) return Response.slide;
-            else if (other.userData instanceof Character) return Response.slide;
-            else if (other.userData instanceof Wall) return Response.slide;
-            else return null;
+            if (((Entity) other.userData).charaterCollidable) {
+                return Response.slide;
+            } else {
+                return null;
+            }
         }
     }
 }

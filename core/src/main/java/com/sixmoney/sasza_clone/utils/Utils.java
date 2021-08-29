@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class Utils {
-    public static enum weaponCategory {
+    public enum weaponCategory {
         RIFLE,
         SMG,
-        DRM
+        DMR
     };
 
     public static void drawTextureRegion(Batch batch, TextureRegion region, float x, float y) {

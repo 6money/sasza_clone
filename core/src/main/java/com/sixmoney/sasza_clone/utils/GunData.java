@@ -6,7 +6,7 @@ public class GunData {
 
     public static GunRecord m4 = new GunRecord("m4", weaponCategory.RIFLE, 15, 12, 1000, 250, 240, 30);
     public static GunRecord mp5 = new GunRecord("mp5", weaponCategory.SMG, 10, 20, 800, 150, 240, 30);
-    public static GunRecord svd = new GunRecord("svd", weaponCategory.DRM, 100, 2, 2000, 500, 80, 10);
+    public static GunRecord svd = new GunRecord("svd", weaponCategory.DMR, 100, 2, 2000, 500, 80, 10);
 
     public static class GunRecord {
         public String name;

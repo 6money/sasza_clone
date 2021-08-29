@@ -108,6 +108,9 @@ public class Constants {
     public static final String LEVEL_LAYER_NAME = "layerName";
     public static final String LEVEL_ERROR_MESSAGE = "There was a problem loading the level.";
     public static final String LEVEL_IMAGENAME_KEY = "imageName";
+    public static final String LEVEL_TAGS_KEY = "tags";
+    public static final String LEVEL_ROTATION_KEY = "rotation";
+    public static final String LEVEL_EXPLICIT_ROTATION_KEY = "explicitRotate";
     public static final String LEVEL_X_KEY = "x";
     public static final String LEVEL_Y_KEY = "y";
     public static final String LEVEL_WIDTH_KEY = "width";

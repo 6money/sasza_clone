@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.Collision;
@@ -82,7 +81,6 @@ public class BaseEnemy extends Character {
     private void attack(Entity entity) {
         if (Utils.secondsSince(attackDelayTimer) >= Constants.ENEMY_ATTACK_SPEED || attackDelayTimer == 0) {
             attackDelayTimer = TimeUtils.nanoTime();
-            Gdx.app.log(TAG, "ATTACK!!");
             entity.decrementHealth(damage);
         }
     }
@@ -91,11 +89,11 @@ public class BaseEnemy extends Character {
         @Override
         public Response filter(Item item, Item other) {
             if(other == null) return null;
-            else if (other.userData instanceof EnvironmentObject) return Response.slide;
-            else if (other.userData instanceof FloorTile) return Response.slide;
-            else if (other.userData instanceof Character) return Response.slide;
-            else if (other.userData instanceof Wall) return Response.slide;
-            else return null;
+            if (((Entity) other.userData).charaterCollidable) {
+                return Response.slide;
+            } else {
+                return null;
+            }
         }
     }
 }
