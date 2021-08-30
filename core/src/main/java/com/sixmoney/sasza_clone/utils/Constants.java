@@ -45,14 +45,23 @@ public class Constants {
     public static final String PLAYER_WALK = "player_walk";
     public static final String PLAYER_STAND = "player_stand";
     public static final String PLAYER_PLACEHOLDER = "particle_pixel";
-    public static final String RIFLE_PROJECTILE = "player_bullet";
+
+    // npc sprites
+    public static final String SNIPER_BASE = "sniper_base";
+    public static final String SNIPER_SHOOTING = "sniper_shot";
+    public static final String SNIPER_DEAD = "sniper_die";
+    public static final String RIFLEMAN_BASE = "rifleman_base";
+    public static final String RIFLEMAN_DEAD = "rifleman_die";
+    public static final String RIFLEMAN_SHOOTING = "rifleman_shot";
+    public static final String GUNNER_BASE = "gunner_base";
+    public static final String GUNNER_DEAD = "gunner_die";
+    public static final String GUNNER_SHOOTING = "gunner_shot";
+    public static final String NPC_WALK_S1 = "npc_walk_style_1";
+    public static final String NPC_STAND_S1 = "npc_stand_style_one";
+    public static final String NPC_WALK_S2 = "npc_walk_style_2";
+    public static final String NPC_STAND_S2 = "npc_stand_style_two";
 
     // enemy sprites
-    public static final String SNIPER_BASE = "sniper_base";
-    public static final String SNIPER_WALK = "sniper_walk";
-    public static final String SNIPER_DEAD = "sniper_die";
-    public static final String SNIPER_STAND = "sniper_stand";
-    public static final String SNIPER_SHOOTING = "sniper_shot";
     public static final String ZOM1 = "zom1_base";
     public static final String ZOM2 = "zom2_base";
     public static final String ZOM1_DEAD = "zom1_die";
@@ -91,9 +100,11 @@ public class Constants {
     public static final String MP5_BASE = "mp5_base";
     public static final String SVD_BASE = "svd_base";
     public static final String M4_BASE = "m4_base";
+    public static final String RIFLE_PROJECTILE = "rifle_projectile";
+    public static final String DMR_PROJECTILE = "dmr_projectile";
     public static final String RIFLE_MUZZLE_FLASH = "rifle_muzzle_flash";
     public static final String PISTOL_MUZZLE_FLASH = "pistol_muzzle_flash";
-    public static final String DRM_MUZZLE_FLASH = "drm_muzzle_flash";
+    public static final String DMR_MUZZLE_FLASH = "dmr_muzzle_flash";
 
     // HUD
     public static final float HUD_MARGIN = 23;

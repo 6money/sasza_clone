@@ -28,13 +28,13 @@ public class BaseNPC extends Character {
         destructible = true;
         health = 1000;
         maxHealth = 1000;
-        entityAnimation = Assets.get_instance().npcAssets.sniperWalkingAnimation;
+        entityAnimation = Assets.get_instance().npcAssets.npcWalkingAnimationS1;
         deathAnimation = Assets.get_instance().npcAssets.sniperDyingAnimation;
         characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;
-        characterIdleLegTexture = Assets.get_instance().npcAssets.sniperStand;
+        characterIdleLegTexture = Assets.get_instance().npcAssets.npcStandS1;
         currentGun = new Gun(GunData.svd);
         bulletCollidable = false;
-
+        bulletOffset = new Vector2( 19, -3);
         detectionObject = new NPCDetectionObject(this);
     }
 

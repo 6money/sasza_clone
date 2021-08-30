@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class Utils {
-    public enum weaponCategory {
+    public enum WeaponCategory {
         RIFLE,
         SMG,
         DMR

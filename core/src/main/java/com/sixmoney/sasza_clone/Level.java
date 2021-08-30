@@ -302,7 +302,8 @@ public class Level {
                 bulletVector.x,
                 bulletVector.y,
                 character.getGun().getProjectileSpeed(),
-                character.getGun().getDamage()
+                character.getGun().getDamage(),
+                character.getGun().getWeaponType()
         );
 
         bullets.add(bullet);

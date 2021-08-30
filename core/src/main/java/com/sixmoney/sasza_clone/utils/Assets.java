@@ -65,7 +65,7 @@ public class Assets implements Disposable, AssetErrorListener {
         enemyAssets = new EnemyAssets(atlas, atlasPrivate);
         envronmentAssets = new EnvronmentAssets(atlas, atlasPrivate);
         tileAssets = new TileAssets(atlasPrivate);
-        weaponAssets = new WeaponAssets(atlasPrivateWeapons);
+        weaponAssets = new WeaponAssets(atlasPrivate, atlasPrivateWeapons);
     }
 
     public AssetManager getAssetManager() {
@@ -117,7 +117,6 @@ public class Assets implements Disposable, AssetErrorListener {
         public TextureRegion playerShooting;
         public TextureRegion playerStand;
         public TextureRegion playerPlaceholder;
-        public TextureRegion rifleProjectile;
         public Animation<TextureRegion> playerWalkingAnimation;
 
         public PlayerAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
@@ -125,7 +124,6 @@ public class Assets implements Disposable, AssetErrorListener {
             playerShooting = atlasPrivate.findRegion(Constants.PLAYER_SHOOTING);
             playerStand = atlasPrivate.findRegion(Constants.PLAYER_STAND);
             playerPlaceholder = atlas.findRegion(Constants.PLAYER_PLACEHOLDER);
-            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
             playerWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.PLAYER_WALK), Animation.PlayMode.LOOP);
         }
     }
@@ -133,18 +131,41 @@ public class Assets implements Disposable, AssetErrorListener {
     public class NPCAssets {
         public TextureRegion sniperBase;
         public TextureRegion sniperShooting;
-        public TextureRegion sniperStand;
-        public TextureRegion rifleProjectile;
-        public Animation<TextureRegion> sniperWalkingAnimation;
         public Animation<TextureRegion> sniperDyingAnimation;
+
+        public TextureRegion riflemanBase;
+        public TextureRegion riflemanShooting;
+        public Animation<TextureRegion> riflemanDyingAnimation;
+
+        public TextureRegion gunnerBase;
+        public TextureRegion gunnerShooting;
+        public Animation<TextureRegion> gunnerDyingAnimation;
+
+        public TextureRegion npcStandS1;
+        public Animation<TextureRegion> npcWalkingAnimationS1;
+
+        public TextureRegion npcStandS2;
+        public Animation<TextureRegion> npcWalkingAnimationS2;
+
 
         public NPCAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             sniperBase = atlasPrivate.findRegion(Constants.SNIPER_BASE);
             sniperShooting = atlasPrivate.findRegion(Constants.SNIPER_SHOOTING);
-            sniperStand = atlasPrivate.findRegion(Constants.SNIPER_STAND);
-            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
-            sniperWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.SNIPER_WALK), Animation.PlayMode.LOOP);
             sniperDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.SNIPER_DEAD), Animation.PlayMode.NORMAL);
+
+            riflemanBase = atlasPrivate.findRegion(Constants.RIFLEMAN_BASE);
+            riflemanShooting = atlasPrivate.findRegion(Constants.RIFLEMAN_SHOOTING);
+            riflemanDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.RIFLEMAN_DEAD), Animation.PlayMode.NORMAL);
+
+            gunnerBase = atlasPrivate.findRegion(Constants.GUNNER_BASE);
+            gunnerShooting = atlasPrivate.findRegion(Constants.GUNNER_SHOOTING);
+            gunnerDyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.GUNNER_DEAD), Animation.PlayMode.NORMAL);
+
+            npcStandS1 = atlasPrivate.findRegion(Constants.NPC_STAND_S1);
+            npcWalkingAnimationS1 = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.NPC_WALK_S1), Animation.PlayMode.LOOP);
+
+            npcStandS2 = atlasPrivate.findRegion(Constants.NPC_STAND_S2);
+            npcWalkingAnimationS2 = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.NPC_WALK_S2), Animation.PlayMode.LOOP);
         }
     }
 
@@ -159,8 +180,8 @@ public class Assets implements Disposable, AssetErrorListener {
         public EnemyAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             zom1 = atlasPrivate.findRegion(Constants.ZOM1);
             zom2 = atlasPrivate.findRegion(Constants.ZOM2);
-            enemyStand = atlasPrivate.findRegion(Constants.SNIPER_STAND);
-            enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.SNIPER_WALK), Animation.PlayMode.LOOP);
+            enemyStand = atlasPrivate.findRegion(Constants.NPC_STAND_S1);
+            enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.NPC_WALK_S1), Animation.PlayMode.LOOP);
             zom1DyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ZOM1_DEAD), Animation.PlayMode.NORMAL);
             zom2DyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ZOM2_DEAD), Animation.PlayMode.NORMAL);
         }
@@ -208,17 +229,23 @@ public class Assets implements Disposable, AssetErrorListener {
         public TextureRegion mp5Base;
         public TextureRegion svdBase;
 
+        public TextureRegion rifleProjectile;
+        public TextureRegion dmrProjectile;
+
         public Animation<TextureRegion> rifleMuzzleFlashAnimation;
         public Animation<TextureRegion> pistolMuzzleFlashAnimation;
-        public Animation<TextureRegion> drmMuzzleFlashAnimation;
+        public Animation<TextureRegion> dmrMuzzleFlashAnimation;
 
-        public WeaponAssets(TextureAtlas atlasPrivateWeapons) {
+        public WeaponAssets(TextureAtlas atlasPrivate, TextureAtlas atlasPrivateWeapons) {
             mp5Base = atlasPrivate.findRegion(Constants.MP5_BASE);
             svdBase = atlasPrivate.findRegion(Constants.SVD_BASE);
 
+            rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
+            dmrProjectile = atlasPrivate.findRegion(Constants.DMR_PROJECTILE);
+
             rifleMuzzleFlashAnimation = new Animation<>(0.04f, atlasPrivate.findRegions(Constants.RIFLE_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
             pistolMuzzleFlashAnimation = new Animation<>(0.035f, atlasPrivate.findRegions(Constants.PISTOL_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
-            drmMuzzleFlashAnimation = new Animation<>(0.05f, atlasPrivate.findRegions(Constants.DRM_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
+            dmrMuzzleFlashAnimation = new Animation<>(0.05f, atlasPrivate.findRegions(Constants.DMR_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
         }
     }
 }

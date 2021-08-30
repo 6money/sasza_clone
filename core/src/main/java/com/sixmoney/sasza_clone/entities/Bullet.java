@@ -7,6 +7,7 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.Utils.WeaponCategory;
 
 import java.util.ArrayList;
 
@@ -22,13 +23,18 @@ public class Bullet extends Entity {
     private ArrayList<Item> items;
     private BulletCollisionFilter bulletCollisionFilter;
 
-    public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed, float damage) {
+    public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed, float damage, WeaponCategory projectileType) {
         super();
         position = new Vector2(x, y);
         bbox.set(x, y, 2, 2);
         this.rotation = rotation;
         target = new Vector2(targetX, targetY);
-        entityTextureRegion = Assets.get_instance().playerAssets.rifleProjectile;
+        if (projectileType == WeaponCategory.DMR) {
+            entityTextureRegion = Assets.get_instance().weaponAssets.dmrProjectile;
+        } else {
+            entityTextureRegion = Assets.get_instance().weaponAssets.rifleProjectile;
+        }
+
         this.speed = speed;
         this.damage = damage;
         dead = false;

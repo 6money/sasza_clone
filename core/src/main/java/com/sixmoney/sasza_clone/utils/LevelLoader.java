@@ -14,7 +14,9 @@ import com.sixmoney.sasza_clone.entities.EnemyTierTwo;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
+import com.sixmoney.sasza_clone.entities.GunnerNPC;
 import com.sixmoney.sasza_clone.entities.Player;
+import com.sixmoney.sasza_clone.entities.RiflemanNPC;
 import com.sixmoney.sasza_clone.entities.Wall;
 
 import java.io.File;
@@ -117,9 +119,19 @@ public class LevelLoader {
                     Gdx.app.log(TAG, player.toString());
                     break;
                 case Constants.SNIPER_BASE:
-                    BaseNPC baseNPC = new BaseNPC(x, y);
-                    enemyArray.add(baseNPC);
-                    Gdx.app.log(TAG, baseNPC.toString());
+                    BaseNPC sniperNPC = new BaseNPC(x, y);
+                    enemyArray.add(sniperNPC);
+                    Gdx.app.log(TAG, sniperNPC.toString());
+                    break;
+                case Constants.RIFLEMAN_BASE:
+                    BaseNPC riflemanNPC = new RiflemanNPC(x, y);
+                    enemyArray.add(riflemanNPC);
+                    Gdx.app.log(TAG, riflemanNPC.toString());
+                    break;
+                case Constants.GUNNER_BASE:
+                    BaseNPC gunnerNPC = new GunnerNPC(x, y);
+                    enemyArray.add(gunnerNPC);
+                    Gdx.app.log(TAG, gunnerNPC.toString());
                     break;
             }
         }
