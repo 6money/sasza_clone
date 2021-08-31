@@ -31,6 +31,7 @@ public class LevelLoader {
         Array<JsonValue> enemies = new Array<>();
         Array<JsonValue> canopy = new Array<>();
         Array<JsonValue> environment = new Array<>();
+        Array<JsonValue> vehicles = new Array<>();
         Array<JsonValue> walls = new Array<>();
         Level level = new Level(viewport, camera);
         String path = Constants.LEVEL_DIR + File.separator + levelName + Constants.LEVEL_FILE_EXTENSION;
@@ -52,6 +53,9 @@ public class LevelLoader {
                         enemies.add(jsonObject);
                         break;
                     case "Environment":
+                        environment.add(jsonObject);
+                        break;
+                    case "Vehicles":
                         environment.add(jsonObject);
                         break;
                     case "Canopy":
@@ -182,9 +186,6 @@ public class LevelLoader {
             }
 
             EnvironmentObject environmentObject;
-
-            Gdx.app.log(TAG, explicitRotate + "");
-            Gdx.app.log(TAG, rotation + "");
 
             if (explicitRotate) {
                 environmentObject = new EnvironmentObject(x, y, textureName, true, rotation);
