@@ -38,7 +38,7 @@ public class Gun {
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
         weaponType = gunData.category;
 
-        if (gunData.category == WeaponCategory.RIFLE) {
+        if (gunData.category == WeaponCategory.RIFLE || gunData.category == WeaponCategory.LMG) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.rifleMuzzleFlashAnimation;
         } else if (gunData.category == WeaponCategory.DMR) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.dmrMuzzleFlashAnimation;
