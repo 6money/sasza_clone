@@ -10,7 +10,8 @@ public class Utils {
     public enum WeaponCategory {
         RIFLE,
         SMG,
-        DMR
+        DMR,
+        LMG
     };
 
     public static void drawTextureRegion(Batch batch, TextureRegion region, float x, float y) {
@@ -26,7 +27,7 @@ public class Utils {
     }
 
     public static void drawTextureRegion(Batch batch, TextureRegion region, float x, float y, float rotation, float scale) {
-        drawTextureRegion(batch, region, x, y, rotation, 1f, region.getRegionWidth() / 2f, region.getRegionHeight() / 2f);
+        drawTextureRegion(batch, region, x, y, rotation, scale, region.getRegionWidth() / 2f, region.getRegionHeight() / 2f);
     }
 
     public static void drawTextureRegion(Batch batch, TextureRegion region, float x, float y, float rotation, float scale, float originX, float originY) {

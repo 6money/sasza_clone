@@ -174,10 +174,14 @@ public class LevelLoader {
             float rotation = 0;
             boolean explicitRotate = false;
             try {
-                JsonValue tags = object.get(Constants.LEVEL_TAGS_KEY);
-                for (JsonValue tag: tags) {
-                    if (tag.asString().equals(Constants.LEVEL_EXPLICIT_ROTATION_KEY)) {
-                        explicitRotate = true;
+                if (textureName.contains("vehicle")) {
+                    explicitRotate = true;
+                } else {
+                    JsonValue tags = object.get(Constants.LEVEL_TAGS_KEY);
+                    for (JsonValue tag : tags) {
+                        if (tag.asString().equals(Constants.LEVEL_EXPLICIT_ROTATION_KEY)) {
+                            explicitRotate = true;
+                        }
                     }
                 }
                 rotation = object.getFloat(Constants.LEVEL_ROTATION_KEY);
