@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.utils.Collision;
 import com.badlogic.gdx.ai.utils.Ray;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
@@ -78,7 +77,6 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
         public Response filter(Item item, Item other) {
             if (item == null) return null;
             if (((Entity) item.userData).characterCollidable && !(item.userData instanceof BaseNPC)) {
-                Gdx.app.log(TAG, item.userData.getClass().getName());
                 return Response.touch;
             } else {
                 return null;
