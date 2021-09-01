@@ -26,6 +26,7 @@ import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
 import com.sixmoney.sasza_clone.entities.Character;
 import com.sixmoney.sasza_clone.entities.DeadEntity;
 import com.sixmoney.sasza_clone.entities.Entity;
+import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.NPCDetectionObject;
 import com.sixmoney.sasza_clone.entities.Player;
@@ -47,7 +48,7 @@ public class Level {
     private Player player;
 
     private Array<Entity> tiles;
-    private DelayedRemovalArray<Entity> environmentEntities;
+    private DelayedRemovalArray<EnvironmentObject> environmentEntities;
     private Array<Entity> canopyEntities;
     private Array<Entity> wallEntities;
     private DelayedRemovalArray<BaseNPC> characterEntities;
@@ -84,17 +85,33 @@ public class Level {
     public void setTiles(Array<Entity> tiles) {
         this.tiles = tiles;
         for (Entity tile: tiles) {
-            if (tile.charaterCollidable) {
+            if (tile.characterCollidable) {
                 world.add(tile.item, tile.bbox.x, tile.bbox.y, tile.bbox.width, tile.bbox.height);
             }
         }
     }
 
-    public void setEnvironmentEntities(Array<Entity> entities) {
+    public void setEnvironmentEntities(Array<EnvironmentObject> entities) {
         this.environmentEntities = new DelayedRemovalArray<>(entities);
-        for (Entity entity: environmentEntities) {
-            world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
-            world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
+        for (EnvironmentObject environmentObject: environmentEntities) {
+            world.add(environmentObject.item, environmentObject.bbox.x, environmentObject.bbox.y, environmentObject.bbox.width, environmentObject.bbox.height);
+            world.add(
+                    environmentObject.bulletCollisionSubObject.item,
+                    environmentObject.bulletCollisionSubObject.bbox.x,
+                    environmentObject.bulletCollisionSubObject.bbox.y,
+                    environmentObject.bulletCollisionSubObject.bbox.width,
+                    environmentObject.bulletCollisionSubObject.bbox.height
+            );
+            for (EnvironmentObject compositeObject: environmentObject.compositeObjects) {
+                world.add(compositeObject.item, compositeObject.bbox.x, compositeObject.bbox.y, compositeObject.bbox.width, compositeObject.bbox.height);
+                world.add(
+                        compositeObject.bulletCollisionSubObject.item,
+                        compositeObject.bulletCollisionSubObject.bbox.x,
+                        compositeObject.bulletCollisionSubObject.bbox.y,
+                        compositeObject.bulletCollisionSubObject.bbox.width,
+                        compositeObject.bulletCollisionSubObject.bbox.height
+                );
+            }
         }
     }
 
@@ -108,7 +125,7 @@ public class Level {
     public void setWallEntities(Array<Entity> entities) {
         this.wallEntities = entities;
         for (Entity entity: wallEntities) {
-            if (entity.charaterCollidable) {
+            if (entity.characterCollidable) {
                 world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
                 world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
             }
@@ -160,7 +177,7 @@ public class Level {
         }
 
         environmentEntities.begin();
-        for (Entity entity: environmentEntities) {
+        for (EnvironmentObject entity: environmentEntities) {
             if (entity.health <= 0) {
                 world.remove(entity.item);
                 if (entity.bulletCollisionSubObject != null) {

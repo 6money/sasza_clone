@@ -41,7 +41,7 @@ public class Bullet extends Entity {
         firstUpdate = true;
         items = new ArrayList<>();
         bulletCollisionFilter = new BulletCollisionFilter();
-        charaterCollidable = false;
+        characterCollidable = false;
         bulletCollidable = false;
     }
 

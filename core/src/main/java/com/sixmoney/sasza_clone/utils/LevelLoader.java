@@ -168,7 +168,7 @@ public class LevelLoader {
     }
 
     private static void loadEnvironment(Array<JsonValue> objects, Level level) {
-        Array<Entity> environmentArray = new Array<>();
+        Array<EnvironmentObject> environmentArray = new Array<>();
 
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);

@@ -1,9 +1,12 @@
 package com.sixmoney.sasza_clone.entities;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.CompositeObjectData;
 import com.sixmoney.sasza_clone.utils.Constants;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -11,16 +14,24 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class EnvironmentObject extends Entity {
 
+    public Array<EnvironmentObject> compositeObjects;
+
     public EnvironmentObject(float x, float y, String textureName) {
         this(x, y, textureName, false, 0);
     }
 
     public EnvironmentObject(float x, float y, String textureName, boolean explicitRotate, float rotation) {
+        this(x, y, textureName, explicitRotate, rotation, true, true);
+    }
+
+    public EnvironmentObject(float x, float y, String textureName, boolean explicitRotate, float rotation, boolean characterCollidable, boolean bulletCollidable) {
         super();
         entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
         position = new Vector2(x, y);
         health = 100;
         maxHealth = 100;
+        this.characterCollidable = characterCollidable;
+        this.bulletCollidable = bulletCollidable;
         if (textureName.contains("box") || textureName.contains("barrel")) {
             destructible = true;
         }
@@ -67,10 +78,29 @@ public class EnvironmentObject extends Entity {
         );
 
         if (textureName.contains("bush")) {
-            bulletCollidable = false;
+            this.bulletCollidable = false;
         }
 
         bulletCollisionSubObject = new BulletCollisionSubObject(this, Constants.BBOX_BUFFER_ENVIRONMENT);
+        compositeObjects = new Array<>();
+
+        try {
+            CompositeObjectData.CompositeObjectRecord[] test = CompositeObjectData.get_instance().compositeObjectRecordMap.get(textureName);
+
+            for (CompositeObjectData.CompositeObjectRecord record: test) {
+                compositeObjects.add(new EnvironmentObject(x + record.xOffset, y + record.yOffset, record.textureName, explicitRotate, this.rotation, record.characterCollidable, record.bulletCollidable));
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void render(Batch batch) {
+        super.render(batch);
+
+        for (EnvironmentObject environmentObject: compositeObjects) {
+            environmentObject.render(batch);
+        }
     }
 
     @Override
@@ -78,6 +108,10 @@ public class EnvironmentObject extends Entity {
         super.renderDebug(drawer);
         if (bulletCollisionSubObject != null && bulletCollidable) {
             drawer.rectangle(bulletCollisionSubObject.bbox, Color.ORANGE);
+        }
+
+        for (EnvironmentObject environmentObject: compositeObjects) {
+            environmentObject.renderDebug(drawer);
         }
     }
 }

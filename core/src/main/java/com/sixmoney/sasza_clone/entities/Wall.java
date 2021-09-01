@@ -16,7 +16,7 @@ public class Wall extends Entity {
 
     public Wall(float x, float y, String textureName, boolean isDoor) {
         super();
-        charaterCollidable = !isDoor;
+        characterCollidable = !isDoor;
         this.isDoor = isDoor;
         position = new Vector2(x, y);
 

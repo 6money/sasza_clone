@@ -27,7 +27,7 @@ public class Canopy extends Entity {
         rotation = MathUtils.random(0, 360);
         transparent = false;
         collisionItems = new ArrayList<>();
-        charaterCollidable = false;
+        characterCollidable = false;
         bulletCollidable = false;
     }
 

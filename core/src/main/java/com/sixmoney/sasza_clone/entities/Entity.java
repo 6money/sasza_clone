@@ -27,7 +27,7 @@ public abstract class Entity {
     public float maxHealth;
     public float health;
     public boolean destructible;
-    public boolean charaterCollidable;
+    public boolean characterCollidable;
     public boolean bulletCollidable;
 
     protected Entity() {
@@ -40,7 +40,7 @@ public abstract class Entity {
         bbox = new Rectangle(0, 0, 0, 0);
         destructible = false;
         rotation = 0;
-        charaterCollidable = true;
+        characterCollidable = true;
         bulletCollidable = true;
         entityTextureRegion = Assets.get_instance().playerAssets.playerPlaceholder;
         animationStartTime = 0;
@@ -58,7 +58,7 @@ public abstract class Entity {
     }
 
     public void renderDebug(ShapeDrawer drawer) {
-        if (bbox != null && (charaterCollidable || bulletCollidable)) {
+        if (bbox != null && (characterCollidable || bulletCollidable)) {
             drawer.rectangle(bbox, Color.MAGENTA);
         }
     }
@@ -81,7 +81,7 @@ public abstract class Entity {
         dataString = dataString + "\nbounding box: " + bbox.toString();
         dataString = dataString + "\nhealth: " + health;
         dataString = dataString + "\ndestructible: " + destructible;
-        dataString = dataString + "\ncharaterCollidable: " + charaterCollidable;
+        dataString = dataString + "\ncharaterCollidable: " + characterCollidable;
         dataString = dataString + "\nbulletCollidable: " + bulletCollidable;
         return new String[]{dataClass, dataString};
     }

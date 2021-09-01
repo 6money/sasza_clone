@@ -19,7 +19,7 @@ public class BulletCollisionSubObject extends Entity {
         );
         item = new Item<>(this);
         destructible = parent.destructible;
-        charaterCollidable = false;
+        characterCollidable = false;
         bulletCollidable = parent.bulletCollidable;
     }
 

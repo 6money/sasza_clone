@@ -97,7 +97,7 @@ public class BaseNPC extends Character {
         @Override
         public Response filter(Item item, Item other) {
             if(other == null) return null;
-            if (((Entity) other.userData).charaterCollidable) {
+            if (((Entity) other.userData).characterCollidable) {
                 return Response.slide;
             } else {
                 return null;
