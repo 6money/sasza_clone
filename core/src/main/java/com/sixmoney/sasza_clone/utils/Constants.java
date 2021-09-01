@@ -88,13 +88,10 @@ public class Constants {
     public static final String TREE_4 = "canopy_tree4";
 
     // tile sprites
-    public static final String GRASS_TO_ROAD = "_0006_GrassToRoad";
-    public static final String DIRT_TO_ROAD = "_0008_DirtToRoad";
-    public static final String SAND_TO_ROAD = "_0007_SandToRoad";
-    public static final String GRASS = "_0003_GrassTiles";
-    public static final String DIRT = "_0001_DirtTiles";
-    public static final String SAND = "_0002_SandTiles";
-    public static final String WATER = "_0000_WTiles";
+    public static final String GRASS = "tile_grass";
+    public static final String DIRT = "tile_dirt";
+    public static final String SAND = "tile_sand";
+    public static final String WATER = "tile_water";
 
     // weapon sprites
     public static final String MP5_BASE = "mp5_base";

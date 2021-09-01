@@ -206,18 +206,12 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     public class TileAssets {
-        public TextureRegion dirtToRoad;
-        public TextureRegion sandToRoad;
-        public TextureRegion grassToRoad;
         public TextureRegion grass;
         public TextureRegion dirt;
         public TextureRegion sand;
         public TextureRegion water;
 
         public TileAssets(TextureAtlas atlasPrivate) {
-            dirtToRoad = atlasPrivate.findRegion(Constants.DIRT_TO_ROAD);
-            sandToRoad = atlasPrivate.findRegion(Constants.SAND_TO_ROAD);
-            grassToRoad = atlasPrivate.findRegion(Constants.GRASS_TO_ROAD);
             grass = atlasPrivate.findRegion(Constants.GRASS);
             dirt = atlasPrivate.findRegion(Constants.DIRT);
             sand = atlasPrivate.findRegion(Constants.SAND);
