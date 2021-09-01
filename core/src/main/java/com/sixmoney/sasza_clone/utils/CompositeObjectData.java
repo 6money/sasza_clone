@@ -12,9 +12,9 @@ public class CompositeObjectData {
 
     private CompositeObjectData() {
         helicopter = new CompositeObjectRecord[]{
-                new CompositeObjectRecord("vehicles_helicopter_wings_left", -12, 43, true, true),
-                new CompositeObjectRecord("vehicles_helicopter_wings_right", 50, 43, true, true),
-                new CompositeObjectRecord("vehicles_helicopter_blades2", -88.5f, -39, false, false)
+                new CompositeObjectRecord("vehicles_helicopter_wings_left", -12, 43, true, true, false),
+                new CompositeObjectRecord("vehicles_helicopter_wings_right", 50, 43, true, true, false),
+                new CompositeObjectRecord("vehicles_helicopter_blades2", -88.5f, -39, false, false, true)
         };
 
         compositeObjectRecordMap = new HashMap<>();
@@ -35,14 +35,16 @@ public class CompositeObjectData {
         public float yOffset;
         public boolean characterCollidable;
         public boolean bulletCollidable;
+        public boolean upper;
 
         public CompositeObjectRecord(String textureName, float xOffset, float yOffset,
-                         boolean characterCollidable, boolean bulletCollidable) {
+                         boolean characterCollidable, boolean bulletCollidable, boolean upper) {
             this.textureName = textureName;
             this.xOffset = xOffset;
             this.yOffset = yOffset;
             this.characterCollidable = characterCollidable;
             this.bulletCollidable = bulletCollidable;
+            this.upper = upper;
         }
     }
 }

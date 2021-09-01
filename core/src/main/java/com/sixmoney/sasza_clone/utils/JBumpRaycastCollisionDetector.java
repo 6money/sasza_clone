@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.utils.Collision;
 import com.badlogic.gdx.ai.utils.Ray;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
@@ -9,10 +10,8 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
+import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Entity;
-import com.sixmoney.sasza_clone.entities.EnvironmentObject;
-import com.sixmoney.sasza_clone.entities.FloorTile;
-import com.sixmoney.sasza_clone.entities.Wall;
 
 import java.util.ArrayList;
 
@@ -77,11 +76,13 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
     public static class RayCastCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
-            if(item == null) return null;
-            else if (item.userData instanceof EnvironmentObject) return Response.touch;
-            else if (item.userData instanceof FloorTile) return Response.touch;
-            else if (item.userData instanceof Wall) return Response.touch;
-            else return null;
+            if (item == null) return null;
+            if (((Entity) item.userData).characterCollidable && !(item.userData instanceof BaseNPC)) {
+                Gdx.app.log(TAG, item.userData.getClass().getName());
+                return Response.touch;
+            } else {
+                return null;
+            }
         }
     }
 }

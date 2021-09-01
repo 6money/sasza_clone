@@ -8,12 +8,14 @@ import com.badlogic.gdx.utils.Array;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.CompositeObjectData;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.Utils;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 
 public class EnvironmentObject extends Entity {
 
+    public boolean upper;
     public Array<EnvironmentObject> compositeObjects;
 
     public EnvironmentObject(float x, float y, String textureName) {
@@ -21,10 +23,10 @@ public class EnvironmentObject extends Entity {
     }
 
     public EnvironmentObject(float x, float y, String textureName, boolean explicitRotate, float rotation) {
-        this(x, y, textureName, explicitRotate, rotation, true, true);
+        this(x, y, textureName, explicitRotate, rotation, true, true, false);
     }
 
-    public EnvironmentObject(float x, float y, String textureName, boolean explicitRotate, float rotation, boolean characterCollidable, boolean bulletCollidable) {
+    public EnvironmentObject(float x, float y, String textureName, boolean explicitRotate, float rotation, boolean characterCollidable, boolean bulletCollidable, boolean upper) {
         super();
         entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
         position = new Vector2(x, y);
@@ -32,6 +34,7 @@ public class EnvironmentObject extends Entity {
         maxHealth = 100;
         this.characterCollidable = characterCollidable;
         this.bulletCollidable = bulletCollidable;
+        this.upper = upper;
         if (textureName.contains("box") || textureName.contains("barrel")) {
             destructible = true;
         }
@@ -88,7 +91,7 @@ public class EnvironmentObject extends Entity {
             CompositeObjectData.CompositeObjectRecord[] test = CompositeObjectData.get_instance().compositeObjectRecordMap.get(textureName);
 
             for (CompositeObjectData.CompositeObjectRecord record: test) {
-                compositeObjects.add(new EnvironmentObject(x + record.xOffset, y + record.yOffset, record.textureName, explicitRotate, this.rotation, record.characterCollidable, record.bulletCollidable));
+                compositeObjects.add(new EnvironmentObject(x + record.xOffset, y + record.yOffset, record.textureName, explicitRotate, this.rotation, record.characterCollidable, record.bulletCollidable, record.upper));
             }
         } catch (Exception ignored) {
         }
@@ -96,10 +99,33 @@ public class EnvironmentObject extends Entity {
 
     @Override
     public void render(Batch batch) {
-        super.render(batch);
+        if (!upper) {
+            super.render(batch);
+        }
 
         for (EnvironmentObject environmentObject: compositeObjects) {
-            environmentObject.render(batch);
+            if (!environmentObject.upper) {
+                environmentObject.render(batch);
+            }
+        }
+    }
+
+    @Override
+    public void renderSecondary(Batch batch) {
+        if (upper) {
+            Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
+        }
+
+        for (EnvironmentObject environmentObject: compositeObjects) {
+            if (environmentObject.upper) {
+                Utils.drawTextureRegion(
+                        batch,
+                        environmentObject.entityTextureRegion,
+                        environmentObject.position.x,
+                        environmentObject.position.y,
+                        environmentObject.rotation
+                );
+            }
         }
     }
 
