@@ -10,6 +10,7 @@ import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.entities.BaseEnemy;
 import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Canopy;
+import com.sixmoney.sasza_clone.entities.EnemyTierThree;
 import com.sixmoney.sasza_clone.entities.EnemyTierTwo;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.EnvironmentObject;
@@ -154,6 +155,8 @@ public class LevelLoader {
             BaseEnemy zom;
             if (textureName.equals(Constants.ZOM2)) {
                 zom = new EnemyTierTwo(x, y);
+            } else if (textureName.equals(Constants.ZOM3)) {
+                zom = new EnemyTierThree(x, y);
             } else {
                 zom = new BaseEnemy(x, y);
             }

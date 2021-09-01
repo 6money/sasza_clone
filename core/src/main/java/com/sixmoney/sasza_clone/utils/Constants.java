@@ -64,8 +64,10 @@ public class Constants {
     // enemy sprites
     public static final String ZOM1 = "zom1_base";
     public static final String ZOM2 = "zom2_base";
+    public static final String ZOM3= "zom3_base";
     public static final String ZOM1_DEAD = "zom1_die";
     public static final String ZOM2_DEAD = "zom2_die";
+    public static final String ZOM3_DEAD = "zom3_die";
 
     // environment sprites
     public static final String BOX_1 = "environment_box1";

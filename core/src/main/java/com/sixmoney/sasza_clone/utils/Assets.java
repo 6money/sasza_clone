@@ -174,16 +174,20 @@ public class Assets implements Disposable, AssetErrorListener {
         public Animation<TextureRegion> enemyWalkingAnimation;
         public Animation<TextureRegion> zom1DyingAnimation;
         public Animation<TextureRegion> zom2DyingAnimation;
+        public Animation<TextureRegion> zom3DyingAnimation;
         public TextureRegion zom1;
         public TextureRegion zom2;
+        public TextureRegion zom3;
 
         public EnemyAssets(TextureAtlas atlas, TextureAtlas atlasPrivate) {
             zom1 = atlasPrivate.findRegion(Constants.ZOM1);
             zom2 = atlasPrivate.findRegion(Constants.ZOM2);
+            zom3 = atlasPrivate.findRegion(Constants.ZOM3);
             enemyStand = atlasPrivate.findRegion(Constants.NPC_STAND_S1);
             enemyWalkingAnimation = new Animation<>(0.10f, atlasPrivate.findRegions(Constants.NPC_WALK_S1), Animation.PlayMode.LOOP);
             zom1DyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ZOM1_DEAD), Animation.PlayMode.NORMAL);
             zom2DyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ZOM2_DEAD), Animation.PlayMode.NORMAL);
+            zom3DyingAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.ZOM3_DEAD), Animation.PlayMode.NORMAL);
         }
     }
 
