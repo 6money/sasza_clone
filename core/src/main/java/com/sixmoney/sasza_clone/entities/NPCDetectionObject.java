@@ -57,7 +57,7 @@ public class NPCDetectionObject extends Entity {
                         collisions.get(i).otherRect.y + (((Entity) collisions.get(i).other.userData).bbox.height / 2));
                 tempLenVector.set(tempVector);
                 tempLenVector.sub(parent.getPosition());
-                if (tempLenVector.len() < targetLenVector.len()) {
+                if (tempLenVector.len2() < targetLenVector.len2()) {
                     targetVector.set(tempVector);
                     targetLenVector.set(targetVector);
                     targetLenVector.sub(parent.getPosition());
