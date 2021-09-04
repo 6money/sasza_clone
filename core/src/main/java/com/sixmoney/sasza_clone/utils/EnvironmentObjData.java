@@ -22,12 +22,16 @@ public class EnvironmentObjData {
         buffers.put(default_record, new EnvironmentObjRecord(default_buffer_array, true, true, false, false));
 
         // base vehicles
-        buffers.put("vehicles_helicopter_base", new EnvironmentObjRecord(new float[]{15, default_buffer}, true, true, true, false));
-        buffers.put("vehicles_helicopter_base_broken2", new EnvironmentObjRecord(new float[]{15, default_buffer}, true, true, true, false));
+        buffers.put("vehicles_helicopter_base", new EnvironmentObjRecord(new float[]{18, 10}, true, true, true, false));
+        buffers.put("vehicles_helicopter_base_broken2", new EnvironmentObjRecord(new float[]{18, 10}, true, true, true, false));
         buffers.put("vehicles_bomber_mini", new EnvironmentObjRecord(new float[]{73, 12}, true, true, true, false));
         buffers.put("vehicles_bomber", new EnvironmentObjRecord(new float[]{108, 18}, true, true, true, false));
         buffers.put("vehicles_bomber_broken1", new EnvironmentObjRecord(new float[]{108, 18}, true, true, true, false));
         buffers.put("vehicles_bomber_broken2", new EnvironmentObjRecord(new float[]{108, 18}, true, true, true, false));
+        buffers.put("vehicles_humvee_broken3", new EnvironmentObjRecord(new float[]{12, default_buffer}, true, true, false, false));
+        buffers.put("vehicles_humvee_broken4", new EnvironmentObjRecord(new float[]{12, default_buffer}, true, true, false, false));
+        buffers.put("vehicles_humvee_broken5", new EnvironmentObjRecord(new float[]{8, default_buffer}, true, true, false, false));
+        buffers.put("vehicles_humvee_broken6sd", new EnvironmentObjRecord(new float[]{8, default_buffer}, true, true, false, false));
 
         // vehicle composites
         buffers.put("vehicles_helicopter_blades2", new EnvironmentObjRecord(default_buffer_array, false, false, true, false));

@@ -16,6 +16,8 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class EnvironmentObject extends Entity {
 
+    private float[] rotationOrigin;
+
     public boolean upper;
     public Array<EnvironmentObject> compositeObjects;
 
@@ -24,6 +26,10 @@ public class EnvironmentObject extends Entity {
     }
 
     public EnvironmentObject(float x, float y, String textureName, boolean explicitRotate, float rotation) {
+        this(x, y, textureName, explicitRotate, rotation, null);
+    }
+
+    public EnvironmentObject(float x, float y, String textureName, boolean explicitRotate, float rotation, float[] rotationOrigin) {
         super();
         entityTextureRegion = Assets.get_instance().getPrivateAtlas().findRegion(textureName);
         position = new Vector2(x, y);
@@ -51,6 +57,11 @@ public class EnvironmentObject extends Entity {
             this.rotation = rotation;
         }
 
+        if (rotationOrigin != null) {
+            this.rotationOrigin = rotationOrigin;
+        }
+
+
         String objKey;
 
         if (textureName.contains("box") || textureName.contains("barrel") || textureName.contains("bush")) {
@@ -66,12 +77,46 @@ public class EnvironmentObject extends Entity {
         float bboxX = x;
         float bboxY = y;
 
-        if (this.rotation == 90 || this.rotation == 270 ||
-                this.rotation == -90 || this.rotation == -270) {
-            bboxX += width / 2 - height / 2;
-            bboxY -= width / 2 - height / 2;
-            width = entityTextureRegion.getRegionHeight();
-            height = entityTextureRegion.getRegionWidth();
+        if (this.rotation != 0) {
+
+            float[] p1 = rotatePoint(-(width / 2), -(height / 2));
+
+            if (this.rotationOrigin == null) {
+                p1[0] = p1[0] + (width / 2);
+                p1[1] = p1[1] + (height / 2);
+            }
+
+            if (this.rotation == 90 || this.rotation == -270) {
+                if (this.rotationOrigin == null) {
+                    p1[0] -= height;
+                } else {
+                    p1[0] -= height * 1.5;
+                    p1[1] += width / 2;
+                }
+            } else if (this.rotation == -90 || this.rotation == 270) {
+                if (this.rotationOrigin == null) {
+                    p1[1] -= width;
+                } else {
+                    p1[0] += height / 2;
+                    p1[1] -= width * 1.5;
+                }
+            } else if (this.rotation == 180) {
+                if (this.rotationOrigin == null) {
+                    p1[0] -= width;
+                    p1[1] -= height;
+                } else {
+                    p1[0] -= width * 1.5;
+                    p1[1] -= height * 1.5;
+                }
+            }
+
+            bboxX += p1[0];
+            bboxY += p1[1];
+
+            if (this.rotation == 90 || this.rotation == -90) {
+                width = entityTextureRegion.getRegionHeight();
+                height = entityTextureRegion.getRegionWidth();
+            }
 
             bbox.set(
                     bboxX + envObjRecord.bboxBuffer[1],
@@ -101,16 +146,47 @@ public class EnvironmentObject extends Entity {
             CompositeObjectData.CompositeObjectRecord[] test = CompositeObjectData.get_instance().compositeObjectRecordMap.get(textureName);
 
             for (CompositeObjectData.CompositeObjectRecord record: test) {
-                compositeObjects.add(new EnvironmentObject(x + record.xOffset, y + record.yOffset, record.textureName, explicitRotate, this.rotation));
+                compositeObjects.add(new EnvironmentObject(x + record.xOffset, y + record.yOffset, record.textureName, explicitRotate, this.rotation, record.rotateOrig));
             }
         } catch (Exception ignored) {
         }
     }
 
+    private float[] rotatePoint(float tempX, float tempY) {
+        if (this.rotationOrigin != null) {
+            tempX -= this.rotationOrigin[0];
+            tempY -= this.rotationOrigin[1];
+        }
+
+        if (this.rotation == 90 || this.rotation == -270) {
+            float temp = tempX;
+            tempX = -tempY;
+            tempY = temp;
+        } else if (this.rotation == -90 || this.rotation == 270) {
+            float temp = tempX;
+            tempX = tempY;
+            tempY = -temp;
+        } else if (this.rotation == 180) {
+            tempX = -tempX;
+            tempY = -tempY;
+        }
+
+        if (this.rotationOrigin != null) {
+            tempX += this.rotationOrigin[0];
+            tempY += this.rotationOrigin[1];
+        }
+
+        return new float[]{tempX, tempY};
+    }
+
     @Override
     public void render(Batch batch) {
         if (!upper) {
-            super.render(batch);
+            if (rotationOrigin == null) {
+                Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
+            } else {
+                Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation, 1, rotationOrigin[0], rotationOrigin[1]);
+            }
         }
 
         for (EnvironmentObject environmentObject: compositeObjects) {
@@ -123,18 +199,16 @@ public class EnvironmentObject extends Entity {
     @Override
     public void renderSecondary(Batch batch) {
         if (upper) {
-            Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
+            if (rotationOrigin == null) {
+                Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
+            } else {
+                Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation, 1, rotationOrigin[0], rotationOrigin[1]);
+            }
         }
 
         for (EnvironmentObject environmentObject: compositeObjects) {
             if (environmentObject.upper) {
-                Utils.drawTextureRegion(
-                        batch,
-                        environmentObject.entityTextureRegion,
-                        environmentObject.position.x,
-                        environmentObject.position.y,
-                        environmentObject.rotation
-                );
+                environmentObject.renderSecondary(batch);
             }
         }
     }
