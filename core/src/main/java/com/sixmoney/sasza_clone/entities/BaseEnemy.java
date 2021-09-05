@@ -61,7 +61,7 @@ public class BaseEnemy extends Character {
                 setPosition(collision.touch.x - (bbox.x - position.x), collision.touch.y - (bbox.y - position.y));
             }
 
-            if (((Entity) collision.other.userData).destructible) {
+            if (((Entity) collision.other.userData).destructible && !(collision.other.userData instanceof BaseEnemy)) {
                 attack((Entity) collision.other.userData);
             }
         }
