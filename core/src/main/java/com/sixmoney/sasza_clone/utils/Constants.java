@@ -11,7 +11,7 @@ public class Constants {
     public static final int WORLD_WIDTH = 640;
 //    public static final int WORLD_HEIGHT_2 = 540;
     public static final int WORLD_HEIGHT = 360;
-    public static final Color BG_COLOR = Color.SKY;
+    public static final Color BG_COLOR = Color.BLACK;
     public static final int BACKGROUND_FPS = 30;
     public static final int FORGROUND_FPS = 144;
     public static final boolean V_SYNC = false;

@@ -1,1 +1,1 @@
-{parameterVO:{gridWidth:232,gridHeight:150}}
+{tiles:[{regionName:tile_sand},{regionName:tile_dirt},{regionName:tile_grass},{regionName:tile_water}],parameterVO:{gridWidth:192,gridHeight:192}}
