@@ -11,6 +11,7 @@ import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Utils;
 
+import hxDaedalus.data.Obstacle;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public abstract class Entity {
@@ -29,6 +30,7 @@ public abstract class Entity {
     public boolean destructible;
     public boolean characterCollidable;
     public boolean bulletCollidable;
+    public Obstacle pathObstacle;
 
     protected Entity() {
         rotation = 0;

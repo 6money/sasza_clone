@@ -121,6 +121,7 @@ public class Constants {
     public static final String LEVEL_TAGS_KEY = "tags";
     public static final String LEVEL_ROTATION_KEY = "rotation";
     public static final String LEVEL_EXPLICIT_ROTATION_KEY = "explicitRotate";
+    public static final String LEVEL_OFFSET_KEY = "offset";
     public static final String LEVEL_X_KEY = "x";
     public static final String LEVEL_Y_KEY = "y";
     public static final String LEVEL_WIDTH_KEY = "width";

@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.ai.steer.utils.RayConfiguration;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
@@ -19,6 +21,9 @@ import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
+import com.dongbat.walkable.FloatArray;
+import com.dongbat.walkable.PathHelper;
+import com.dongbat.walkable.PathfinderException;
 import com.sixmoney.sasza_clone.entities.BaseEnemy;
 import com.sixmoney.sasza_clone.entities.BaseNPC;
 import com.sixmoney.sasza_clone.entities.Bullet;
@@ -38,6 +43,7 @@ import com.sixmoney.sasza_clone.utils.Utils;
 
 import java.util.ArrayList;
 
+import hxDaedalus.data.Obstacle;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Level {
@@ -46,6 +52,8 @@ public class Level {
     private Viewport viewport;
     private ChaseCam camera;
     private Player player;
+    private PathHelper pathHelper;
+    private Vector2 offset;
 
     private Array<Entity> tiles;
     private DelayedRemovalArray<EnvironmentObject> environmentEntities;
@@ -56,12 +64,21 @@ public class Level {
     private Array<Entity> deadEntities;
     private final DelayedRemovalArray<Bullet> bullets;
 
+    public FloatArray path;
+    public Vector2 clickedCoordinate;
+    public boolean showPath;
+
     public Level(Viewport viewport, ChaseCam camera) {
         this.viewport = viewport;
         this.camera = camera;
+        offset = new Vector2(0, 0);
 
         world = new World<>();
         world.setTileMode(true);
+        pathHelper = new PathHelper(2000, 2000);
+        path = new FloatArray();
+        showPath = false;
+        clickedCoordinate = new Vector2(0,0);
 
         tiles = new Array<>();
         environmentEntities = new DelayedRemovalArray<>();
@@ -70,6 +87,10 @@ public class Level {
         enemyEntities = new DelayedRemovalArray<>();
         deadEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
+    }
+
+    public void setOffset(Vector2 offset) {
+        this.offset = offset;
     }
 
     public Player getPlayer() {
@@ -87,6 +108,7 @@ public class Level {
         for (Entity tile: tiles) {
             if (tile.characterCollidable) {
                 world.add(tile.item, tile.bbox.x, tile.bbox.y, tile.bbox.width, tile.bbox.height);
+                tile.pathObstacle = pathHelper.addRect(tile.bbox.x + offset.x, tile.bbox.y + offset.y, tile.bbox.width, tile.bbox.height);
             }
         }
     }
@@ -102,6 +124,11 @@ public class Level {
                     environmentObject.bulletCollisionSubObject.bbox.width,
                     environmentObject.bulletCollisionSubObject.bbox.height
             );
+
+            if (environmentObject.characterCollidable) {
+                environmentObject.pathObstacle = pathHelper.addRect(environmentObject.bbox.x + offset.x, environmentObject.bbox.y + offset.y, environmentObject.bbox.width, environmentObject.bbox.height);
+            }
+
             for (EnvironmentObject compositeObject: environmentObject.compositeObjects) {
                 world.add(compositeObject.item, compositeObject.bbox.x, compositeObject.bbox.y, compositeObject.bbox.width, compositeObject.bbox.height);
                 world.add(
@@ -111,6 +138,10 @@ public class Level {
                         compositeObject.bulletCollisionSubObject.bbox.width,
                         compositeObject.bulletCollisionSubObject.bbox.height
                 );
+
+                if (compositeObject.characterCollidable) {
+                    compositeObject.pathObstacle = pathHelper.addRect(compositeObject.bbox.x + offset.x, compositeObject.bbox.y + offset.y, compositeObject.bbox.width, compositeObject.bbox.height);
+                }
             }
         }
     }
@@ -128,6 +159,7 @@ public class Level {
             if (entity.characterCollidable) {
                 world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
                 world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
+                entity.pathObstacle = pathHelper.addRect(entity.bbox.x + offset.x, entity.bbox.y + offset.y, entity.bbox.width, entity.bbox.height);
             }
         }
     }
@@ -180,6 +212,9 @@ public class Level {
         for (EnvironmentObject entity: environmentEntities) {
             if (entity.health <= 0) {
                 world.remove(entity.item);
+                if (entity.pathObstacle != null) {
+                    pathHelper.removeObstacle(entity.pathObstacle);
+                }
                 if (entity.bulletCollisionSubObject != null) {
                     world.remove(entity.bulletCollisionSubObject.item);
                 }
@@ -298,6 +333,41 @@ public class Level {
             entity.renderDebug(drawer);
         }
         player.renderDebug(drawer);
+
+        if (showPath) {
+
+            for (Obstacle obstacle: pathHelper.obstacles) {
+                haxe.root.Array<Object> coords = obstacle._coordinates;
+                Rectangle rectangle = new Rectangle((float) obstacle.get_x() - offset.x, (float) obstacle.get_y() - offset.y, ((float) coords.__get(2)), ((float) coords.__get(7)));
+                drawer.rectangle(rectangle);
+            }
+
+            float pastNodeX = player.getPosition().x + offset.x;
+            float pastNodeY = player.getPosition().y + offset.y;
+
+            for (int i = 0; i < path.size; i += 2) {
+                drawer.line(pastNodeX - offset.x, pastNodeY - offset.y, path.get(i) - offset.x, path.get(i + 1) - offset.y);
+                pastNodeX = path.get(i);
+                pastNodeY = path.get(i + 1);
+            }
+        }
+    }
+
+    public void genPath(Vector2 clickedCoords) {
+        clickedCoordinate = clickedCoords.add(offset);
+        try {
+            pathHelper.findPath(player.getPosition().x + offset.x, player.getPosition().y + offset.y, clickedCoordinate.x, clickedCoordinate.y, getPlayer().bbox.width / 2, path);
+        } catch (PathfinderException e) {
+            return;
+        }
+
+        Gdx.app.log(TAG, path.size + "");
+        for (int i = 0; i < path.size; i += 2) {
+            Gdx.app.log(TAG, path.get(i) + ", " + path.get(i + 1));
+        }
+        for (float floaty: path.items) {
+            Gdx.app.log(TAG, floaty + "");
+        }
     }
 
     public void shoot(Character character) {

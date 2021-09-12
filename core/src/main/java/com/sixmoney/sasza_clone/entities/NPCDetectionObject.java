@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.CollisionFilter;
@@ -84,10 +83,6 @@ public class NPCDetectionObject extends Entity implements Comparator<Integer> {
                         infos
                 );
 
-                if (infos.size() != 0) {
-                    Gdx.app.log(TAG, infos.get(0).item.userData.getClass().getSimpleName());
-                }
-
                 if (infos.size() != 0 && infos.get(0).item.userData instanceof BaseEnemy) {
                     targetVector.set(
                             collisions.get(integer).otherRect.x + (collisions.get(integer).otherRect.w / 2),
@@ -96,6 +91,8 @@ public class NPCDetectionObject extends Entity implements Comparator<Integer> {
                 }
             }
         }
+
+
 
         return null;
     }

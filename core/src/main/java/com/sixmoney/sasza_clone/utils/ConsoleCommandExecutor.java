@@ -26,6 +26,11 @@ public class ConsoleCommandExecutor extends CommandExecutor {
         console.log(gameWorld.clickedEntity.getData()[1]);
     }
 
+    @ConsoleDoc(description = "Display pathfinding route to click coordinate") public final void togglePath() {
+        console.log("Current selected coordinate: " + gameWorld.level.clickedCoordinate.toString());
+        gameWorld.level.showPath = !gameWorld.level.showPath;
+    }
+
     // Player commands
     @ConsoleDoc(description = "Teleports the player to the specified location") public final void teleport(float x, float y) {
         gameWorld.level.teleportPlayer(x, y);

@@ -2,6 +2,7 @@ package com.sixmoney.sasza_clone.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -36,6 +37,7 @@ public class LevelLoader {
         Array<JsonValue> walls = new Array<>();
         Level level = new Level(viewport, camera);
         String path = Constants.LEVEL_DIR + File.separator + levelName + Constants.LEVEL_FILE_EXTENSION;
+        Vector2 offset;
 
 
         try {
@@ -54,8 +56,6 @@ public class LevelLoader {
                         enemies.add(jsonObject);
                         break;
                     case "Environment":
-                        environment.add(jsonObject);
-                        break;
                     case "Vehicles":
                         environment.add(jsonObject);
                         break;
@@ -65,8 +65,24 @@ public class LevelLoader {
                     case "Walls":
                         walls.add(jsonObject);
                         break;
-                    default:
+                    case "GroundFloor":
+                    case "GroundRoad":
+                    case "GroundWater":
+                    case "GroundSand":
+                    case "GroundGrass":
+                    case "GroundDirt":
                         tiles.add(jsonObject);
+                    default:
+                        JsonValue tags = jsonObject.get(Constants.LEVEL_TAGS_KEY);
+                        for (JsonValue tag : tags) {
+                            if (tag.asString().equals(Constants.LEVEL_OFFSET_KEY)) {
+                                offset = new Vector2(jsonObject.getFloat(Constants.LEVEL_X_KEY, 0), jsonObject.getFloat(Constants.LEVEL_Y_KEY, 0));
+                                offset.x = -offset.x;
+                                offset.y = -offset.y;
+                                level.setOffset(offset);
+                                Gdx.app.log(TAG, "offset:" + offset.toString());
+                            }
+                        }
                         break;
                 }
             }

@@ -233,7 +233,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public float getBoundingRadius() {
-        return Constants.PLAYER_CENTER.x;
+        return Constants.PLAYER_CENTER.x / 2;
     }
 
     @Override

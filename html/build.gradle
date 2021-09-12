@@ -48,6 +48,7 @@ dependencies {
 //	implementation "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion:sources"
 	implementation "de.golfgl.gdxcontrollerutils:gdx-controllerutils-scene2d:$gdxControllerutilsScene2d:sources"
 	implementation files("libs/libgdx-inGameConsole-1.0.0-sources.jar")
+	implementation files("libs/jwalkable-sources.jar")
 }
 
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
