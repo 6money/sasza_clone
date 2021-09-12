@@ -15,8 +15,6 @@ public class Constants {
     public static final int BACKGROUND_FPS = 30;
     public static final int FORGROUND_FPS = 144;
     public static final boolean V_SYNC = false;
-    public static final int BBOX_BUFFER_ENVIRONMENT = 5;
-    public static final int BBOX_BUFFER_WALL = 2;
     public static final String SKIN_PATH = "ui/shimmer-ui.json";
     public static final String SKIN_CONSOLE_PATH = "ui/console/uiskin.json";
     public static final String PREFERENCES_NAME = "sasza_clone";
@@ -24,6 +22,11 @@ public class Constants {
     public static final String TEXTURE_ATLAS_PRIVATE = "packagedPrivate/sasza_clone_private.atlas";
     public static final String TEXTURE_ATLAS_PRIVATE_WEAPONS = "packagedPrivate/sasza_clone_private_weapons.atlas";
     public static final String VERSION = "0.0.1-alpha";
+
+    // level stuff
+    public static final int BBOX_BUFFER_ENVIRONMENT = 5;
+    public static final int BBOX_BUFFER_WALL = 2;
+    public static final int MAX_DEAD_SPRITES = 100;
 
 
     // debug sprites

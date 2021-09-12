@@ -229,6 +229,9 @@ public class Level {
                 world.remove(enemy.item);
                 enemyEntities.removeValue(enemy, true);
                 deadEntities.add(new DeadEntity(enemy.position.x, enemy.position.y, enemy.rotation, enemy.deathAnimation));
+                if (deadEntities.size > Constants.MAX_DEAD_SPRITES) {
+                    deadEntities.removeIndex(0);
+                }
             }
         }
         enemyEntities.end();
@@ -240,6 +243,9 @@ public class Level {
                 world.remove(baseNPC.detectionObject.item);
                 characterEntities.removeValue(baseNPC, true);
                 deadEntities.add(new DeadEntity(baseNPC.position.x, baseNPC.position.y, baseNPC.rotation, baseNPC.deathAnimation));
+                if (deadEntities.size > Constants.MAX_DEAD_SPRITES) {
+                    deadEntities.removeIndex(0);
+                }
             }
             if (baseNPC.shooting && Utils.secondsSince(baseNPC.shootStartTime) > 1 / baseNPC.getGun().getFireRate()) {
                 baseNPC.shootStartTime = TimeUtils.nanoTime();
