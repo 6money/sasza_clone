@@ -8,6 +8,7 @@ import com.dongbat.jbump.Collisions;
 import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
+import com.dongbat.walkable.PathHelper;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.Utils;
@@ -18,6 +19,8 @@ public class BaseEnemy extends Character {
     protected float damage;
 
     private long attackDelayTimer;
+    private ZomCollisionFilter zomCollisionFilter;
+    private ZomPlayerCollisionFilter zomPlayerCollisionFilter;
 
     public BaseEnemy(float x, float y) {
         super(x, y);
@@ -33,6 +36,9 @@ public class BaseEnemy extends Character {
         maxLinearSpeed = 150f;
         damage = 10;
         attackDelayTimer = 0;
+        zomCollisionFilter = new ZomCollisionFilter();
+        zomPlayerCollisionFilter = new ZomPlayerCollisionFilter();
+        prioritySteering.setEnabled(false);
     }
 
 
@@ -43,8 +49,13 @@ public class BaseEnemy extends Character {
     }
 
 
-    @Override
-    public void update(float delta, World<Entity> world) {
+    public void update(float delta, World<Entity> world, PathHelper pathHelper, Vector2 target) {
+        world.querySegmentWithCoords(getPosition().x, getPosition().y, target.x, target.y, zomPlayerCollisionFilter, items);
+
+        if (items.size() > 0) {
+            prioritySteering.setEnabled(items.get(0).item.userData instanceof Player);
+        }
+
         if (prioritySteering.isEnabled()) {
             prioritySteering.calculateSteering(steerOutput);
             applySteering(delta);
@@ -53,7 +64,7 @@ public class BaseEnemy extends Character {
             }
         }
 
-        Response.Result result = world.move(item, bbox.x, bbox.y, new ZomCollisionFilter());
+        Response.Result result = world.move(item, bbox.x, bbox.y, zomCollisionFilter);
         Collisions projectedCollisions = result.projectedCollisions;
         for (int i = 0; i < projectedCollisions.size(); i++) {
             Collision collision = projectedCollisions.get(i);
@@ -90,6 +101,20 @@ public class BaseEnemy extends Character {
             if(other == null) return null;
             if (((Entity) other.userData).characterCollidable) {
                 return Response.slide;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public static class ZomPlayerCollisionFilter implements CollisionFilter {
+        @Override
+        public Response filter(Item item, Item other) {
+            if(item == null) return null;
+            else if (item.userData instanceof BaseEnemy) return null;
+            else if (item.userData instanceof BaseNPC) return null;
+            if (((Entity) item.userData).characterCollidable || ((Entity) item.userData).bulletCollidable) {
+                return Response.touch;
             } else {
                 return null;
             }

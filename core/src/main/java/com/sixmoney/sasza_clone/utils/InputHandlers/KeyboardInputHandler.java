@@ -127,8 +127,8 @@ public class KeyboardInputHandler extends InputAdapter {
         level.getPlayer().setRotation(mouseCoords);
 
         if (button == 0) {
-            level.genPath(mouseScreenCoords);
             gameWorldScreen.setClickedEntity(mouseScreenCoords);
+            level.genPath(mouseScreenCoords);
             level.getPlayer().shooting = true;
             return true;
         }

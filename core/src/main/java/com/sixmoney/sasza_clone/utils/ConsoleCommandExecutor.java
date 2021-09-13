@@ -48,7 +48,7 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     }
 
     // Spawn commands
-    @ConsoleDoc(description = "Spawns specified number of basic enemies at random areas around player") public final void spawnEnemy(float quantity) {
+    @ConsoleDoc(description = "Spawns specified number of enemies at random areas around player") public final void spawnEnemy(float quantity) {
         try {
             gameWorld.level.spawnEnemy(quantity);
             console.log("Spawned " + quantity + " enemies");

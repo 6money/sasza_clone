@@ -52,7 +52,6 @@ public class Level {
     private Viewport viewport;
     private ChaseCam camera;
     private Player player;
-    private PathHelper pathHelper;
     private Vector2 offset;
 
     private Array<Entity> tiles;
@@ -64,6 +63,7 @@ public class Level {
     private Array<Entity> deadEntities;
     private final DelayedRemovalArray<Bullet> bullets;
 
+    public PathHelper pathHelper;
     public FloatArray path;
     public Vector2 clickedCoordinate;
     public boolean showPath;
@@ -224,7 +224,7 @@ public class Level {
         environmentEntities.end();
         enemyEntities.begin();
         for (BaseEnemy enemy: enemyEntities) {
-            enemy.update(delta, world);
+            enemy.update(delta, world, pathHelper, player.getPosition());
             if (enemy.getHealth() <= 0) {
                 world.remove(enemy.item);
                 enemyEntities.removeValue(enemy, true);
@@ -237,7 +237,7 @@ public class Level {
         enemyEntities.end();
         characterEntities.begin();
         for (BaseNPC baseNPC : characterEntities) {
-            baseNPC.update(delta, world);
+            baseNPC.update(delta, world, pathHelper, player.getPosition());
             if (baseNPC.getHealth() <= 0) {
                 world.remove(baseNPC.item);
                 world.remove(baseNPC.detectionObject.item);

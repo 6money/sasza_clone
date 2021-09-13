@@ -8,14 +8,11 @@ import com.dongbat.jbump.Collision;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Collisions;
 import com.dongbat.jbump.Item;
-import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Rect;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
-
-import java.util.ArrayList;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -112,7 +109,7 @@ public class Player extends Character {
             }
         }
 
-        ArrayList<ItemInfo> items = new ArrayList<>();
+        items.clear();
         lazerVector.set(1, 0);
         lazerVector.rotateDeg(rotation);
         lazerVector.setLength(currentGun.getRange());

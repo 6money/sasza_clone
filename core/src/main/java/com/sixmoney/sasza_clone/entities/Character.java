@@ -16,13 +16,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.World;
+import com.dongbat.walkable.FloatArray;
 import com.ray3k.tenpatch.TenPatchDrawable;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.GunData;
 import com.sixmoney.sasza_clone.utils.Utils;
+
+import java.util.ArrayList;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -51,6 +55,8 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected long muzzleFlashStartTime;
     protected boolean showHealthBar;
     protected TenPatchDrawable healthBar;
+    protected FloatArray path;
+    protected ArrayList<ItemInfo> items;
 
     public boolean shooting;
     public long shootStartTime;
@@ -84,6 +90,8 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         muzzleFlashStartTime = 0;
         showHealthBar = true;
         healthBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("health_bar"));
+        path = new FloatArray();
+        items = new ArrayList<>();
     }
 
 

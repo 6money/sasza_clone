@@ -9,6 +9,7 @@ import com.dongbat.jbump.Collisions;
 import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
+import com.dongbat.walkable.PathHelper;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.GunData;
 
@@ -46,8 +47,7 @@ public class BaseNPC extends Character {
     }
 
 
-    @Override
-    public void update(float delta, World<Entity> world) {
+    public void update(float delta, World<Entity> world, PathHelper pathHelper, Vector2 target) {
         if (prioritySteering.isEnabled()) {
             prioritySteering.calculateSteering(steerOutput);
             applySteering(delta);
