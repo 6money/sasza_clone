@@ -329,12 +329,12 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public float getOrientation() {
-        return rotation;
+        return legsRotation;
     }
 
     @Override
     public void setOrientation(float orientation) {
-        rotation = orientation;
+        legsRotation = orientation;
     }
 
     @Override
