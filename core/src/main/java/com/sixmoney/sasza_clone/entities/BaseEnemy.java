@@ -39,6 +39,7 @@ public class BaseEnemy extends Character {
         zomCollisionFilter = new ZomCollisionFilter();
         zomPlayerCollisionFilter = new ZomPlayerCollisionFilter();
         prioritySteering.setEnabled(false);
+        pathSteering.setEnabled(false);
     }
 
 
@@ -49,15 +50,40 @@ public class BaseEnemy extends Character {
     }
 
 
-    public void update(float delta, World<Entity> world, PathHelper pathHelper, Vector2 target) {
+    public void update(float delta, World<Entity> world, PathHelper pathHelper, Vector2 target, Vector2 meshOffset) {
         world.querySegmentWithCoords(getPosition().x, getPosition().y, target.x, target.y, zomPlayerCollisionFilter, items);
 
-        if (items.size() > 0) {
-            prioritySteering.setEnabled(items.get(0).item.userData instanceof Player);
+        if (items.size() > 0 && items.get(0).item.userData instanceof Player) {
+            prioritySteering.setEnabled(true);
+            pathSteering.setEnabled(false);
+
+            prioritySteering.calculateSteering(steerOutput);
+        } else {
+//            prioritySteering.setEnabled(false);
+//            pathSteering.setEnabled(true);
+//            if (path.size == 0) {
+//                try {
+//                    pathHelper.findPath(getPosition().x + meshOffset.x, getPosition().y + meshOffset.y, target.x + meshOffset.x, target.y + meshOffset.y, bbox.width / 2, path);
+//                } catch (PathfinderException ignored) {
+//                    return;
+//                }
+//
+//                if (path.size > 0) {
+//                    Array<Vector2> waypoints = new Array<>();
+//                    Gdx.app.log(TAG, path.size + "");
+//                    for (int i = 0; i < path.size; i += 2) {
+//                        waypoints.add(new Vector2(path.get(i), path.get(i + 1)));
+//                    }
+//
+//                    Path<Vector2, LinePath.LinePathParam> newPath = new LinePath<>(waypoints);
+//                    ((FollowPath<Vector2, LinePath.LinePathParam>) steeringBehaviors.get(2)).setPath(newPath);
+//                }
+//            }
+
+//            pathSteering.calculateSteering(steerOutput);
         }
 
         if (prioritySteering.isEnabled()) {
-            prioritySteering.calculateSteering(steerOutput);
             applySteering(delta);
             if (!velocity.isZero()) {
                 rotation = velocity.angleDeg();

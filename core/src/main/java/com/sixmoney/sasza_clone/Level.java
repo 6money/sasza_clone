@@ -2,9 +2,12 @@ package com.sixmoney.sasza_clone;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.ai.steer.utils.Path;
 import com.badlogic.gdx.ai.steer.utils.RayConfiguration;
+import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
@@ -174,13 +177,13 @@ public class Level {
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(baseNPC, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
             RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(baseNPC, rayConfiguration, raycastCollisionDetector, 0);
-            baseNPC.addBehavior(raycastObstacleAvoidance);
+            baseNPC.addBehavior(raycastObstacleAvoidance, 0);
 
             Arrive<Vector2> arrive = new Arrive<>(baseNPC, player)
                     .setTimeToTarget(0.1f)
                     .setArrivalTolerance(50f)
                     .setDecelerationRadius(50);
-            baseNPC.addBehavior(arrive);
+            baseNPC.addBehavior(arrive, 1);
         }
     }
 
@@ -193,10 +196,17 @@ public class Level {
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
             RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 0);
-            enemy.addBehavior(raycastObstacleAvoidance);
+            enemy.addBehavior(raycastObstacleAvoidance, 0);
 
             Seek<Vector2> seek = new Seek<>(enemy, player);
-            enemy.addBehavior(seek);
+            enemy.addBehavior(seek, 1);
+
+            Array<Vector2> waypoints = new Array<>();
+            waypoints.add(new Vector2(0, 0));
+            waypoints.add(new Vector2(0, 0));
+            Path<Vector2, LinePath.LinePathParam> path = new LinePath<>(waypoints, true);
+            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 100f).setDecelerationRadius(350);
+            enemy.addBehavior(followPath, 2);
         }
     }
 
@@ -224,7 +234,7 @@ public class Level {
         environmentEntities.end();
         enemyEntities.begin();
         for (BaseEnemy enemy: enemyEntities) {
-            enemy.update(delta, world, pathHelper, player.getPosition());
+            enemy.update(delta, world, pathHelper, player.getPosition(), offset);
             if (enemy.getHealth() <= 0) {
                 world.remove(enemy.item);
                 enemyEntities.removeValue(enemy, true);
@@ -451,10 +461,17 @@ public class Level {
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
             RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 0);
-            enemy.addBehavior(raycastObstacleAvoidance);
+            enemy.addBehavior(raycastObstacleAvoidance, 0);
 
             Seek<Vector2> seek = new Seek<>(enemy, player);
-            enemy.addBehavior(seek);
+            enemy.addBehavior(seek, 1);
+
+            Array<Vector2> waypoints = new Array<>();
+            waypoints.add(new Vector2(0, 0));
+            waypoints.add(new Vector2(0, 0));
+            Path<Vector2, LinePath.LinePathParam> path = new LinePath<>(waypoints, true);
+            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 100f).setDecelerationRadius(350);
+            enemy.addBehavior(followPath, 2);
 
             enemyEntities.add(enemy);
         }
@@ -486,13 +503,13 @@ public class Level {
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(npc, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
             RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(npc, rayConfiguration, raycastCollisionDetector, 0);
-            npc.addBehavior(raycastObstacleAvoidance);
+            npc.addBehavior(raycastObstacleAvoidance, 0);
 
             Arrive<Vector2> arrive = new Arrive<>(npc, player)
                     .setTimeToTarget(0.1f)
                     .setArrivalTolerance(50f)
                     .setDecelerationRadius(50);
-            npc.addBehavior(arrive);
+            npc.addBehavior(arrive, 1);
 
             characterEntities.add(npc);
         }

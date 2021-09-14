@@ -44,6 +44,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance;
     protected SteeringAcceleration<Vector2> steerOutput;
     protected PrioritySteering<Vector2> prioritySteering;
+    protected PrioritySteering<Vector2> pathSteering;
     protected TextureRegion characterShootingTexture;
     protected TextureRegion characterIdleLegTexture;
     protected Vector2 oldVelocity;
@@ -63,6 +64,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     public long shootSpriteTime;
     public Animation<TextureRegion> deathAnimation;
     public Vector2 bulletOffsetReal;
+    public Array<SteeringBehavior<Vector2>> steeringBehaviors;
 
     public Character(float x, float y) {
         super();
@@ -74,6 +76,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         maxAngularAcceleration = 200f;
         tagged = false;
         prioritySteering = new PrioritySteering<>(this, 0.0001f);
+        pathSteering = new PrioritySteering<>(this, 0.0001f);
         oldVelocity = new Vector2(velocity);
         legsOffset = 0;
         legsRotation = 0;
@@ -92,6 +95,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         healthBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("health_bar"));
         path = new FloatArray();
         items = new ArrayList<>();
+        steeringBehaviors = new Array<>();
     }
 
 
@@ -216,13 +220,23 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         if (raycastObstacleAvoidance != null) {
             CentralRayWithWhiskersConfig config = (CentralRayWithWhiskersConfig) raycastObstacleAvoidance.getRayConfiguration();
 
-            for (Ray<Vector2> ray : config.getRays())
+            for (Ray<Vector2> ray : config.getRays()) {
                 drawer.line(ray.start, ray.end, Color.CYAN);
+            }
         }
     }
 
-    public void addBehavior(SteeringBehavior<Vector2> behavior) {
-        prioritySteering.add(behavior);
+    public void addBehavior(SteeringBehavior<Vector2> behavior, int steeringIndex) {
+        steeringBehaviors.add(behavior);
+
+        if (steeringIndex == 0) {
+            prioritySteering.add(behavior);
+            pathSteering.add(behavior);
+        } else if (steeringIndex == 1) {
+            prioritySteering.add(behavior);
+        } else if (steeringIndex == 2) {
+            pathSteering.add(behavior);
+        }
 
         if (behavior instanceof RaycastObstacleAvoidance) {
             raycastObstacleAvoidance = (RaycastObstacleAvoidance<Vector2>) behavior;
