@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
@@ -205,7 +204,7 @@ public class Level {
             waypoints.add(new Vector2(0, 0));
             waypoints.add(new Vector2(0, 0));
             Path<Vector2, LinePath.LinePathParam> path = new LinePath<>(waypoints, true);
-            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 100f).setDecelerationRadius(350);
+            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 100f);
             enemy.addBehavior(followPath, 2);
         }
     }
@@ -373,16 +372,7 @@ public class Level {
         clickedCoordinate = clickedCoords.add(offset);
         try {
             pathHelper.findPath(player.getPosition().x + offset.x, player.getPosition().y + offset.y, clickedCoordinate.x, clickedCoordinate.y, getPlayer().bbox.width / 2, path);
-        } catch (PathfinderException e) {
-            return;
-        }
-
-        Gdx.app.log(TAG, path.size + "");
-        for (int i = 0; i < path.size; i += 2) {
-            Gdx.app.log(TAG, path.get(i) + ", " + path.get(i + 1));
-        }
-        for (float floaty: path.items) {
-            Gdx.app.log(TAG, floaty + "");
+        } catch (PathfinderException ignored) {
         }
     }
 
@@ -469,7 +459,7 @@ public class Level {
             Array<Vector2> waypoints = new Array<>();
             waypoints.add(new Vector2(0, 0));
             waypoints.add(new Vector2(0, 0));
-            Path<Vector2, LinePath.LinePathParam> path = new LinePath<>(waypoints, true);
+            LinePath<Vector2> path = new LinePath<>(waypoints, true);
             FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 100f).setDecelerationRadius(350);
             enemy.addBehavior(followPath, 2);
 

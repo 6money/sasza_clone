@@ -1,6 +1,10 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
+import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.Collision;
 import com.dongbat.jbump.CollisionFilter;
@@ -9,6 +13,7 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.dongbat.walkable.PathHelper;
+import com.dongbat.walkable.PathfinderException;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.Utils;
@@ -59,31 +64,35 @@ public class BaseEnemy extends Character {
 
             prioritySteering.calculateSteering(steerOutput);
         } else {
-//            prioritySteering.setEnabled(false);
-//            pathSteering.setEnabled(true);
+            prioritySteering.setEnabled(false);
+            pathSteering.setEnabled(true);
 //            if (path.size == 0) {
-//                try {
-//                    pathHelper.findPath(getPosition().x + meshOffset.x, getPosition().y + meshOffset.y, target.x + meshOffset.x, target.y + meshOffset.y, bbox.width / 2, path);
-//                } catch (PathfinderException ignored) {
-//                    return;
-//                }
-//
-//                if (path.size > 0) {
-//                    Array<Vector2> waypoints = new Array<>();
-//                    Gdx.app.log(TAG, path.size + "");
-//                    for (int i = 0; i < path.size; i += 2) {
-//                        waypoints.add(new Vector2(path.get(i), path.get(i + 1)));
-//                    }
-//
-//                    Path<Vector2, LinePath.LinePathParam> newPath = new LinePath<>(waypoints);
-//                    ((FollowPath<Vector2, LinePath.LinePathParam>) steeringBehaviors.get(2)).setPath(newPath);
-//                }
+                try {
+                    pathHelper.findPath(getPosition().x + meshOffset.x, getPosition().y + meshOffset.y, target.x + meshOffset.x, target.y + meshOffset.y, bbox.width / 1.5f, path);
+                } catch (PathfinderException ignored) {
+                    return;
+                }
+
+                if (path.size > 0) {
+                    Array<Vector2> waypoints = new Array<>();
+                    Gdx.app.log(TAG, path.size + "");
+                    for (int i = 0; i < path.size; i += 2) {
+                        waypoints.add(new Vector2(path.get(i) - meshOffset.x, path.get(i + 1) - meshOffset.y));
+                    }
+
+                    LinePath<Vector2> newPath = new LinePath<>(waypoints, true);
+                    ((FollowPath<Vector2, LinePath.LinePathParam>) steeringBehaviors.get(2)).setPath(newPath);
+                    for (LinePath.Segment<Vector2> node: newPath.getSegments()) {
+                        Gdx.app.log(TAG, node.getEnd().toString());
+                    }
+                }
 //            }
 
-//            pathSteering.calculateSteering(steerOutput);
+            pathSteering.calculateSteering(steerOutput);
+//            Gdx.app.log(TAG, steerOutput.linear.toString());
         }
 
-        if (prioritySteering.isEnabled()) {
+        if (prioritySteering.isEnabled() || pathSteering.isEnabled()) {
             applySteering(delta);
             if (!velocity.isZero()) {
                 rotation = velocity.angleDeg();
