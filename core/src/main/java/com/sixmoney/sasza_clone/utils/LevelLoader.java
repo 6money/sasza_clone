@@ -37,7 +37,7 @@ public class LevelLoader {
         Array<JsonValue> walls = new Array<>();
         Level level = new Level(viewport, camera);
         String path = Constants.LEVEL_DIR + File.separator + levelName + Constants.LEVEL_FILE_EXTENSION;
-        Vector2 offset;
+        Vector2 outerCorner = null;
 
 
         try {
@@ -75,16 +75,18 @@ public class LevelLoader {
                     default:
                         JsonValue tags = jsonObject.get(Constants.LEVEL_TAGS_KEY);
                         for (JsonValue tag : tags) {
-                            if (tag.asString().equals(Constants.LEVEL_OFFSET_KEY)) {
-                                offset = new Vector2(jsonObject.getFloat(Constants.LEVEL_X_KEY, 0), jsonObject.getFloat(Constants.LEVEL_Y_KEY, 0));
-                                offset.x = -offset.x;
-                                offset.y = -offset.y;
-                                level.setOffset(offset);
-                                Gdx.app.log(TAG, "offset:" + offset.toString());
+                            if (tag.asString().equals(Constants.LEVEL_OUTERCORNER_KEY)) {
+                                outerCorner = new Vector2(jsonObject.getFloat(Constants.LEVEL_X_KEY, 0), jsonObject.getFloat(Constants.LEVEL_Y_KEY, 0));
+                                level.initPathHelper(outerCorner);
+                                Gdx.app.log(TAG, "outerCorner:" + outerCorner.toString());
                             }
                         }
                         break;
                 }
+            }
+
+            if (outerCorner == null) {
+                Gdx.app.log(TAG, "NO OUTERCORNER FOUND IN LEVEL");
             }
 
             loadTiles(tiles, level);

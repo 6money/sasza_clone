@@ -86,7 +86,6 @@ public class BaseNPC extends Character {
         }
     }
 
-    @Override
     public void renderDebug(ShapeDrawer drawer) {
         super.renderDebug(drawer);
         drawer.rectangle(detectionObject.bbox, Color.ORANGE);

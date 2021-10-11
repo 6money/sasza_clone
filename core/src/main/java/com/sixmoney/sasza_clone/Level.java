@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.behaviors.RaycastObstacleAvoidance;
@@ -54,7 +55,6 @@ public class Level {
     private Viewport viewport;
     private ChaseCam camera;
     private Player player;
-    private Vector2 offset;
 
     private Array<Entity> tiles;
     private DelayedRemovalArray<EnvironmentObject> environmentEntities;
@@ -73,11 +73,8 @@ public class Level {
     public Level(Viewport viewport, ChaseCam camera) {
         this.viewport = viewport;
         this.camera = camera;
-        offset = new Vector2(0, 0);
-
         world = new World<>();
         world.setTileMode(true);
-        pathHelper = new PathHelper(2000, 2000);
         path = new FloatArray();
         showPath = false;
         clickedCoordinate = new Vector2(0,0);
@@ -91,8 +88,8 @@ public class Level {
         bullets = new DelayedRemovalArray<>();
     }
 
-    public void setOffset(Vector2 offset) {
-        this.offset = offset;
+    public void initPathHelper(Vector2 outerCorner) {
+        pathHelper = new PathHelper(outerCorner.x, outerCorner.y);
     }
 
     public Player getPlayer() {
@@ -110,7 +107,7 @@ public class Level {
         for (Entity tile: tiles) {
             if (tile.characterCollidable) {
                 world.add(tile.item, tile.bbox.x, tile.bbox.y, tile.bbox.width, tile.bbox.height);
-                tile.pathObstacle = pathHelper.addRect(tile.bbox.x + offset.x, tile.bbox.y + offset.y, tile.bbox.width, tile.bbox.height);
+                tile.pathObstacle = pathHelper.addRect(tile.bbox.x, tile.bbox.y, tile.bbox.width, tile.bbox.height);
             }
         }
     }
@@ -127,8 +124,8 @@ public class Level {
                     environmentObject.bulletCollisionSubObject.bbox.height
             );
 
-            if (environmentObject.characterCollidable) {
-                environmentObject.pathObstacle = pathHelper.addRect(environmentObject.bbox.x + offset.x, environmentObject.bbox.y + offset.y, environmentObject.bbox.width, environmentObject.bbox.height);
+            if (environmentObject.characterCollidable && !environmentObject.destructible) {
+                environmentObject.pathObstacle = pathHelper.addRect(environmentObject.bbox.x, environmentObject.bbox.y, environmentObject.bbox.width, environmentObject.bbox.height);
             }
 
             for (EnvironmentObject compositeObject: environmentObject.compositeObjects) {
@@ -141,8 +138,8 @@ public class Level {
                         compositeObject.bulletCollisionSubObject.bbox.height
                 );
 
-                if (compositeObject.characterCollidable) {
-                    compositeObject.pathObstacle = pathHelper.addRect(compositeObject.bbox.x + offset.x, compositeObject.bbox.y + offset.y, compositeObject.bbox.width, compositeObject.bbox.height);
+                if (compositeObject.characterCollidable && !compositeObject.destructible) {
+                    compositeObject.pathObstacle = pathHelper.addRect(compositeObject.bbox.x, compositeObject.bbox.y, compositeObject.bbox.width, compositeObject.bbox.height);
                 }
             }
         }
@@ -161,7 +158,7 @@ public class Level {
             if (entity.characterCollidable) {
                 world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
                 world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
-                entity.pathObstacle = pathHelper.addRect(entity.bbox.x + offset.x, entity.bbox.y + offset.y, entity.bbox.width, entity.bbox.height);
+                entity.pathObstacle = pathHelper.addRect(entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
             }
         }
     }
@@ -204,7 +201,7 @@ public class Level {
             waypoints.add(new Vector2(0, 0));
             waypoints.add(new Vector2(0, 0));
             Path<Vector2, LinePath.LinePathParam> path = new LinePath<>(waypoints, true);
-            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 100f);
+            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 5);
             enemy.addBehavior(followPath, 2);
         }
     }
@@ -233,7 +230,7 @@ public class Level {
         environmentEntities.end();
         enemyEntities.begin();
         for (BaseEnemy enemy: enemyEntities) {
-            enemy.update(delta, world, pathHelper, player.getPosition(), offset);
+            enemy.update(delta, world, pathHelper, player.getPosition());
             if (enemy.getHealth() <= 0) {
                 world.remove(enemy.item);
                 enemyEntities.removeValue(enemy, true);
@@ -353,15 +350,15 @@ public class Level {
 
             for (Obstacle obstacle: pathHelper.obstacles) {
                 haxe.root.Array<Object> coords = obstacle._coordinates;
-                Rectangle rectangle = new Rectangle((float) obstacle.get_x() - offset.x, (float) obstacle.get_y() - offset.y, ((float) coords.__get(2)), ((float) coords.__get(7)));
+                Rectangle rectangle = new Rectangle((float) obstacle.get_x(), (float) obstacle.get_y(), ((float) coords.__get(2)), ((float) coords.__get(7)));
                 drawer.rectangle(rectangle);
             }
 
-            float pastNodeX = player.getPosition().x + offset.x;
-            float pastNodeY = player.getPosition().y + offset.y;
+            float pastNodeX = player.getPosition().x;
+            float pastNodeY = player.getPosition().y;
 
             for (int i = 0; i < path.size; i += 2) {
-                drawer.line(pastNodeX - offset.x, pastNodeY - offset.y, path.get(i) - offset.x, path.get(i + 1) - offset.y);
+                drawer.line(pastNodeX, pastNodeY, path.get(i), path.get(i + 1));
                 pastNodeX = path.get(i);
                 pastNodeY = path.get(i + 1);
             }
@@ -369,10 +366,12 @@ public class Level {
     }
 
     public void genPath(Vector2 clickedCoords) {
-        clickedCoordinate = clickedCoords.add(offset);
+        clickedCoordinate = clickedCoords;
+
         try {
-            pathHelper.findPath(player.getPosition().x + offset.x, player.getPosition().y + offset.y, clickedCoordinate.x, clickedCoordinate.y, getPlayer().bbox.width / 2, path);
+            pathHelper.findPath(player.getPosition().x, player.getPosition().y, clickedCoordinate.x, clickedCoordinate.y, getPlayer().bbox.width * 1.1f, path);
         } catch (PathfinderException ignored) {
+            Gdx.app.debug(TAG, "Pathfinding error");
         }
     }
 
@@ -460,7 +459,7 @@ public class Level {
             waypoints.add(new Vector2(0, 0));
             waypoints.add(new Vector2(0, 0));
             LinePath<Vector2> path = new LinePath<>(waypoints, true);
-            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 100f).setDecelerationRadius(350);
+            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 5);
             enemy.addBehavior(followPath, 2);
 
             enemyEntities.add(enemy);

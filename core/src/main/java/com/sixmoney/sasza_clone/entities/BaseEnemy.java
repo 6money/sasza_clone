@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -17,6 +18,8 @@ import com.dongbat.walkable.PathfinderException;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.Utils;
+
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class BaseEnemy extends Character {
     private static final String TAG = BaseEnemy.class.getName();
@@ -55,41 +58,44 @@ public class BaseEnemy extends Character {
     }
 
 
-    public void update(float delta, World<Entity> world, PathHelper pathHelper, Vector2 target, Vector2 meshOffset) {
+    public void update(float delta, World<Entity> world, PathHelper pathHelper, Vector2 target) {
         world.querySegmentWithCoords(getPosition().x, getPosition().y, target.x, target.y, zomPlayerCollisionFilter, items);
 
-        if (items.size() > 0 && items.get(0).item.userData instanceof Player) {
+        if (items.size() > 0 && items.get(0).item.userData instanceof Player && !prioritySteering.isEnabled()) {
             prioritySteering.setEnabled(true);
             pathSteering.setEnabled(false);
-
-            prioritySteering.calculateSteering(steerOutput);
-        } else {
+            path.clear();
+            Gdx.app.log(TAG, "Toggled prioritySteering");
+        } else if ((items.size() == 0 || !(items.get(0).item.userData instanceof Player)) && !pathSteering.isEnabled()) {
             prioritySteering.setEnabled(false);
             pathSteering.setEnabled(true);
-//            if (path.size == 0) {
+            Gdx.app.log(TAG, "Toggled pathSteering");
+        }
+
+        if (prioritySteering.isEnabled()) {
+            prioritySteering.calculateSteering(steerOutput);
+        } else if (pathSteering.isEnabled()) {
+
                 try {
-                    pathHelper.findPath(getPosition().x + meshOffset.x, getPosition().y + meshOffset.y, target.x + meshOffset.x, target.y + meshOffset.y, bbox.width / 1.5f, path);
+                    pathHelper.findPath(getPosition().x, getPosition().y, target.x, target.y, bbox.width * 1.1f, path);
+
                 } catch (PathfinderException ignored) {
+                    Gdx.app.debug(TAG, "Pathfinding error");
+                    Gdx.app.debug(TAG, "Location: " + position.toString());
                     return;
                 }
 
                 if (path.size > 0) {
                     Array<Vector2> waypoints = new Array<>();
-                    Gdx.app.log(TAG, path.size + "");
                     for (int i = 0; i < path.size; i += 2) {
-                        waypoints.add(new Vector2(path.get(i) - meshOffset.x, path.get(i + 1) - meshOffset.y));
+                        waypoints.add(new Vector2(path.get(i), path.get(i + 1)));
                     }
 
                     LinePath<Vector2> newPath = new LinePath<>(waypoints, true);
                     ((FollowPath<Vector2, LinePath.LinePathParam>) steeringBehaviors.get(2)).setPath(newPath);
-                    for (LinePath.Segment<Vector2> node: newPath.getSegments()) {
-                        Gdx.app.log(TAG, node.getEnd().toString());
-                    }
                 }
-//            }
 
             pathSteering.calculateSteering(steerOutput);
-//            Gdx.app.log(TAG, steerOutput.linear.toString());
         }
 
         if (prioritySteering.isEnabled() || pathSteering.isEnabled()) {
@@ -127,6 +133,18 @@ public class BaseEnemy extends Character {
         if (Utils.secondsSince(attackDelayTimer) >= Constants.ENEMY_ATTACK_SPEED || attackDelayTimer == 0) {
             attackDelayTimer = TimeUtils.nanoTime();
             entity.decrementHealth(damage);
+        }
+    }
+
+    public void renderDebug(ShapeDrawer drawer) {
+        super.renderDebug(drawer);
+
+        if (pathSteering.isEnabled()) {
+            LinePath<Vector2> path = (LinePath<Vector2>) ((FollowPath<Vector2, LinePath.LinePathParam>) steeringBehaviors.get(2)).getPath();
+
+            for (LinePath.Segment<Vector2> segment : path.getSegments()) {
+                drawer.line(segment.getBegin().x, segment.getBegin().y, segment.getEnd().x, segment.getEnd().y, Color.GOLD);
+            }
         }
     }
 
