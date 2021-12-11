@@ -9,16 +9,16 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.entities.BaseEnemy;
-import com.sixmoney.sasza_clone.entities.BaseNPC;
+import com.sixmoney.sasza_clone.entities.BaseSoldier;
 import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.EnemyTierThree;
 import com.sixmoney.sasza_clone.entities.EnemyTierTwo;
 import com.sixmoney.sasza_clone.entities.Entity;
 import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
-import com.sixmoney.sasza_clone.entities.GunnerNPC;
+import com.sixmoney.sasza_clone.entities.GunnerSoldier;
 import com.sixmoney.sasza_clone.entities.Player;
-import com.sixmoney.sasza_clone.entities.RiflemanNPC;
+import com.sixmoney.sasza_clone.entities.RiflemanSoldier;
 import com.sixmoney.sasza_clone.entities.Wall;
 
 import java.io.File;
@@ -77,7 +77,7 @@ public class LevelLoader {
                         for (JsonValue tag : tags) {
                             if (tag.asString().equals(Constants.LEVEL_OUTERCORNER_KEY)) {
                                 outerCorner = new Vector2(jsonObject.getFloat(Constants.LEVEL_X_KEY, 0), jsonObject.getFloat(Constants.LEVEL_Y_KEY, 0));
-                                level.initPathHelper(outerCorner);
+                                level.initPathHelpers(outerCorner);
                                 Gdx.app.log(TAG, "outerCorner:" + outerCorner.toString());
                             }
                         }
@@ -128,7 +128,7 @@ public class LevelLoader {
     }
 
     private static void loadCharacters(Array<JsonValue> objects, Level level) {
-        Array<BaseNPC> enemyArray = new Array<>();
+        Array<BaseSoldier> enemyArray = new Array<>();
 
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
@@ -142,17 +142,17 @@ public class LevelLoader {
                     Gdx.app.log(TAG, player.toString());
                     break;
                 case Constants.SNIPER_BASE:
-                    BaseNPC sniperNPC = new BaseNPC(x, y);
+                    BaseSoldier sniperNPC = new BaseSoldier(x, y);
                     enemyArray.add(sniperNPC);
                     Gdx.app.log(TAG, sniperNPC.toString());
                     break;
                 case Constants.RIFLEMAN_BASE:
-                    BaseNPC riflemanNPC = new RiflemanNPC(x, y);
+                    BaseSoldier riflemanNPC = new RiflemanSoldier(x, y);
                     enemyArray.add(riflemanNPC);
                     Gdx.app.log(TAG, riflemanNPC.toString());
                     break;
                 case Constants.GUNNER_BASE:
-                    BaseNPC gunnerNPC = new GunnerNPC(x, y);
+                    BaseSoldier gunnerNPC = new GunnerSoldier(x, y);
                     enemyArray.add(gunnerNPC);
                     Gdx.app.log(TAG, gunnerNPC.toString());
                     break;

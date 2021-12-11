@@ -13,40 +13,39 @@ import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.dongbat.walkable.PathHelper;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.Constants;
-import com.sixmoney.sasza_clone.utils.Utils;
+import com.sixmoney.sasza_clone.utils.GunData;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class BaseEnemy extends BaseNPC {
-    private static final String TAG = BaseEnemy.class.getName();
+public class BaseSoldier extends BaseNPC {
+    private static final String TAG = BaseSoldier.class.getName();
 
-    protected float damage;
+    public NPCDetectionObject detectionObject;
+    public Vector2 targetLocation;
 
-    private long attackDelayTimer;
 
-    public BaseEnemy(float x, float y) {
+    public BaseSoldier(float x, float y) {
         super(x, y);
         position = new Vector2(x, y);
-        entityTextureRegion = Assets.get_instance().enemyAssets.zom1;
+        entityTextureRegion = Assets.get_instance().npcAssets.sniperBase;
         destructible = true;
-        health = 100;
-        maxHealth = 100;
-        entityAnimation = Assets.get_instance().enemyAssets.enemyWalkingAnimation;
-        deathAnimation = Assets.get_instance().enemyAssets.zom1DyingAnimation;
-        characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
-        maxLinearAcceleration = 4000f;
-        maxLinearSpeed = 150f;
-        damage = 10;
-        attackDelayTimer = 0;
-        npcCollisionFilter = new ZomCollisionFilter();
-        npcPlayerCollisionFilter = new ZomPlayerCollisionFilter();
+        health = 1000;
+        maxHealth = 1000;
+        entityAnimation = Assets.get_instance().npcAssets.npcWalkingAnimationS1;
+        deathAnimation = Assets.get_instance().npcAssets.sniperDyingAnimation;
+        characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;
+        characterIdleLegTexture = Assets.get_instance().npcAssets.npcStandS1;
+        currentGun = new Gun(GunData.svd);
+        bulletCollidable = false;
+        bulletOffset = new Vector2( 19, -3);
+        detectionObject = new NPCDetectionObject(this);
         prioritySteering.setEnabled(false);
         pathSteering.setEnabled(false);
+        npcCollisionFilter = new NpcCollisionFilter();
+        npcPlayerCollisionFilter = new NpcPlayerCollisionFilter();
     }
 
 
-    @Override
     public void update(float delta, World<Entity> world, PathHelper pathHelper, Vector2 target) {
         super.update(delta, world, pathHelper, target);
 
@@ -56,10 +55,7 @@ public class BaseEnemy extends BaseNPC {
             Collision collision = projectedCollisions.get(i);
             if (collision.type == Response.slide) {
                 setPosition(collision.touch.x - (bbox.x - position.x), collision.touch.y - (bbox.y - position.y));
-            }
-
-            if (((Entity) collision.other.userData).destructible && !(collision.other.userData instanceof BaseEnemy)) {
-                attack((Entity) collision.other.userData);
+                break;
             }
         }
 
@@ -70,17 +66,20 @@ public class BaseEnemy extends BaseNPC {
         } else if (velocity.len() >= 5 && animationStartTime == 0) {
             animationStartTime = TimeUtils.nanoTime();
         }
-    }
 
-    private void attack(Entity entity) {
-        if (Utils.secondsSince(attackDelayTimer) >= Constants.ENEMY_ATTACK_SPEED || attackDelayTimer == 0) {
-            attackDelayTimer = TimeUtils.nanoTime();
-            entity.decrementHealth(damage);
+        targetLocation = detectionObject.update(world);
+
+        if (targetLocation != null) {
+            shooting = true;
+            rotation = new Vector2(targetLocation).sub(getPosition()).angleDeg();
+        } else {
+            shooting = false;
         }
     }
 
     public void renderDebug(ShapeDrawer drawer) {
         super.renderDebug(drawer);
+        drawer.rectangle(detectionObject.bbox, Color.ORANGE);
 
         if (pathSteering.isEnabled()) {
             LinePath<Vector2> path = (LinePath<Vector2>) ((FollowPath<Vector2, LinePath.LinePathParam>) steeringBehaviors.get(2)).getPath();
@@ -91,7 +90,8 @@ public class BaseEnemy extends BaseNPC {
         }
     }
 
-    public static class ZomCollisionFilter implements CollisionFilter {
+
+    public static class NpcCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
             if(other == null) return null;
@@ -103,7 +103,7 @@ public class BaseEnemy extends BaseNPC {
         }
     }
 
-    public static class ZomPlayerCollisionFilter implements CollisionFilter {
+    public static class NpcPlayerCollisionFilter implements CollisionFilter {
         @Override
         public Response filter(Item item, Item other) {
             if(item == null) return null;

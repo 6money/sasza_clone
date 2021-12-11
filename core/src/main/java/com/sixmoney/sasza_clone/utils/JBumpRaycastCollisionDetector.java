@@ -9,7 +9,7 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
-import com.sixmoney.sasza_clone.entities.BaseNPC;
+import com.sixmoney.sasza_clone.entities.BaseSoldier;
 import com.sixmoney.sasza_clone.entities.Entity;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class JBumpRaycastCollisionDetector implements RaycastCollisionDetector<V
         @Override
         public Response filter(Item item, Item other) {
             if (item == null) return null;
-            if (((Entity) item.userData).characterCollidable && !(item.userData instanceof BaseNPC)) {
+            if (((Entity) item.userData).characterCollidable && !(item.userData instanceof BaseSoldier)) {
                 return Response.touch;
             } else {
                 return null;

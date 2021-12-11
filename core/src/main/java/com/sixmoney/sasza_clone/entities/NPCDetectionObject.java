@@ -27,9 +27,9 @@ public class NPCDetectionObject extends Entity implements Comparator<Integer> {
     private NPCDetectionFilter npcDetectionFilter;
     private NPCRayQueryFilter npcRayQueryFilter;
 
-    public BaseNPC parent;
+    public BaseSoldier parent;
 
-    public NPCDetectionObject(BaseNPC parent) {
+    public NPCDetectionObject(BaseSoldier parent) {
         super();
         this.parent = parent;
         position = new Vector2(parent.getPosition().x - parent.getGun().getRange(), parent.getPosition().y - parent.getGun().getRange());
@@ -128,7 +128,7 @@ public class NPCDetectionObject extends Entity implements Comparator<Integer> {
         @Override
         public Response filter(Item item, Item other) {
             if(item == null) return null;
-            else if (item.userData instanceof BaseNPC) return null;
+            else if (item.userData instanceof BaseSoldier) return null;
             else if (item.userData instanceof Player) return null;
             else if (((Entity) item.userData).bulletCollidable) return Response.touch;
             else return null;

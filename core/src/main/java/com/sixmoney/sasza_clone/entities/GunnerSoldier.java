@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.GunData;
 
-public class GunnerNPC extends BaseNPC {
-    public GunnerNPC(float x, float y) {
+public class GunnerSoldier extends BaseSoldier {
+    public GunnerSoldier(float x, float y) {
         super(x, y);
 
         entityTextureRegion = Assets.get_instance().npcAssets.gunnerBase;

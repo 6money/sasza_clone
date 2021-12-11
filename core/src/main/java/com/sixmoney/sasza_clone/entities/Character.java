@@ -117,23 +117,6 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         muzzleFlashStartTime = TimeUtils.nanoTime();
     }
 
-    protected void applySteering(float delta) {
-        if (!steerOutput.linear.isZero()) {
-            acceleration = steerOutput.linear.scl(delta);
-            if (acceleration.len() > maxLinearAcceleration) {
-                acceleration.setLength(maxLinearAcceleration);
-            }
-            velocity.x += acceleration.x;
-            velocity.y += acceleration.y;
-            if (velocity.len() > maxLinearSpeed) {
-                velocity.setLength(maxLinearSpeed);
-            }
-            position.mulAdd(velocity, delta);
-        } else {
-            velocity.set(0, 0);
-        }
-    }
-
     @Override
     public void update(float delta, World<Entity> world) {
         if (!velocity.isZero()) {
