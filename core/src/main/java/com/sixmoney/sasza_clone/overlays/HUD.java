@@ -64,6 +64,9 @@ public class HUD {
         table.defaults().reset();
         table.add(gunSprite).align(Align.bottomLeft);
 
+        table.row();
+
+
 
         table.pack();
         table.validate();

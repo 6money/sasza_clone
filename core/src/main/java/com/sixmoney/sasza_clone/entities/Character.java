@@ -84,7 +84,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         bulletOffsetReal = new Vector2(bulletOffset);
         currentGun = new Gun(GunData.m4);
         guns = new Array<>(true, 3);
-        guns.add(currentGun, new Gun(GunData.mp5), new Gun(GunData.svd));
+        guns.add(currentGun, new Gun(GunData.mp5), new Gun(GunData.pkm));
         shooting = false;
         shootStartTime = TimeUtils.nanoTime();
         shootSpriteTime = TimeUtils.nanoTime();
@@ -125,6 +125,10 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
         bulletOffsetReal.set(bulletOffset);
         bulletOffsetReal.rotateDeg(rotation);
+
+        if (currentGun != null) {
+            currentGun.checkReloadStatus();
+        }
     }
 
     protected void updateBBox() {
@@ -134,7 +138,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public void render(Batch batch) {
-        if (currentGun != null && characterShootingTexture != null && shooting && currentGun.getCurrentMagazineAmmo() > 0) {
+        if (currentGun != null && characterShootingTexture != null && shooting && currentGun.getCurrentMagazineAmmo() > 0 && currentGun.checkReloadStatus() == 0) {
             if (Utils.secondsSince(shootSpriteTime) < Math.max(0.02, Math.min(0.1, 1 / currentGun.getFireRate()))) {
                 Utils.drawTextureRegion(batch, characterShootingTexture, position.x, position.y, rotation);
             } else {

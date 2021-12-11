@@ -11,6 +11,7 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Rect;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
+import com.ray3k.tenpatch.TenPatchDrawable;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
 
@@ -20,6 +21,7 @@ public class Player extends Character {
     private static final String TAG = Player.class.getName();
 
     private Vector2 lazerVector;
+    private TenPatchDrawable reloadBar;
 
     public float playerSpeed = 200;
 
@@ -36,6 +38,7 @@ public class Player extends Character {
         maxHealth = 2000;
         destructible = true;
         showHealthBar = false;
+        reloadBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("reload_bar"));
     }
 
 
@@ -135,6 +138,16 @@ public class Player extends Character {
     public void render(Batch batch, ShapeDrawer drawer) {
         drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
         super.render(batch);
+    }
+
+
+    public void renderReloadBar(Batch batch) {
+        float reloadTime = currentGun.checkReloadStatus();
+
+        if (reloadTime != 0 && reloadTime < currentGun.getReloadTime()) {
+            float reloadBarWidth = Constants.HEALTH_BAR_WIDTH * 2 * (reloadTime / currentGun.getReloadTime());
+            reloadBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH * 2 / 2f), position.y + Constants.PLAYER_CENTER.y / 2, reloadBarWidth, 3);
+        }
     }
 
 

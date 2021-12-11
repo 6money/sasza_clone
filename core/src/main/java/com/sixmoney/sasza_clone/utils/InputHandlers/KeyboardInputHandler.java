@@ -58,6 +58,9 @@ public class KeyboardInputHandler extends InputAdapter {
                 velocityNormal.set(velocity).nor();
                 level.getPlayer().setVelocity(velocityNormal);
                 return true;
+            case Input.Keys.R:
+                gameWorldScreen.level.getPlayer().getGun().initReload();
+                return true;
             case Input.Keys.NUM_1:
                 gameWorldScreen.switchWeapon(0);
                 return true;
@@ -69,6 +72,7 @@ public class KeyboardInputHandler extends InputAdapter {
                 return true;
             case Input.Keys.ESCAPE:
                 gameWorldScreen.setPaused();
+                return true;
         }
         return false;
     }

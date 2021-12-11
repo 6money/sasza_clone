@@ -339,6 +339,7 @@ public class Level {
         for (Entity entity: canopyEntities) {
             entity.render(batch);
         }
+        player.renderReloadBar(batch);
     }
 
     public void renderDebug(ShapeDrawer drawer) {
@@ -399,8 +400,13 @@ public class Level {
             return;
         }
 
-        if (character.getGun().getCurrentMagazineAmmo() <= 0) {
-            character.getGun().reload();
+        if (character.getGun().getCurrentMagazineAmmo() <= 0 && character.getGun().getCurrentAmmo() > 0) {
+            character.getGun().initReload();
+            return;
+        }
+
+        if (character.getGun().checkReloadStatus() != 0) {
+            return;
         }
 
         float rotation = character.rotation;
