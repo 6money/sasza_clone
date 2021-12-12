@@ -71,7 +71,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         bbox = new Rectangle(x + Constants.PLAYER_CENTER.x * 0.80f, y + Constants.PLAYER_CENTER.y * 0.80f, MathUtils.round(Constants.PLAYER_CENTER.x / 2.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 2.5f));
         steerOutput = new SteeringAcceleration<>(new Vector2());
         maxLinearSpeed = 120;
-        maxLinearAcceleration = 200f;
+        maxLinearAcceleration = 800f;
         maxAngularSpeed = 120f;
         maxAngularAcceleration = 200f;
         tagged = false;
