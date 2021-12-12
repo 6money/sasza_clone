@@ -26,6 +26,8 @@ public class Gun {
     private float bloom;
     private float impact;
     private int penetration;
+    private float critChance;
+    private float critDamage;
     private TextureRegion weaponSprite;
     private Animation muzzleFlashAnimation;
     private Vector2 muzzleFlashOffset;
@@ -47,13 +49,15 @@ public class Gun {
         bloom = gunData.bloom;
         impact = gunData.impact;
         penetration = gunData.penetration;
+        critChance = gunData.critChance;
+        critDamage = gunData.critDamage;
         weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
         muzzleFlashOffset = new Vector2(5, 16);
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
         weaponType = gunData.category;
         reloadTimer = 0;
 
-        if (gunData.category == WeaponCategory.RIFLE || gunData.category == WeaponCategory.LMG) {
+        if (gunData.category == WeaponCategory.RIFLE || gunData.category == WeaponCategory.LMG || gunData.category == WeaponCategory.SPECIAL) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.rifleMuzzleFlashAnimation;
         } else if (gunData.category == WeaponCategory.DMR) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.dmrMuzzleFlashAnimation;
@@ -168,6 +172,22 @@ public class Gun {
 
     public void setPenetration(int penetration) {
         this.penetration = penetration;
+    }
+
+    public float getCritChance() {
+        return critChance;
+    }
+
+    public void setCritChance(float critChance) {
+        this.critChance = critChance;
+    }
+
+    public float getCritDamage() {
+        return critDamage;
+    }
+
+    public void setCritDamage(float critDamage) {
+        this.critDamage = critDamage;
     }
 
     public int getReloadTime() {

@@ -1,5 +1,7 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.dongbat.jbump.CollisionFilter;
@@ -26,9 +28,11 @@ public class Bullet extends Entity {
     private BulletCollisionFilter bulletCollisionFilter;
     private int penetration;
     private int penetrationCount;
+    private float critChance;
+    private float critDamage;
     private Array<Entity> hitEntities;
 
-    public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed, float damage, WeaponCategory projectileType, float impact, int penetration) {
+    public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed, float damage, WeaponCategory projectileType, float impact, int penetration, float critChange, float critDamage) {
         super();
         position = new Vector2(x, y);
         bbox.set(x, y, 2, 2);
@@ -37,6 +41,8 @@ public class Bullet extends Entity {
         this.penetration = penetration;
         penetrationCount = 0;
         hitEntities = new Array<>();
+        this.critChance = critChange;
+        this.critDamage = critDamage;
         target = new Vector2(targetX, targetY);
         if (projectileType == WeaponCategory.DMR) {
             entityTextureRegion = Assets.get_instance().weaponAssets.dmrProjectile;
@@ -86,8 +92,18 @@ public class Bullet extends Entity {
         if (collisions.size() > 0) {
             for (Item item: collisions.others) {
                 if (!hitEntities.contains(((Entity) item.userData), true)) {
+                    boolean isCrit = MathUtils.randomBoolean(critChance);
+                    float realDamage = damage;
+
+                    if (isCrit) {
+                        realDamage *= critDamage;
+                        Gdx.app.debug(TAG, realDamage + " CRIT");
+                    } else {
+                        Gdx.app.debug(TAG, realDamage + "");
+                    }
+
                     if (((Entity) item.userData).destructible) {
-                        ((Entity) item.userData).decrementHealth(damage);
+                        ((Entity) item.userData).decrementHealth(realDamage);
 
                         if (item.userData instanceof BaseEnemy) {
                             ((BaseEnemy) item.userData).incrementStun(impact);

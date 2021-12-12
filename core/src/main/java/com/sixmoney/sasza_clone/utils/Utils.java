@@ -11,7 +11,8 @@ public class Utils {
         RIFLE,
         SMG,
         DMR,
-        LMG
+        LMG,
+        SPECIAL
     };
 
     public static void drawTextureRegion(Batch batch, TextureRegion region, float x, float y) {

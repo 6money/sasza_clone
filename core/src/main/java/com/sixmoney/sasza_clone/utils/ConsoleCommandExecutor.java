@@ -77,6 +77,11 @@ public class ConsoleCommandExecutor extends CommandExecutor {
 
 
     // Weapon commands
+    @ConsoleDoc(description = "Set current weapon for clicked entity") public final void setWeapon(String weaponName) {
+        gameWorld.getClickedEntity().setNewGun(weaponName);
+        console.log("Set current weapon for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
     @ConsoleDoc(description = "Set current weapon's ammo for clicked entity") public final void setWeaponAmmo(int quantity) {
         gameWorld.getClickedEntity().getGun().setCurrentAmmo(quantity);
         console.log("Updated weapon ammo quantity for " + gameWorld.getClickedEntity().getClass().getSimpleName());
@@ -127,9 +132,14 @@ public class ConsoleCommandExecutor extends CommandExecutor {
         console.log("Updated weapon projectile penetration for " + gameWorld.getClickedEntity().getClass().getSimpleName());
     }
 
-    @ConsoleDoc(description = "Set current weapon for clicked entity") public final void setWeapon(String weaponName) {
-        gameWorld.getClickedEntity().setNewGun(weaponName);
-        console.log("Set current weapon for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    @ConsoleDoc(description = "Set current weapon's crit chance for clicked entity") public final void setWeaponCritChance(float critChance) {
+        gameWorld.getClickedEntity().getGun().setCritChance(critChance);
+        console.log("Updated weapon crit chance for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
+    @ConsoleDoc(description = "Set current weapon's crit damage for clicked entity") public final void setWeaponCritDamage(float critDamage) {
+        gameWorld.getClickedEntity().getGun().setCritChance(critDamage);
+        console.log("Updated weapon crit damage for " + gameWorld.getClickedEntity().getClass().getSimpleName());
     }
 
 
