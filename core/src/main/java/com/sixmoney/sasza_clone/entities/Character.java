@@ -97,8 +97,8 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         muzzleFlashReset = false;
         muzzleFlashStartTime = 0;
         showHealthBar = true;
-        healthBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("health_bar"));
-        stunBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("stun_bar"));
+        healthBar = new TenPatchDrawable(new int[] {1, 1}, new int[] {1, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("health_bar"));
+        stunBar = new TenPatchDrawable(new int[] {1, 1}, new int[] {1, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("stun_bar"));
         path = new FloatArray();
         items = new ArrayList<>();
         steeringBehaviors = new Array<>();
@@ -166,11 +166,16 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public void render(Batch batch) {
+        render(batch, 0, 0);
+    }
+
+    @Override
+    public void render(Batch batch, float xOffset, float yOffset) {
         if (currentGun != null && characterShootingTexture != null && shooting && currentGun.getCurrentMagazineAmmo() > 0 && currentGun.checkReloadStatus() == 0) {
             if (Utils.secondsSince(shootSpriteTime) < Math.max(0.02, Math.min(0.1, 1 / currentGun.getFireRate()))) {
                 Utils.drawTextureRegion(batch, characterShootingTexture, position.x, position.y, rotation);
             } else {
-                super.render(batch);
+                super.render(batch, xOffset, yOffset);
             }
 
             float tempResetTime;
@@ -185,7 +190,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
                 shootSpriteTime = TimeUtils.nanoTime();
             }
         } else {
-            super.render(batch);
+            super.render(batch, xOffset, yOffset);
         }
 
         float muzzleFlahsStartSeconds = Utils.secondsSince(muzzleFlashStartTime);
@@ -224,14 +229,14 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     public void renderHealthBar(Batch batch) {
         if (health < maxHealth && showHealthBar) {
             float healthBarWidth = Constants.HEALTH_BAR_WIDTH * (health / maxHealth);
-            healthBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH / 2f), position.y + (Constants.PLAYER_CENTER.y * 1.5f), healthBarWidth, 2);
+            healthBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH / 2f), position.y + (Constants.PLAYER_CENTER.y * 1.5f), healthBarWidth, 3);
         }
     }
 
     public void renderStunBar(Batch batch) {
         if (stun != 0) {
             float stunBarWidth = Constants.HEALTH_BAR_WIDTH * (Math.min(stun, stunLimit) / stunLimit);
-            stunBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH / 2f), position.y + (Constants.PLAYER_CENTER.y * 1.5f) + 2, stunBarWidth, 2);
+            stunBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH / 2f), position.y + (Constants.PLAYER_CENTER.y * 1.5f) + 2, stunBarWidth, 3);
         }
     }
 

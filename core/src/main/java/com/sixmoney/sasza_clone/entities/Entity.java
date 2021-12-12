@@ -53,7 +53,11 @@ public abstract class Entity {
     }
 
     public void render(Batch batch) {
-        Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
+        render(batch, 0, 0);
+    }
+
+    public void render(Batch batch, float xOffset, float yOffset) {
+        Utils.drawTextureRegion(batch, entityTextureRegion, position.x + xOffset, position.y + yOffset, rotation);
     }
 
     public void renderSecondary(Batch batch) {

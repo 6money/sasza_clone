@@ -38,7 +38,7 @@ public class Player extends Character {
         maxHealth = 2000;
         destructible = true;
         showHealthBar = false;
-        reloadBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("reload_bar"));
+        reloadBar = new TenPatchDrawable(new int[] {1, 1}, new int[] {1, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("reload_bar"));
     }
 
 
@@ -146,7 +146,7 @@ public class Player extends Character {
 
         if (reloadTime != 0 && reloadTime < currentGun.getReloadTime()) {
             float reloadBarWidth = Constants.HEALTH_BAR_WIDTH * 2 * (reloadTime / currentGun.getReloadTime());
-            reloadBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH * 2 / 2f), position.y + Constants.PLAYER_CENTER.y / 2, reloadBarWidth, 3);
+            reloadBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH * 2 / 2f), position.y + Constants.PLAYER_CENTER.y / 2, reloadBarWidth, 4);
         }
     }
 
