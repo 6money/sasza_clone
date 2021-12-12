@@ -36,6 +36,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected boolean tagged;
     protected float zeroLinearSpeedThreshold;
     protected float maxLinearSpeed;
+    protected float defaultMaxLinearSpeed;
     protected float maxLinearAcceleration;
     protected float maxAngularSpeed;
     protected float maxAngularAcceleration;
@@ -76,6 +77,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         bbox = new Rectangle(x + Constants.PLAYER_CENTER.x * 0.80f, y + Constants.PLAYER_CENTER.y * 0.80f, MathUtils.round(Constants.PLAYER_CENTER.x / 2.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 2.5f));
         steerOutput = new SteeringAcceleration<>(new Vector2());
         maxLinearSpeed = 120;
+        defaultMaxLinearSpeed = maxLinearSpeed;
         maxLinearAcceleration = 800f;
         maxAngularSpeed = 120f;
         maxAngularAcceleration = 200f;
@@ -87,9 +89,9 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         legsRotation = 0;
         bulletOffset = new Vector2( 18, -3);
         bulletOffsetReal = new Vector2(bulletOffset);
-        currentGun = new Gun(GunData.m4);
         guns = new Array<>(true, 3);
-        guns.add(currentGun, new Gun(GunData.mp5), new Gun(GunData.pkm));
+        guns.add(new Gun(GunData.m4), new Gun(GunData.mp5), new Gun(GunData.pkm));
+        setGun(0);
         shooting = false;
         shootStartTime = TimeUtils.nanoTime();
         shootSpriteTime = TimeUtils.nanoTime();
@@ -119,13 +121,14 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     public void setGun(int index) {
         currentGun = guns.get(index);
+        setMaxLinearSpeed(defaultMaxLinearSpeed);
     }
 
     public void setNewGun(String gunName) {
         Gun newGun = new Gun(GunData.gunRecords.get(gunName));
         int currentIndex = guns.indexOf(currentGun, true);
         guns.set(currentIndex, newGun);
-        currentGun = newGun;
+        setGun(currentIndex);
     }
 
     public void triggerMuzzleFlash() {
@@ -286,6 +289,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         String[] data = super.getData();
         data[1] = data[1] + "\nstun current: " + stun;
         data[1] = data[1] + "\nstun limit: " + stunLimit;
+        data[1] = data[1] + "\nmaxLinearSpeed: " + maxLinearSpeed;
         return data;
     }
 
@@ -331,6 +335,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
     @Override
     public void setMaxLinearSpeed(float maxLinearSpeed) {
+        defaultMaxLinearSpeed = maxLinearSpeed;
         this.maxLinearSpeed = maxLinearSpeed;
     }
 

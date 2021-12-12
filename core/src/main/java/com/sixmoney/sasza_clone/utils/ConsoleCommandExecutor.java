@@ -39,12 +39,12 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     }
 
     @ConsoleDoc(description = "Sets player movement speed") public final void setPlayerSpeed(float speed) {
-        gameWorld.level.getPlayer().playerSpeed = speed;
+        gameWorld.level.getPlayer().setMaxLinearSpeed(speed);
         console.log("Set player movement speed to " + speed);
     }
 
     @ConsoleDoc(description = "Resets player movement speed to default") public final void resetPlayerSpeed() {
-        gameWorld.level.getPlayer().playerSpeed = Constants.DEFAULT_PLAYER_SPEED;
+        gameWorld.level.getPlayer().setMaxLinearSpeed(Constants.DEFAULT_PLAYER_SPEED);
         console.log("Reset player movement speed to " + Constants.DEFAULT_PLAYER_SPEED);
     }
 
@@ -138,8 +138,13 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     }
 
     @ConsoleDoc(description = "Set current weapon's crit damage for clicked entity") public final void setWeaponCritDamage(float critDamage) {
-        gameWorld.getClickedEntity().getGun().setCritChance(critDamage);
+        gameWorld.getClickedEntity().getGun().setCritDamage(critDamage);
         console.log("Updated weapon crit damage for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
+    @ConsoleDoc(description = "Set current weapon's movement penalty for clicked entity") public final void setWeaponMovementPenalty(float penalty) {
+        gameWorld.getClickedEntity().getGun().setMovementPenalty(penalty);
+        console.log("Updated weapon movement penalty for " + gameWorld.getClickedEntity().getClass().getSimpleName());
     }
 
 

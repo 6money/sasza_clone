@@ -23,22 +23,27 @@ public class Player extends Character {
     private Vector2 lazerVector;
     private TenPatchDrawable reloadBar;
 
-    public float playerSpeed = 200;
-
 
     public Player(float x, float y) {
         super(x, y);
         position = new Vector2(x, y);
-        entityTextureRegion = Assets.get_instance().playerAssets.player;
-        entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
-        characterShootingTexture = Assets.get_instance().playerAssets.playerShooting;
-        characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
+//        entityTextureRegion = Assets.get_instance().playerAssets.player;
+//        entityAnimation = Assets.get_instance().playerAssets.playerWalkingAnimation;
+//        characterShootingTexture = Assets.get_instance().playerAssets.playerShooting;
+//        characterIdleLegTexture = Assets.get_instance().playerAssets.playerStand;
+        entityTextureRegion = Assets.get_instance().npcAssets.sniperBase;
+        entityAnimation = Assets.get_instance().npcAssets.npcWalkingAnimationS1;
+        characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;
+        characterIdleLegTexture = Assets.get_instance().npcAssets.npcStandS1;
         lazerVector = new Vector2();
         health = 2000;
         maxHealth = 2000;
+        maxLinearSpeed = Constants.DEFAULT_PLAYER_SPEED;
+        defaultMaxLinearSpeed = maxLinearSpeed;
         destructible = true;
         showHealthBar = false;
         reloadBar = new TenPatchDrawable(new int[] {1, 1}, new int[] {1, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("reload_bar"));
+        setGun(0);
     }
 
 
@@ -60,7 +65,7 @@ public class Player extends Character {
     public void setVelocity(Vector2 newVelocityNormal) {
         oldVelocity.set(velocity);
         velocity.set(newVelocityNormal);
-        velocity.setLength(playerSpeed);
+        velocity.setLength(maxLinearSpeed);
 
         if (velocity.isZero() && velocity != oldVelocity) {
             animationStartTime = 0;
@@ -86,15 +91,15 @@ public class Player extends Character {
                     (velocity.angleDeg() >= 0 && velocity.angleDeg() < rotationUpper)
                     || (velocity.angleDeg() <= 365 && velocity.angleDeg() < rotationLower )
             ) {
-                velocity.setLength(playerSpeed);
+                velocity.setLength(maxLinearSpeed);
             } else {
-                velocity.setLength(playerSpeed - Constants.PLAYER_BACK_PEDAL_PENALTY);
+                velocity.setLength(maxLinearSpeed - Constants.PLAYER_BACK_PEDAL_PENALTY);
             }
         } else {
             if (velocity.angleDeg() > rotationLower && velocity.angleDeg() < rotationUpper) {
-                velocity.setLength(playerSpeed);
+                velocity.setLength(maxLinearSpeed);
             } else {
-                velocity.setLength(playerSpeed - Constants.PLAYER_BACK_PEDAL_PENALTY);
+                velocity.setLength(maxLinearSpeed - Constants.PLAYER_BACK_PEDAL_PENALTY);
             }
         }
 
@@ -148,6 +153,12 @@ public class Player extends Character {
             float reloadBarWidth = Constants.HEALTH_BAR_WIDTH * 2 * (reloadTime / currentGun.getReloadTime());
             reloadBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH * 2 / 2f), position.y + Constants.PLAYER_CENTER.y / 2, reloadBarWidth, 4);
         }
+    }
+
+
+    @Override
+    public void setMaxLinearSpeed(float maxLinearSpeed) {
+        this.maxLinearSpeed = maxLinearSpeed - currentGun.getMovementPenalty();
     }
 
 

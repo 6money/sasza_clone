@@ -28,6 +28,7 @@ public class Gun {
     private int penetration;
     private float critChance;
     private float critDamage;
+    private float movementPenalty;
     private TextureRegion weaponSprite;
     private Animation muzzleFlashAnimation;
     private Vector2 muzzleFlashOffset;
@@ -51,6 +52,7 @@ public class Gun {
         penetration = gunData.penetration;
         critChance = gunData.critChance;
         critDamage = gunData.critDamage;
+        movementPenalty = gunData.movementPenalty;
         weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
         muzzleFlashOffset = new Vector2(5, 16);
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
@@ -188,6 +190,14 @@ public class Gun {
 
     public void setCritDamage(float critDamage) {
         this.critDamage = critDamage;
+    }
+
+    public float getMovementPenalty() {
+        return movementPenalty;
+    }
+
+    public void setMovementPenalty(float movementPenalty) {
+        this.movementPenalty = movementPenalty;
     }
 
     public int getReloadTime() {
