@@ -21,15 +21,16 @@ public class ConsoleCommandExecutor extends CommandExecutor {
         gameWorld.toggleMobileControls();
     }
 
+    @ConsoleDoc(description = "Display pathfinding route to click coordinate") public final void togglePath() {
+        console.log("Current selected coordinate: " + gameWorld.level.clickedCoordinate.toString());
+        gameWorld.level.showPath = !gameWorld.level.showPath;
+    }
+
     @ConsoleDoc(description = "Display info about the higlighted entity") public final void entityInfo() {
         console.log(gameWorld.clickedEntity.getData()[0]);
         console.log(gameWorld.clickedEntity.getData()[1]);
     }
 
-    @ConsoleDoc(description = "Display pathfinding route to click coordinate") public final void togglePath() {
-        console.log("Current selected coordinate: " + gameWorld.level.clickedCoordinate.toString());
-        gameWorld.level.showPath = !gameWorld.level.showPath;
-    }
 
     // Player commands
     @ConsoleDoc(description = "Teleports the player to the specified location") public final void teleport(float x, float y) {
@@ -46,6 +47,7 @@ public class ConsoleCommandExecutor extends CommandExecutor {
         gameWorld.level.getPlayer().playerSpeed = Constants.DEFAULT_PLAYER_SPEED;
         console.log("Reset player movement speed to " + Constants.DEFAULT_PLAYER_SPEED);
     }
+
 
     // Spawn commands
     @ConsoleDoc(description = "Spawns specified number of enemies at random areas around player") public final void spawnEnemy(float quantity) {
@@ -104,6 +106,17 @@ public class ConsoleCommandExecutor extends CommandExecutor {
         gameWorld.getClickedEntity().getGun().setProjectileSpeed(speed);
         console.log("Updated weapon projectile speed for " + gameWorld.getClickedEntity().getClass().getSimpleName());
     }
+
+    @ConsoleDoc(description = "Set current weapon's reload time for clicked entity") public final void setWeaponReloadTime(int milliseconds) {
+        gameWorld.getClickedEntity().getGun().setReloadTime(milliseconds);
+        console.log("Updated weapon reload time for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
+    @ConsoleDoc(description = "Set current weapon's bloom/accuracy for clicked entity") public final void setWeaponBloom(float bloom) {
+        gameWorld.getClickedEntity().getGun().setBloom(bloom);
+        console.log("Updated weapon bloom for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
 
     // Misc
     @ConsoleDoc(description = "Kills the clicked entity") public final void kill() {

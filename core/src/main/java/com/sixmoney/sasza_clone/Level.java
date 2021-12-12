@@ -409,7 +409,8 @@ public class Level {
             return;
         }
 
-        float rotation = character.rotation;
+        float rotation = character.rotation + MathUtils.random(-character.getGun().getBloom(), character.getGun().getBloom());
+
         Vector2 bulletVector = new Vector2(1, 0);
         bulletVector.rotateDeg(rotation);
         bulletVector.setLength(character.getGun().getRange());
@@ -418,7 +419,7 @@ public class Level {
         Bullet bullet = new Bullet(
                 character.position.x + Constants.PLAYER_CENTER.x + character.bulletOffsetReal.x,
                 character.position.y + Constants.PLAYER_CENTER.y + character.bulletOffsetReal.y,
-                character.rotation,
+                rotation,
                 bulletVector.x,
                 bulletVector.y,
                 character.getGun().getProjectileSpeed(),

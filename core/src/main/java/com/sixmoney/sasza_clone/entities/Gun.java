@@ -23,6 +23,7 @@ public class Gun {
     private float damage;
     private int reloadTime;
     private long reloadTimer;
+    private float bloom;
     private TextureRegion weaponSprite;
     private Animation muzzleFlashAnimation;
     private Vector2 muzzleFlashOffset;
@@ -41,6 +42,7 @@ public class Gun {
         projectileSpeed = gunData.projectileSpeed;
         damage = gunData.damage;
         reloadTime = gunData.reloadTime;
+        bloom = gunData.bloom;
         weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
         muzzleFlashOffset = new Vector2(5, 16);
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
@@ -140,14 +142,26 @@ public class Gun {
         return weaponType;
     }
 
-    public void initReload() {
-        if (currentMagazineAmmo < magazineSize && reloadTimer == 0) {
-            reloadTimer = TimeUtils.nanoTime();
-        }
+    public float getBloom() {
+        return bloom;
+    }
+
+    public void setBloom(float bloom) {
+        this.bloom = bloom;
     }
 
     public int getReloadTime() {
         return reloadTime;
+    }
+
+    public void setReloadTime(int reloadTime) {
+        this.reloadTime = reloadTime;
+    }
+
+    public void initReload() {
+        if (currentMagazineAmmo < magazineSize && reloadTimer == 0) {
+            reloadTimer = TimeUtils.nanoTime();
+        }
     }
 
     public void resetReloadTimer() {
