@@ -14,11 +14,8 @@
 	<inherits name="space.earlygrey.shapedrawer"/>
 	<inherits name="de.golfgl.gdx.controllers.controller_scene2d" />
 	<inherits name="com.strongjoshua.console"/>
-	<inherits name="com.dongbat.walkable"/>
-	<inherits name="haxe"/>
-	<inherits name="hxDaedalus"/>
-	<inherits name="hxPixels"/>
 	<inherits name="Sasza" />
+	<inherits name="gdxwalkable" />
 	<entry-point class="com.sixmoney.sasza_clone.gwt.GwtLauncher" />
 	<set-configuration-property name="gdx.assetpath" value="../assets" />
 	<set-configuration-property name="xsiframe.failIfScriptTag" value="FALSE"/>
@@ -26,10 +23,6 @@
 	<set-property name="user.agent" value="gecko1_8, safari"/>
 	<collapse-property name="user.agent" values="*" />
 	<!-- Remove the "user.agent" lines above if you encounter issues with Safari or other Gecko browsers. -->
-	<extend-configuration-property name="gdx.reflect.include" value="com.dongbat.walkable" />
-	<extend-configuration-property name="gdx.reflect.include" value="haxe" />
-	<extend-configuration-property name="gdx.reflect.include" value="hxDaedalus" />
-	<extend-configuration-property name="gdx.reflect.include" value="hxPixels" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.strongjoshua.console" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.sixmoney.sasza_clone" />
 </module>

@@ -48,7 +48,8 @@ dependencies {
 //	implementation "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion:sources"
 	implementation "de.golfgl.gdxcontrollerutils:gdx-controllerutils-scene2d:$gdxControllerutilsScene2d:sources"
 	implementation files("libs/libgdx-inGameConsole-1.0.0-sources.jar")
-	implementation files("libs/jwalkable-sources.jar")
+//	implementation files("libs/jwalkable-sources.jar")
+	implementation 'com.github.tommyettinger:gdxWalkable:33292ee7da:sources'
 }
 
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
@@ -145,7 +146,7 @@ tasks.draftCompileGwt.dependsOn(addSource)
 tasks.checkGwt.dependsOn(addSource)
 checkGwt.war = file("war")
 
-sourceCompatibility = 8.0
+sourceCompatibility = 16.0
 sourceSets.main.java.srcDirs = [ "src/main/java/" ]
 
 eclipse.project.name = appName + "-html"

@@ -38,8 +38,8 @@ android {
 		multiDexEnabled true
 	}
 	compileOptions {
-		sourceCompatibility "8.0"
-		targetCompatibility "8.0"
+		sourceCompatibility "15"
+		targetCompatibility "15"
 		coreLibraryDesugaringEnabled true
 	}
 	
