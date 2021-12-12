@@ -427,7 +427,8 @@ public class Level {
                 character.getGun().getProjectileSpeed(),
                 character.getGun().getDamage(),
                 character.getGun().getWeaponType(),
-                character.getGun().getImpact()
+                character.getGun().getImpact(),
+                character.getGun().getPenetration()
         );
 
         bullets.add(bullet);

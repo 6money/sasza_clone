@@ -25,6 +25,7 @@ public class Gun {
     private long reloadTimer;
     private float bloom;
     private float impact;
+    private int penetration;
     private TextureRegion weaponSprite;
     private Animation muzzleFlashAnimation;
     private Vector2 muzzleFlashOffset;
@@ -33,7 +34,7 @@ public class Gun {
 
 
     public Gun(GunData.GunRecord gunData) {
-        name = gunData.name;
+        name = gunData.textureName;
         magazineSize = gunData.magSize;
         fireRate = gunData.fireRate;
         range = gunData.range;
@@ -45,6 +46,7 @@ public class Gun {
         reloadTime = gunData.reloadTime;
         bloom = gunData.bloom;
         impact = gunData.impact;
+        penetration = gunData.penetration;
         weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
         muzzleFlashOffset = new Vector2(5, 16);
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
@@ -158,6 +160,14 @@ public class Gun {
 
     public void setImpact(float impact) {
         this.impact = impact;
+    }
+
+    public int getPenetration() {
+        return penetration;
+    }
+
+    public void setPenetration(int penetration) {
+        this.penetration = penetration;
     }
 
     public int getReloadTime() {

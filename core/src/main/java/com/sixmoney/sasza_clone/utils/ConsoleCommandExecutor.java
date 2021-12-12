@@ -122,6 +122,16 @@ public class ConsoleCommandExecutor extends CommandExecutor {
         console.log("Updated weapon projectile impact for " + gameWorld.getClickedEntity().getClass().getSimpleName());
     }
 
+    @ConsoleDoc(description = "Set current weapon's penetration value for clicked entity") public final void setWeaponPenetration(int penetration) {
+        gameWorld.getClickedEntity().getGun().setPenetration(penetration);
+        console.log("Updated weapon projectile penetration for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
+    @ConsoleDoc(description = "Set current weapon for clicked entity") public final void setWeapon(String weaponName) {
+        gameWorld.getClickedEntity().setNewGun(weaponName);
+        console.log("Set current weapon for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
 
     // Misc
     @ConsoleDoc(description = "Kills the clicked entity") public final void kill() {

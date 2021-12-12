@@ -1,6 +1,7 @@
 package com.sixmoney.sasza_clone.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Collisions;
 import com.dongbat.jbump.Item;
@@ -23,13 +24,19 @@ public class Bullet extends Entity {
     private float impact;
     private ArrayList<Item> items;
     private BulletCollisionFilter bulletCollisionFilter;
+    private int penetration;
+    private int penetrationCount;
+    private Array<Entity> hitEntities;
 
-    public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed, float damage, WeaponCategory projectileType, float impact) {
+    public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed, float damage, WeaponCategory projectileType, float impact, int penetration) {
         super();
         position = new Vector2(x, y);
         bbox.set(x, y, 2, 2);
         this.rotation = rotation;
         this.impact = impact;
+        this.penetration = penetration;
+        penetrationCount = 0;
+        hitEntities = new Array<>();
         target = new Vector2(targetX, targetY);
         if (projectileType == WeaponCategory.DMR) {
             entityTextureRegion = Assets.get_instance().weaponAssets.dmrProjectile;
@@ -77,15 +84,27 @@ public class Bullet extends Entity {
         Collisions collisions = result.projectedCollisions;
 
         if (collisions.size() > 0) {
-            Item item = collisions.get(0).other;
+            for (Item item: collisions.others) {
+                if (!hitEntities.contains(((Entity) item.userData), true)) {
+                    if (((Entity) item.userData).destructible) {
+                        ((Entity) item.userData).decrementHealth(damage);
 
-            if (((Entity) item.userData).destructible) {
-                ((Entity) item.userData).decrementHealth(damage);
-                if (item.userData instanceof BaseEnemy) {
-                    ((BaseEnemy) item.userData).incrementStun(impact);
+                        if (item.userData instanceof BaseEnemy) {
+                            ((BaseEnemy) item.userData).incrementStun(impact);
+                            penetrationCount += 1;
+                            hitEntities.add(((Entity) item.userData));
+                        } else {
+                            dead = true;
+                        }
+                    } else if (((Entity) item.userData).bulletCollidable) {
+                        dead = true;
+                    }
+
+                    if (penetrationCount >= penetration) {
+                        dead = true;
+                    }
                 }
             }
-            dead = true;
         }
     }
 
@@ -94,7 +113,11 @@ public class Bullet extends Entity {
         public Response filter(Item item, Item other) {
             if(other == null) return null;
             if (((Entity) other.userData).bulletCollidable) {
-                return Response.touch;
+                if (other.userData instanceof Character) {
+                    return Response.cross;
+                } else {
+                    return Response.touch;
+                }
             } else {
                 return null;
             }

@@ -121,6 +121,13 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         currentGun = guns.get(index);
     }
 
+    public void setNewGun(String gunName) {
+        Gun newGun = new Gun(GunData.gunRecords.get(gunName));
+        int currentIndex = guns.indexOf(currentGun, true);
+        guns.set(currentIndex, newGun);
+        currentGun = newGun;
+    }
+
     public void triggerMuzzleFlash() {
         muzzleFlash = true;
         muzzleFlashReset = true;
