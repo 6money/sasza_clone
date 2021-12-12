@@ -117,6 +117,11 @@ public class ConsoleCommandExecutor extends CommandExecutor {
         console.log("Updated weapon bloom for " + gameWorld.getClickedEntity().getClass().getSimpleName());
     }
 
+    @ConsoleDoc(description = "Set current weapon's impact value for clicked entity") public final void setWeaponForce(float impact) {
+        gameWorld.getClickedEntity().getGun().setImpact(impact);
+        console.log("Updated weapon projectile impact for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
 
     // Misc
     @ConsoleDoc(description = "Kills the clicked entity") public final void kill() {

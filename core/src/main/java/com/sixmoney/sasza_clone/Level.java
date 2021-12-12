@@ -326,9 +326,11 @@ public class Level {
         }
         for (BaseEnemy zom: enemyEntities) {
             zom.renderHealthBar(batch);
+            zom.renderStunBar(batch);
         }
         for (Character entity: characterEntities) {
             entity.renderHealthBar(batch);
+            entity.renderStunBar(batch);
         }
         for (Entity entity: wallEntities) {
             entity.renderSecondary(batch);
@@ -424,7 +426,8 @@ public class Level {
                 bulletVector.y,
                 character.getGun().getProjectileSpeed(),
                 character.getGun().getDamage(),
-                character.getGun().getWeaponType()
+                character.getGun().getWeaponType(),
+                character.getGun().getImpact()
         );
 
         bullets.add(bullet);

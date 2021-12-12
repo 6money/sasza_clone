@@ -24,6 +24,7 @@ public class Gun {
     private int reloadTime;
     private long reloadTimer;
     private float bloom;
+    private float impact;
     private TextureRegion weaponSprite;
     private Animation muzzleFlashAnimation;
     private Vector2 muzzleFlashOffset;
@@ -43,6 +44,7 @@ public class Gun {
         damage = gunData.damage;
         reloadTime = gunData.reloadTime;
         bloom = gunData.bloom;
+        impact = gunData.impact;
         weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
         muzzleFlashOffset = new Vector2(5, 16);
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
@@ -148,6 +150,14 @@ public class Gun {
 
     public void setBloom(float bloom) {
         this.bloom = bloom;
+    }
+
+    public float getImpact() {
+        return impact;
+    }
+
+    public void setImpact(float impact) {
+        this.impact = impact;
     }
 
     public int getReloadTime() {

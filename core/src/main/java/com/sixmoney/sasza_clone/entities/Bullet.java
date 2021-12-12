@@ -20,14 +20,16 @@ public class Bullet extends Entity {
     private float remainingDistance;
     private boolean dead;
     private boolean firstUpdate;
+    private float impact;
     private ArrayList<Item> items;
     private BulletCollisionFilter bulletCollisionFilter;
 
-    public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed, float damage, WeaponCategory projectileType) {
+    public Bullet(float x, float y, float rotation, float targetX, float targetY, float speed, float damage, WeaponCategory projectileType, float impact) {
         super();
         position = new Vector2(x, y);
         bbox.set(x, y, 2, 2);
         this.rotation = rotation;
+        this.impact = impact;
         target = new Vector2(targetX, targetY);
         if (projectileType == WeaponCategory.DMR) {
             entityTextureRegion = Assets.get_instance().weaponAssets.dmrProjectile;
@@ -79,6 +81,9 @@ public class Bullet extends Entity {
 
             if (((Entity) item.userData).destructible) {
                 ((Entity) item.userData).decrementHealth(damage);
+                if (item.userData instanceof BaseEnemy) {
+                    ((BaseEnemy) item.userData).incrementStun(impact);
+                }
             }
             dead = true;
         }

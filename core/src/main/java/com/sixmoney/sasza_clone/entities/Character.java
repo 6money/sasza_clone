@@ -56,8 +56,13 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected long muzzleFlashStartTime;
     protected boolean showHealthBar;
     protected TenPatchDrawable healthBar;
+    protected TenPatchDrawable stunBar;
     protected FloatArray path;
     protected ArrayList<ItemInfo> items;
+    protected float stunLimit;
+    protected float stun;
+    protected long stunTimer;
+    protected long stunDecayTimer;
 
     public boolean shooting;
     public long shootStartTime;
@@ -93,9 +98,14 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         muzzleFlashStartTime = 0;
         showHealthBar = true;
         healthBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("health_bar"));
+        stunBar = new TenPatchDrawable(new int[] {0, 0}, new int[] {0, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("stun_bar"));
         path = new FloatArray();
         items = new ArrayList<>();
         steeringBehaviors = new Array<>();
+        stunLimit = 100;
+        stun = 0;
+        stunTimer = 0;
+        stunDecayTimer = TimeUtils.nanoTime();
     }
 
 
@@ -128,6 +138,17 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
 
         if (currentGun != null) {
             currentGun.checkReloadStatus();
+        }
+
+        if (stunTimer != 0 && Utils.secondsSince(stunTimer) >= 0.5f) {
+            stunTimer = 0;
+            stun = 0;
+            maxLinearSpeed *= 2;
+        }
+
+        if (Utils.millisecondsSince(stunDecayTimer) >= 100 && stun > 0) {
+            stunDecayTimer = TimeUtils.nanoTime();
+            stun -= 2;
         }
     }
 
@@ -200,6 +221,13 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         }
     }
 
+    public void renderStunBar(Batch batch) {
+        if (stun != 0) {
+            float stunBarWidth = Constants.HEALTH_BAR_WIDTH * (Math.min(stun, stunLimit) / stunLimit);
+            stunBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH / 2f), position.y + (Constants.PLAYER_CENTER.y * 1.5f) + 2, stunBarWidth, 2);
+        }
+    }
+
     @Override
     public void renderDebug(ShapeDrawer drawer) {
         super.renderDebug(drawer);
@@ -228,6 +256,25 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         if (behavior instanceof RaycastObstacleAvoidance) {
             raycastObstacleAvoidance = (RaycastObstacleAvoidance<Vector2>) behavior;
         }
+    }
+
+    public void incrementStun(float impact) {
+        stun += impact;
+
+        if (stun >= stunLimit) {
+            if (stunTimer == 0) {
+                maxLinearSpeed /= 2;
+            }
+            stunTimer = TimeUtils.nanoTime();
+        }
+    }
+
+    @Override
+    public String[] getData() {
+        String[] data = super.getData();
+        data[1] = data[1] + "\nstun current: " + stun;
+        data[1] = data[1] + "\nstun limit: " + stunLimit;
+        return data;
     }
 
     @Override

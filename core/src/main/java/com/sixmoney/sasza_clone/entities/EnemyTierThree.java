@@ -15,5 +15,6 @@ public class EnemyTierThree extends BaseEnemy {
         maxHealth = 1000;
         maxLinearSpeed = 10f;
         damage = 40;
+        stunLimit = 300;
     }
 }
