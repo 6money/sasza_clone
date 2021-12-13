@@ -57,6 +57,9 @@ public class ControllerInputHandler implements ControllerListener {
         } else if (buttonCode == Controllers.getCurrent().getMapping().buttonY) {
             gameWorldScreen.switchWeapon(nextWeaponIndex());
             return true;
+        } else if (buttonCode == Controllers.getCurrent().getMapping().buttonX) {
+            gameWorldScreen.level.getPlayer().getGun().initReload();
+            return true;
         } else if (buttonCode == Controllers.getCurrent().getMapping().buttonDpadUp) {
             camera.zoomIn(0.1f);
             return true;
