@@ -58,4 +58,22 @@ public class Utils {
     public static float millisecondsSince(long timeNanos) {
         return (1 / 1000000f) * (TimeUtils.nanoTime() - timeNanos);
     }
+
+    public static class HitRecord {
+        public float x;
+        public float y;
+        public int damage;
+        public boolean isCrit;
+        public long hitTime;
+        public float alpha;
+
+        public HitRecord(float x, float y, float damage, boolean isCrit) {
+            this.x = x + MathUtils.random(-4, 4);
+            this.y = y + MathUtils.random(-4, 4);
+            this.damage = MathUtils.round(damage);
+            this.isCrit = isCrit;
+            this.hitTime = TimeUtils.nanoTime();
+            this.alpha = 100;
+        }
+    }
 }

@@ -1,15 +1,16 @@
 package com.sixmoney.sasza_clone.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Collisions;
 import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.Utils;
 import com.sixmoney.sasza_clone.utils.Utils.WeaponCategory;
 
 import java.util.ArrayList;
@@ -64,7 +65,8 @@ public class Bullet extends Entity {
         return dead;
     }
 
-    public void update(float delta, World<Entity> world) {
+
+    public void update(float delta, World<Entity> world, DelayedRemovalArray<Utils.HitRecord> hitLocations) {
         if (firstUpdate) {
             firstUpdate = false;
             return;
@@ -93,14 +95,7 @@ public class Bullet extends Entity {
             for (Item item: collisions.others) {
                 if (!hitEntities.contains(((Entity) item.userData), true)) {
                     boolean isCrit = MathUtils.randomBoolean(critChance);
-                    float realDamage = damage;
-
-                    if (isCrit) {
-                        realDamage *= critDamage;
-                        Gdx.app.debug(TAG, realDamage + " CRIT");
-                    } else {
-                        Gdx.app.debug(TAG, realDamage + "");
-                    }
+                    float realDamage = (!isCrit) ? damage : damage * critDamage;
 
                     if (((Entity) item.userData).destructible) {
                         ((Entity) item.userData).decrementHealth(realDamage);
@@ -109,20 +104,25 @@ public class Bullet extends Entity {
                             ((BaseEnemy) item.userData).incrementStun(impact);
                             penetrationCount += 1;
                             hitEntities.add(((Entity) item.userData));
+                            hitLocations.add(new Utils.HitRecord(collisions.get(collisions.others.indexOf(item)).touch.x, collisions.get(collisions.others.indexOf(item)).touch.y, realDamage, isCrit));
                         } else {
                             dead = true;
+                            return;
                         }
                     } else if (((Entity) item.userData).bulletCollidable) {
                         dead = true;
+                        return;
                     }
 
                     if (penetrationCount >= penetration) {
                         dead = true;
+                        return;
                     }
                 }
             }
         }
     }
+
 
     public static class BulletCollisionFilter implements CollisionFilter {
         @Override

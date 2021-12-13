@@ -9,7 +9,9 @@ import com.badlogic.gdx.ai.steer.utils.Path;
 import com.badlogic.gdx.ai.steer.utils.RayConfiguration;
 import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -66,6 +68,8 @@ public class Level {
     private Array<Entity> deadEntities;
     private final DelayedRemovalArray<Bullet> bullets;
     private Array<Vector2> spawnPoints;
+    private DelayedRemovalArray<Utils.HitRecord> hitLocations;
+    private BitmapFont font;
 
     public PathHelper pathHelperEnemy;
     public PathHelper pathHelperNpc;
@@ -90,6 +94,10 @@ public class Level {
         deadEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
         spawnPoints = new Array<>();
+        hitLocations = new DelayedRemovalArray<>(100);
+        font = new BitmapFont(Gdx.files.internal("fonts/arial-15.fnt"));
+        font.getData().setScale(0.5f);
+        font.setColor(Color.YELLOW);
     }
 
     public void initPathHelpers(Vector2 outerCorner) {
@@ -290,13 +298,22 @@ public class Level {
         }
         bullets.begin();
         for (Bullet bullet: bullets) {
-            bullet.update(delta, world);
+            bullet.update(delta, world, hitLocations);
             if (bullet.getDead()) {
                 world.remove(bullet.item);
                 bullets.removeValue(bullet, true);
             }
         }
         bullets.end();
+        hitLocations.begin();
+        for (Utils.HitRecord hitLocation: hitLocations) {
+            if (Utils.millisecondsSince(hitLocation.hitTime) >= 500) {
+                hitLocations.removeValue(hitLocation, true);
+            } else if (Utils.millisecondsSince(hitLocation.hitTime) >= 200) {
+                hitLocation.alpha -= 2;
+            }
+        }
+        hitLocations.end();
     }
 
     public void render(Batch batch, ShapeDrawer drawer) {
@@ -338,6 +355,17 @@ public class Level {
         for (Character entity: characterEntities) {
             entity.renderHealthBar(batch);
             entity.renderStunBar(batch);
+        }
+        for (Utils.HitRecord hitLocation: hitLocations) {
+            font.setColor(font.getColor().r, font.getColor().g, font.getColor().b, hitLocation.alpha / 100);
+            font.draw(batch, Integer.toString(hitLocation.damage), hitLocation.x, hitLocation.y);
+
+            if (hitLocation.isCrit) {
+                font.setColor(Color.ORANGE);
+                font.setColor(font.getColor().r, font.getColor().g, font.getColor().b, hitLocation.alpha / 100);
+                font.draw(batch, "CRIT", hitLocation.x, hitLocation.y + 5);
+                font.setColor(Color.YELLOW);
+            }
         }
         for (Entity entity: wallEntities) {
             entity.renderSecondary(batch);
