@@ -35,7 +35,6 @@ public class BaseSoldier extends BaseNPC {
         deathAnimation = Assets.get_instance().npcAssets.sniperDyingAnimation;
         characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;
         characterIdleLegTexture = Assets.get_instance().npcAssets.npcStandS1;
-        currentGun = new Gun(GunData.svd);
         bulletCollidable = false;
         bulletOffset = new Vector2( 19, -3);
         detectionObject = new NPCDetectionObject(this);
@@ -43,6 +42,8 @@ public class BaseSoldier extends BaseNPC {
         pathSteering.setEnabled(false);
         npcCollisionFilter = new NpcCollisionFilter();
         npcPlayerCollisionFilter = new NpcPlayerCollisionFilter();
+        guns.set(0, new Gun(GunData.svd));
+        setGun(0);
     }
 
 
@@ -67,7 +68,9 @@ public class BaseSoldier extends BaseNPC {
             animationStartTime = TimeUtils.nanoTime();
         }
 
-        targetLocation = detectionObject.update(world);
+        if (updateCounter == updateBracket) {
+            targetLocation = detectionObject.update(world);
+        }
 
         if (targetLocation != null) {
             shooting = true;

@@ -617,6 +617,13 @@ public class Level {
                     .setDecelerationRadius(50);
             npc.addBehavior(arrive, 1);
 
+            Array<Vector2> waypoints = new Array<>();
+            waypoints.add(new Vector2(0, 0));
+            waypoints.add(new Vector2(0, 0));
+            Path<Vector2, LinePath.LinePathParam> path = new LinePath<>(waypoints, true);
+            FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(npc, path, 5);
+            npc.addBehavior(followPath, 2);
+
             characterEntities.add(npc);
         }
     }

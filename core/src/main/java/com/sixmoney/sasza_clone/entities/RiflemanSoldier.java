@@ -13,7 +13,8 @@ public class RiflemanSoldier extends BaseSoldier {
         characterShootingTexture = Assets.get_instance().npcAssets.riflemanShooting;
         characterIdleLegTexture = Assets.get_instance().npcAssets.npcStandS2;
         entityAnimation = Assets.get_instance().npcAssets.npcWalkingAnimationS2;
-        currentGun = new Gun(GunData.mp5);
         bulletOffset = new Vector2( 16, -3);
+        guns.set(0, new Gun(GunData.mp5));
+        setGun(0);
     }
 }

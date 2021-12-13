@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.dongbat.jbump.CollisionFilter;
@@ -15,9 +16,17 @@ public abstract class BaseNPC extends Character {
 
     protected CollisionFilter npcCollisionFilter;
     protected CollisionFilter npcPlayerCollisionFilter;
+    protected int updateBracket;
+    protected int updateCounter;
+    protected int updateBracket2;
+    protected int updateCounter2;
 
     public BaseNPC(float x, float y) {
         super(x, y);
+        updateBracket = MathUtils.random(11);
+        updateCounter = 0;
+        updateBracket2 = MathUtils.random(1);
+        updateCounter2 = 0;
     }
 
 
@@ -47,22 +56,24 @@ public abstract class BaseNPC extends Character {
 
 
     public void update(float delta, World<Entity> world, PathHelper pathHelper, Vector2 target) {
-        world.querySegmentWithCoords(getPosition().x, getPosition().y, target.x, target.y, npcPlayerCollisionFilter, items);
+        if (updateCounter2 == updateBracket2) {
+            world.querySegmentWithCoords(getPosition().x, getPosition().y, target.x, target.y, npcPlayerCollisionFilter, items);
 
-        if (items.size() > 0 && items.get(0).item.userData instanceof Player && !prioritySteering.isEnabled()) {
-            prioritySteering.setEnabled(true);
-            pathSteering.setEnabled(false);
-            path.clear();
-            Gdx.app.log(TAG, "Toggled prioritySteering");
-        } else if ((items.size() == 0 || !(items.get(0).item.userData instanceof Player)) && !pathSteering.isEnabled()) {
-            prioritySteering.setEnabled(false);
-            pathSteering.setEnabled(true);
-            Gdx.app.log(TAG, "Toggled pathSteering");
+            if (items.size() > 0 && items.get(0).item.userData instanceof Player && !prioritySteering.isEnabled()) {
+                prioritySteering.setEnabled(true);
+                pathSteering.setEnabled(false);
+                path.clear();
+                Gdx.app.log(TAG, "Toggled prioritySteering");
+            } else if ((items.size() == 0 || !(items.get(0).item.userData instanceof Player)) && !pathSteering.isEnabled()) {
+                prioritySteering.setEnabled(false);
+                pathSteering.setEnabled(true);
+                Gdx.app.log(TAG, "Toggled pathSteering");
+            }
         }
 
         if (prioritySteering.isEnabled()) {
             prioritySteering.calculateSteering(steerOutput);
-        } else if (pathSteering.isEnabled()) {
+        } else if (pathSteering.isEnabled() && updateCounter == updateBracket) {
             try {
                 pathHelper.findPath(getPosition().x, getPosition().y, target.x, target.y, bbox.width * 1.1f, path);
 
@@ -80,12 +91,14 @@ public abstract class BaseNPC extends Character {
 
                 LinePath<Vector2> newPath = new LinePath<>(waypoints, true);
                 ((FollowPath<Vector2, LinePath.LinePathParam>) steeringBehaviors.get(2)).setPath(newPath);
+            }
+        }
 
-                try {
-                    pathSteering.calculateSteering(steerOutput);
-                } catch (Exception e) {
-                    Gdx.app.debug(TAG, "Path steering error: " + e.getMessage());
-                }
+        if (pathSteering.isEnabled() && path.size > 2 && path.size % 2 == 0) {
+            try {
+                pathSteering.calculateSteering(steerOutput);
+            } catch (Exception e) {
+                Gdx.app.debug(TAG, "Path steering error: " + e.getMessage());
             }
         }
 
@@ -96,7 +109,8 @@ public abstract class BaseNPC extends Character {
             }
         }
 
-
+        updateCounter = (updateCounter == 11) ? 0 : updateCounter + 1;
+        updateCounter2 = (updateCounter2 == 1) ? 0 : 1;
 
         super.update(delta, world);
     }

@@ -11,7 +11,8 @@ public class GunnerSoldier extends BaseSoldier {
         entityTextureRegion = Assets.get_instance().npcAssets.gunnerBase;
         deathAnimation = Assets.get_instance().npcAssets.gunnerDyingAnimation;
         characterShootingTexture = Assets.get_instance().npcAssets.gunnerShooting;
-        currentGun = new Gun(GunData.pkm);
         bulletOffset = new Vector2( 16, -3);
+        guns.set(0, new Gun(GunData.pkm));
+        setGun(0);
     }
 }
