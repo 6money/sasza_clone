@@ -35,6 +35,7 @@ public class LevelLoader {
         Array<JsonValue> environment = new Array<>();
         Array<JsonValue> vehicles = new Array<>();
         Array<JsonValue> walls = new Array<>();
+        Array<JsonValue> spawns = new Array<>();
         Level level = new Level(viewport, camera);
         String path = Constants.LEVEL_DIR + File.separator + levelName + Constants.LEVEL_FILE_EXTENSION;
         Vector2 outerCorner = null;
@@ -64,6 +65,9 @@ public class LevelLoader {
                         break;
                     case "Walls":
                         walls.add(jsonObject);
+                        break;
+                    case "Spawns":
+                        spawns.add(jsonObject);
                         break;
                     case "GroundFloor":
                     case "GroundRoad":
@@ -95,8 +99,9 @@ public class LevelLoader {
             loadEnvironment(environment, level);
             loadCanopy(canopy, level);
             loadWalls(walls, level);
+            loadSpawns(spawns, level);
         } catch (Exception ex) {
-            Gdx.app.error(TAG, ex.getMessage());
+            Gdx.app.log(TAG, ex.getMessage());
             Gdx.app.log(TAG, Constants.LEVEL_ERROR_MESSAGE);
         }
 
@@ -260,5 +265,19 @@ public class LevelLoader {
         }
 
         level.setWallEntities(wallArray);
+    }
+
+    private static void loadSpawns(Array<JsonValue> objects, Level level) {
+        Array<Vector2> spawnArray = new Array<>();
+
+        for (JsonValue object : objects) {
+            final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
+            final float y = object.getFloat(Constants.LEVEL_Y_KEY, 0);
+
+            spawnArray.add(new Vector2(x, y));
+            Gdx.app.log(TAG, "Spawn point at " + x + ", " + y);
+        }
+
+        level.setSpawnPoints(spawnArray);
     }
 }

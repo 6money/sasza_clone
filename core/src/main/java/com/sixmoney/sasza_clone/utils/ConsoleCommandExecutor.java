@@ -50,27 +50,43 @@ public class ConsoleCommandExecutor extends CommandExecutor {
 
 
     // Spawn commands
-    @ConsoleDoc(description = "Spawns specified number of enemies at random areas around player") public final void spawnEnemy(float quantity) {
+    @ConsoleDoc(description = "Spawns specified number of enemies at the levels spawn points") public final void spawnEnemyWave(int quantity) {
+        try {
+            gameWorld.level.spawnEnemyWave(quantity);
+            console.log("Spawned " + quantity + " enemies");
+        } catch (ReflectionException e) {
+            console.log("Failed to spawn " + quantity + " enemies");
+        }
+    }
+
+    @ConsoleDoc(description = "Spawns specified number of enemies at the levels spawn points") public final void spawnEnemyWave(int quantity, String type) {
+        try {
+            gameWorld.level.spawnEnemyWave(quantity, type);
+            console.log("Spawned " + quantity + " enemies");
+        } catch (ReflectionException e) {
+            console.log("Failed to spawn " + quantity + " enemies");
+        }
+    }
+
+    @ConsoleDoc(description = "Spawns specified number of enemies at random areas around player") public final void spawnEnemy(int quantity) {
         try {
             gameWorld.level.spawnEnemy(quantity);
             console.log("Spawned " + quantity + " enemies");
         } catch (ReflectionException e) {
             console.log("Failed to spawn " + quantity + " enemies");
         }
-
     }
 
-    @ConsoleDoc(description = "Spawns specified number of specified enemies at random areas around player") public final void spawnEnemy(float quantity, String type) {
+    @ConsoleDoc(description = "Spawns specified number of specified enemies at random areas around player") public final void spawnEnemy(int quantity, String type) {
         try {
             gameWorld.level.spawnEnemy(quantity, type);
             console.log("Spawned " + quantity + " enemies of type " + type);
         } catch (ReflectionException e) {
             console.log("Failed to spawn " + quantity + " enemies of type " + type);
         }
-
     }
 
-    @ConsoleDoc(description = "Spawns specified number of NPCs at random areas around player") public final void spawnNPC(float quantity) {
+    @ConsoleDoc(description = "Spawns specified number of NPCs at random areas around player") public final void spawnNPC(int quantity) {
         gameWorld.level.spawnNPC(quantity);
         console.log("Spawned " + quantity + " NPCs");
     }

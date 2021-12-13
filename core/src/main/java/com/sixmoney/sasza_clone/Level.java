@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Constructor;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
@@ -64,6 +65,7 @@ public class Level {
     private DelayedRemovalArray<BaseEnemy> enemyEntities;
     private Array<Entity> deadEntities;
     private final DelayedRemovalArray<Bullet> bullets;
+    private Array<Vector2> spawnPoints;
 
     public PathHelper pathHelperEnemy;
     public PathHelper pathHelperNpc;
@@ -87,6 +89,7 @@ public class Level {
         enemyEntities = new DelayedRemovalArray<>();
         deadEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
+        spawnPoints = new Array<>();
     }
 
     public void initPathHelpers(Vector2 outerCorner) {
@@ -222,6 +225,10 @@ public class Level {
             FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 5);
             enemy.addBehavior(followPath, 2);
         }
+    }
+
+    public void setSpawnPoints(Array<Vector2> spawnPoints) {
+        this.spawnPoints.addAll(spawnPoints);
     }
 
     public void update(float delta) {
@@ -449,12 +456,62 @@ public class Level {
     }
 
 
-    public void spawnEnemy(float quantity) throws ReflectionException {
+    public void spawnEnemyWave(int quantity) throws ReflectionException {
+        spawnEnemyWave(quantity, "BaseEnemy");
+    }
+
+
+    public void spawnEnemyWave(int quantity, String type) throws ReflectionException {
+        Class enemyClass = ClassReflection.forName("com.sixmoney.sasza_clone.entities." + type);
+        Constructor constructor = ClassReflection.getConstructor(enemyClass, float.class, float.class);
+        final Vector2[] spawnPoint = new Vector2[1];
+
+        Timer timer = new Timer();
+
+        Timer.Task task = new Timer.Task() {
+            @Override
+            public void run() {
+                int spawnIndex = MathUtils.random(0, spawnPoints.size - 1);
+                spawnPoint[0] = spawnPoints.get(spawnIndex);
+
+                BaseEnemy enemy = null;
+                try {
+                    enemy = (BaseEnemy) constructor.newInstance(spawnPoint[0].x, spawnPoint[0].y);
+                } catch (ReflectionException e) {
+                    e.printStackTrace();
+                }
+
+                world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
+
+                RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
+                RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
+                RaycastObstacleAvoidance<Vector2> raycastObstacleAvoidance = new RaycastObstacleAvoidance<>(enemy, rayConfiguration, raycastCollisionDetector, 0);
+                enemy.addBehavior(raycastObstacleAvoidance, 0);
+
+                Seek<Vector2> seek = new Seek<>(enemy, player);
+                enemy.addBehavior(seek, 1);
+
+                Array<Vector2> waypoints = new Array<>();
+                waypoints.add(new Vector2(0, 0));
+                waypoints.add(new Vector2(0, 0));
+                LinePath<Vector2> path = new LinePath<>(waypoints, true);
+                FollowPath<Vector2, LinePath.LinePathParam> followPath = new FollowPath<>(enemy, path, 5);
+                enemy.addBehavior(followPath, 2);
+
+                enemyEntities.add(enemy);
+            }
+        };
+
+        timer.scheduleTask(task, 0, 0.1f, quantity);
+    }
+
+
+    public void spawnEnemy(int quantity) throws ReflectionException {
         spawnEnemy(quantity, "BaseEnemy");
     }
 
 
-    public void spawnEnemy(float quantity, String type) throws ReflectionException {
+    public void spawnEnemy(int quantity, String type) throws ReflectionException {
         int randClose = 100;
         int randFar = 400;
 
@@ -498,7 +555,7 @@ public class Level {
         }
     }
 
-    public void spawnNPC(float quantity) {
+    public void spawnNPC(int quantity) {
         int randClose = 100;
         int randFar = 400;
 
