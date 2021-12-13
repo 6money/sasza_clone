@@ -3,8 +3,10 @@ package com.sixmoney.sasza_clone.utils.InputHandlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.sixmoney.sasza_clone.overlays.MobileControlUI;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 
@@ -18,6 +20,7 @@ public class MobileInputHandler {
     private Vector2 velocity;
     private Vector2 velocityNormal;
     private Array<Float> axisValues;
+    private int weaponIndex;
 
     public MobileInputHandler(GameWorldScreen gameWorldScreen, MobileControlUI mobileControlUI) {
         this.gameWorldScreen = gameWorldScreen;
@@ -30,6 +33,7 @@ public class MobileInputHandler {
         for (int i = 0; i < 5; i++){
             axisValues.add(0f);
         }
+        weaponIndex = 0;
 
         attachInputHandlers();
     }
@@ -82,5 +86,49 @@ public class MobileInputHandler {
                     gameWorldScreen.level.getPlayer().shooting = false;
             }
         });
+
+        mobileControlUI.switchWeaponButton.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+                gameWorldScreen.switchWeapon(nextWeaponIndex());
+            }
+        });
+
+        mobileControlUI.reloadButton.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+                gameWorldScreen.level.getPlayer().getGun().initReload();
+            }
+        });
+
+        mobileControlUI.pauseButton.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+                gameWorldScreen.setPaused();
+            }
+        });
+
+        mobileControlUI.spawnWaveButton.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+                try {
+                    gameWorldScreen.level.spawnEnemyWave(20);
+                } catch (ReflectionException ignored) {
+                }
+            }
+        });
+    }
+
+    private int nextWeaponIndex() {
+        weaponIndex += 1;
+        if (weaponIndex >= 3) {
+            weaponIndex = 0;
+        }
+
+        return weaponIndex;
     }
 }
