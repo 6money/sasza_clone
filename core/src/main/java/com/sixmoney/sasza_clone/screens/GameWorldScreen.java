@@ -62,7 +62,7 @@ public class GameWorldScreen implements Screen {
         batch = new SpriteBatch();
         drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
         level = LevelLoader.load("debug", viewport, camera);
-        hud = new HUD(level, batch);
+        hud = new HUD(level, batch, saszaGame.debug);
         pauseOverlay = new PauseOverlay(this, batch);
         mobileControlUI = new MobileControlUI(this, batch);
 

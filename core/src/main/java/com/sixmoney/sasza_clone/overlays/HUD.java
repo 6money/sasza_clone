@@ -14,12 +14,14 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.PreferenceManager;
 
 public class HUD {
     private Level level;
     private Skin skin;
     private Table table;
     private Stage stage;
+    private Boolean debug;
 
     private Label labelHealth;
     private Label labelAmmo;
@@ -28,8 +30,9 @@ public class HUD {
     private Label labelPosition;
     private Image gunSprite;
 
-    public HUD(Level level, Batch batch) {
+    public HUD(Level level, Batch batch, Boolean debug) {
         this.level = level;
+        this.debug = debug;
         stage = new Stage(new ScreenViewport(), batch);
         skin = Assets.get_instance().skinAssets.skin;
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
@@ -42,7 +45,6 @@ public class HUD {
 
         labelHealth = new Label("", skin);
         labelHealth.setAlignment(Align.left);
-
         labelFPS = new Label("", skin);
         labelFPS.setAlignment(Align.right);
         table.add(labelHealth).align(Align.left);
@@ -68,10 +70,6 @@ public class HUD {
         table.defaults().reset();
         table.add(gunSprite).align(Align.bottomLeft);
 
-        table.row();
-
-
-
         table.pack();
         table.validate();
         stage.addActor(table);
@@ -79,10 +77,14 @@ public class HUD {
 
     public void render() {
         labelAmmo.setText(String.valueOf(level.getPlayer().getGun().getCurrentAmmo()));
-        labelFPS.setText(String.valueOf(Gdx.graphics.getFramesPerSecond()));
         labelMagAmmo.setText(String.valueOf(level.getPlayer().getGun().getCurrentMagazineAmmo()));
-        labelPosition.setText(MathUtils.round(level.getPlayer().getPosition().x) + "," + MathUtils.round(level.getPlayer().getPosition().y));
         labelHealth.setText("Health: " + ((int) level.getPlayer().getHealth()));
+        if (debug || PreferenceManager.get_instance().getShowFPS()) {
+            labelFPS.setText(String.valueOf(Gdx.graphics.getFramesPerSecond()));
+        }
+        if (debug || PreferenceManager.get_instance().getShowCoords()) {
+            labelPosition.setText(MathUtils.round(level.getPlayer().getPosition().x) + "," + MathUtils.round(level.getPlayer().getPosition().y));
+        }
 
         stage.act();
         stage.draw();

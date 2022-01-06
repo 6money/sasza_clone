@@ -73,7 +73,7 @@ public class Utils {
             this.damage = MathUtils.round(damage);
             this.isCrit = isCrit;
             this.hitTime = TimeUtils.nanoTime();
-            this.alpha = 60;
+            this.alpha = PreferenceManager.get_instance().getStatusBarTransparency();
         }
     }
 }

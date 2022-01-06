@@ -45,6 +45,7 @@ import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.JBumpRaycastCollisionDetector;
+import com.sixmoney.sasza_clone.utils.PreferenceManager;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import java.util.ArrayList;
@@ -348,7 +349,7 @@ public class Level {
         for (Bullet bullet: bullets) {
             bullet.render(batch);
         }
-        batch.setColor(1, 1, 1, 0.6f);
+        batch.setColor(1, 1, 1, PreferenceManager.get_instance().getStatusBarTransparency() / 100);
         for (BaseEnemy zom: enemyEntities) {
             zom.renderHealthBar(batch);
             zom.renderStunBar(batch);

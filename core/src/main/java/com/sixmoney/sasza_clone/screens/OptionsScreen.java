@@ -30,10 +30,14 @@ public class OptionsScreen implements Screen {
     private CheckBox checkboxMusic;
     private CheckBox checkboxSounds;
     private CheckBox checkboxFPS;
+    private CheckBox checkboxCoords;
     private CheckBox checkboxMobile;
     private Slider sliderMusic;
     private Slider sliderSounds;
     private Slider sliderDifficulty;
+    private Slider sliderStatusBarTransparency;
+    private Slider sliderPlayerStatusBarTransparency;
+    private Slider sliderHitMarkerTransparency;
     private PreferenceManager preferenceManager;
 
     public OptionsScreen(Sasza saszaGame) {
@@ -135,6 +139,17 @@ public class OptionsScreen implements Screen {
             }
         });
 
+        window.row();
+        window.add(new Label("Show Coordinates", skin));
+        checkboxCoords = new CheckBox(null, skin);
+        window.add(checkboxCoords);
+        checkboxCoords.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                preferenceManager.setShowCoords(checkboxCoords.isChecked());
+            }
+        });
+
         if (!game.mobileControls) {
             window.row();
             window.add(new Label("Enable Mobile Controls", skin));
@@ -149,6 +164,39 @@ public class OptionsScreen implements Screen {
         }
 
         window.row();
+        window.add(new Label("Player Status Bar Transparency", skin));
+        sliderPlayerStatusBarTransparency = new Slider(0, 100, 5, false, skin);
+        window.add(sliderPlayerStatusBarTransparency);
+        sliderPlayerStatusBarTransparency.addListener(new DragListener() {
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer) {
+                preferenceManager.setPStatusBarTransparency(sliderPlayerStatusBarTransparency.getValue());
+            }
+        });
+
+        window.row();
+        window.add(new Label("Status Bar Transparency", skin));
+        sliderStatusBarTransparency = new Slider(0, 100, 5, false, skin);
+        window.add(sliderStatusBarTransparency);
+        sliderStatusBarTransparency.addListener(new DragListener() {
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer) {
+                preferenceManager.setStatusBarTransparency(sliderStatusBarTransparency.getValue());
+            }
+        });
+
+        window.row();
+        window.add(new Label("Hit Marker Transparency", skin));
+        sliderHitMarkerTransparency = new Slider(0, 100, 5, false, skin);
+        window.add(sliderHitMarkerTransparency);
+        sliderHitMarkerTransparency.addListener(new DragListener() {
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer) {
+                preferenceManager.setHitMarkerTransparency(sliderHitMarkerTransparency.getValue());
+            }
+        });
+
+        window.row();
         Button buttonResetData = new Button(skin);
         buttonResetData.add(new Label("Reset all data" ,skin));
         window.add(buttonResetData).height(stage.getWidth() / 20);
@@ -160,6 +208,8 @@ public class OptionsScreen implements Screen {
             }
         });
 
+
+//        window.setSize(stage.getWidth() / 1.5f, stage.getHeight() / 1.5f);
         window.pack();
         window.setPosition(stage.getWidth() / 2 - window.getWidth() / 2, stage.getHeight() / 2 - window.getHeight() / 2);
         stage.addActor(window);
@@ -179,7 +229,11 @@ public class OptionsScreen implements Screen {
         float soundVolume = preferenceManager.getSoundVolume();
         float difficulty = preferenceManager.getDifficulty();
         boolean showFPS = preferenceManager.getShowFPS();
+        boolean showCoords = preferenceManager.getShowCoords();
         boolean showMobile = preferenceManager.getMobile();
+        float statusBarTransparency = preferenceManager.getStatusBarTransparency();
+        float playerStatusBarTransparency = preferenceManager.getPStatusBarTransparency();
+        float hitMarkerTransparency = preferenceManager.getHitMarkerTransparency();
 
         checkboxMusic.setChecked(musicEnabled);
         sliderMusic.setValue(musicVolume);
@@ -187,9 +241,13 @@ public class OptionsScreen implements Screen {
         sliderSounds.setValue(soundVolume);
         sliderDifficulty.setValue(difficulty);
         checkboxFPS.setChecked(showFPS);
+        checkboxCoords.setChecked(showCoords);
         if (!game.mobileControls) {
             checkboxMobile.setChecked(showMobile);
         }
+        sliderStatusBarTransparency.setValue(statusBarTransparency);
+        sliderPlayerStatusBarTransparency.setValue(playerStatusBarTransparency);
+        sliderHitMarkerTransparency.setValue(hitMarkerTransparency);
 
 //        SoundManager.get_instance().updateSoundPreferences();
     }

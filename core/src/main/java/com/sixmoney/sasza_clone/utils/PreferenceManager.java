@@ -75,12 +75,48 @@ public class PreferenceManager {
         preferences.flush();
     }
 
+    public boolean getShowCoords() {
+        return preferences.getBoolean("showCoords", false);
+    }
+
+    public void setShowCoords(boolean value) {
+        preferences.putBoolean("showCoords", value);
+        preferences.flush();
+    }
+
     public boolean getMobile() {
         return preferences.getBoolean("showMobile", false);
     }
 
     public void setMobile(boolean value) {
         preferences.putBoolean("showMobile", value);
+        preferences.flush();
+    }
+
+    public float getStatusBarTransparency() {
+        return preferences.getFloat("statusBarTransparency", 50);
+    }
+
+    public void setStatusBarTransparency(float value) {
+        preferences.putFloat("statusBarTransparency", value);
+        preferences.flush();
+    }
+
+    public float getPStatusBarTransparency() {
+        return preferences.getFloat("pStatusBarTransparency", 50);
+    }
+
+    public void setPStatusBarTransparency(float value) {
+        preferences.putFloat("pStatusBarTransparency", value);
+        preferences.flush();
+    }
+
+    public float getHitMarkerTransparency() {
+        return preferences.getFloat("hitMarkerTransparency", 60);
+    }
+
+    public void setHitMarkerTransparency(float value) {
+        preferences.putFloat("hitMarkerTransparency", value);
         preferences.flush();
     }
 
@@ -91,7 +127,11 @@ public class PreferenceManager {
         preferences.remove("soundVolume");
         preferences.remove("difficulty");
         preferences.remove("showFPS");
+        preferences.remove("showCoords");
         preferences.remove("showMobile");
+        preferences.remove("statusBarTransparency");
+        preferences.remove("pStatusBarTransparency");
+        preferences.remove("hitMarkerTransparency");
         preferences.flush();
     }
 }

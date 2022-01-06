@@ -14,6 +14,7 @@ import com.dongbat.jbump.World;
 import com.ray3k.tenpatch.TenPatchDrawable;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.utils.PreferenceManager;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -150,7 +151,7 @@ public class Player extends Character {
         float reloadTime = currentGun.checkReloadStatus();
 
         if (reloadTime != 0 && reloadTime < currentGun.getReloadTime()) {
-            batch.setColor(1, 1, 1, 0.5f);
+            batch.setColor(1, 1, 1, PreferenceManager.get_instance().getStatusBarTransparency() / 100);
             float reloadBarWidth = Constants.HEALTH_BAR_WIDTH * 2 * (reloadTime / currentGun.getReloadTime());
             reloadBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH * 2 / 2f), position.y + Constants.PLAYER_CENTER.y / 2, reloadBarWidth, 4);
             batch.setColor(1, 1, 1, 1);
