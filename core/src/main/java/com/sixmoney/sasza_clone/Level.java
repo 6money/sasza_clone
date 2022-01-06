@@ -348,6 +348,7 @@ public class Level {
         for (Bullet bullet: bullets) {
             bullet.render(batch);
         }
+        batch.setColor(1, 1, 1, 0.6f);
         for (BaseEnemy zom: enemyEntities) {
             zom.renderHealthBar(batch);
             zom.renderStunBar(batch);
@@ -356,6 +357,7 @@ public class Level {
             entity.renderHealthBar(batch);
             entity.renderStunBar(batch);
         }
+        batch.setColor(1, 1, 1, 1);
         for (Utils.HitRecord hitLocation: hitLocations) {
             font.setColor(font.getColor().r, font.getColor().g, font.getColor().b, hitLocation.alpha / 100);
             font.draw(batch, Integer.toString(hitLocation.damage), hitLocation.x, hitLocation.y);

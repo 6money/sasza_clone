@@ -73,7 +73,7 @@ public class Utils {
             this.damage = MathUtils.round(damage);
             this.isCrit = isCrit;
             this.hitTime = TimeUtils.nanoTime();
-            this.alpha = 100;
+            this.alpha = 60;
         }
     }
 }
