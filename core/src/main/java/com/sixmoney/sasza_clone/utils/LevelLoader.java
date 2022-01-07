@@ -36,7 +36,7 @@ public class LevelLoader {
         Array<JsonValue> vehicles = new Array<>();
         Array<JsonValue> walls = new Array<>();
         Array<JsonValue> spawns = new Array<>();
-        Level level = new Level(viewport, camera);
+        Level level = new Level(levelName, viewport, camera);
         String path = Constants.LEVEL_DIR + File.separator + levelName + Constants.LEVEL_FILE_EXTENSION;
         Vector2 outerCorner = null;
 

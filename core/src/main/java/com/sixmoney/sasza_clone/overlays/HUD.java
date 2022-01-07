@@ -28,6 +28,7 @@ public class HUD {
     private Label labelMagAmmo;
     private Label labelFPS;
     private Label labelPosition;
+    private Label labelWaveTimer;
     private Image gunSprite;
 
     public HUD(Level level, Batch batch, Boolean debug) {
@@ -61,7 +62,10 @@ public class HUD {
         table.row();
         labelMagAmmo = new Label("", skin);
         labelMagAmmo.setAlignment(Align.left);
+        labelWaveTimer = new Label("", skin);
+        labelWaveTimer.setAlignment(Align.right);
         table.add(labelMagAmmo).align(Align.left);
+        table.add(labelWaveTimer).align(Align.right);
 
         table.row();
         gunSprite = new Image(level.getPlayer().getGun().getWeaponSprite());
@@ -76,9 +80,10 @@ public class HUD {
     }
 
     public void render() {
+        labelHealth.setText("Health: " + ((int) level.getPlayer().getHealth()));
         labelAmmo.setText(String.valueOf(level.getPlayer().getGun().getCurrentAmmo()));
         labelMagAmmo.setText(String.valueOf(level.getPlayer().getGun().getCurrentMagazineAmmo()));
-        labelHealth.setText("Health: " + ((int) level.getPlayer().getHealth()));
+        labelWaveTimer.setText("Wave starts in " + level.waveCountdown);
         if (debug || PreferenceManager.get_instance().getShowFPS()) {
             labelFPS.setText(String.valueOf(Gdx.graphics.getFramesPerSecond()));
         }

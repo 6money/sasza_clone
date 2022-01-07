@@ -47,6 +47,7 @@ import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.JBumpRaycastCollisionDetector;
 import com.sixmoney.sasza_clone.utils.PreferenceManager;
 import com.sixmoney.sasza_clone.utils.Utils;
+import com.sixmoney.sasza_clone.utils.WaveData;
 
 import java.util.ArrayList;
 
@@ -59,6 +60,7 @@ public class Level {
     private Viewport viewport;
     private ChaseCam camera;
     private Player player;
+    private String levelName;
 
     private Array<Entity> tiles;
     private DelayedRemovalArray<EnvironmentObject> environmentEntities;
@@ -71,14 +73,21 @@ public class Level {
     private Array<Vector2> spawnPoints;
     private DelayedRemovalArray<Utils.HitRecord> hitLocations;
     private BitmapFont font;
+    private Timer waveTimer;
+    private Array<WaveData.WaveRecord>[] waves;
+    private int currentWave;
+    private float currentWaveDelay;
 
     public PathHelper pathHelperEnemy;
     public PathHelper pathHelperNpc;
     public FloatArray path;
     public Vector2 clickedCoordinate;
     public boolean showPath;
+    public int waveCountdown;
+    public long waveCountdownStart;
 
-    public Level(Viewport viewport, ChaseCam camera) {
+    public Level(String levelName, Viewport viewport, ChaseCam camera) {
+        this.levelName = levelName;
         this.viewport = viewport;
         this.camera = camera;
         world = new World<>();
@@ -99,6 +108,12 @@ public class Level {
         font = new BitmapFont(Gdx.files.internal("fonts/arial-15.fnt"));
         font.getData().setScale(0.5f);
         font.setColor(Color.YELLOW);
+        waveTimer = new Timer();
+        waves = WaveData.waveRecords.get(levelName);
+        currentWave = -1;
+        currentWaveDelay = 0;
+        waveCountdown = -1;
+        waveCountdownStart = 0;
     }
 
     public void initPathHelpers(Vector2 outerCorner) {
@@ -241,6 +256,44 @@ public class Level {
     }
 
     public void update(float delta) {
+        if (currentWave == -1) {
+            currentWave = 0;
+            waveCountdownStart = TimeUtils.nanoTime();
+            Array<WaveData.WaveRecord> wave = waves[currentWave];
+            currentWaveDelay = wave.get(0).waveDelay;
+
+            for (WaveData.WaveRecord waveRecord: wave) {
+                try {
+                    spawnEnemyWave(waveRecord.enemyType, waveRecord.waveAmount, waveRecord.waveDelay, waveRecord.spawnDelay);
+                } catch (ReflectionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        if (waveCountdownStart != 0) {
+            waveCountdown = (int) (currentWaveDelay) - MathUtils.floor(Utils.secondsSince(waveCountdownStart));
+            if (waveCountdown < 0) {
+                waveCountdown = 0;
+                waveCountdownStart = 0;
+            }
+        }
+
+        if (waveTimer.isEmpty() && currentWave < waves.length - 1) {
+            currentWave += 1;
+            waveCountdownStart = TimeUtils.nanoTime();
+            Array<WaveData.WaveRecord> wave = waves[currentWave];
+            currentWaveDelay = wave.get(0).waveDelay;
+
+            for (WaveData.WaveRecord waveRecord: wave) {
+                try {
+                    spawnEnemyWave(waveRecord.enemyType, waveRecord.waveAmount, waveRecord.waveDelay, waveRecord.spawnDelay);
+                } catch (ReflectionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         player.update(delta, world);
 
         if (player.shooting && Utils.secondsSince(player.shootStartTime) > 1 / player.getGun().getFireRate()) {
@@ -487,17 +540,30 @@ public class Level {
     }
 
 
-    public void spawnEnemyWave(int quantity) throws ReflectionException {
-        spawnEnemyWave(quantity, "BaseEnemy");
+    public void pauseWave() {
+        waveTimer.stop();
     }
 
 
-    public void spawnEnemyWave(int quantity, String type) throws ReflectionException {
-        Class enemyClass = ClassReflection.forName("com.sixmoney.sasza_clone.entities." + type);
+    public void resumeWave() {
+        waveTimer.start();
+    }
+
+
+    public void spawnEnemyWave(int waveAmount) throws ReflectionException {
+        spawnEnemyWave("BaseEnemy", waveAmount);
+    }
+
+
+    public void spawnEnemyWave(String enemyType, int waveAmount) throws ReflectionException {
+        spawnEnemyWave("BaseEnemy", waveAmount, 0, 0.1f);
+    }
+
+
+    public void spawnEnemyWave(String enemyType, int waveAmount, float waveDelay, float spawnDelay) throws ReflectionException {
+        Class enemyClass = ClassReflection.forName("com.sixmoney.sasza_clone.entities." + enemyType);
         Constructor constructor = ClassReflection.getConstructor(enemyClass, float.class, float.class);
         final Vector2[] spawnPoint = new Vector2[1];
-
-        Timer timer = new Timer();
 
         Timer.Task task = new Timer.Task() {
             @Override
@@ -533,7 +599,7 @@ public class Level {
             }
         };
 
-        timer.scheduleTask(task, 0, 0.1f, quantity);
+        waveTimer.scheduleTask(task, waveDelay, spawnDelay, waveAmount);
     }
 
 

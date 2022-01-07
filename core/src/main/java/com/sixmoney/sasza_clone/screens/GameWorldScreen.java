@@ -178,11 +178,13 @@ public class GameWorldScreen implements Screen {
         Controllers.removeListener(controllerInputHandler);
         pauseOverlay.setInputProcessors();
         resetVelocity();
+        level.pauseWave();
     }
 
     public void setUnpaused() {
         paused = false;
         setInputProcessors();
+        level.resumeWave();
     }
 
     public void quit() {

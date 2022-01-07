@@ -61,7 +61,7 @@ public class ConsoleCommandExecutor extends CommandExecutor {
 
     @ConsoleDoc(description = "Spawns specified number of enemies at the levels spawn points") public final void spawnEnemyWave(int quantity, String type) {
         try {
-            gameWorld.level.spawnEnemyWave(quantity, type);
+            gameWorld.level.spawnEnemyWave(type, quantity);
             console.log("Spawned " + quantity + " enemies");
         } catch (ReflectionException e) {
             console.log("Failed to spawn " + quantity + " enemies");
