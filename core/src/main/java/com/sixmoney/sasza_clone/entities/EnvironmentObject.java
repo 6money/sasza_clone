@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.sixmoney.sasza_clone.staticData.CompositeObjectData;
+import com.sixmoney.sasza_clone.staticData.Constants;
+import com.sixmoney.sasza_clone.staticData.EnvironmentObjData;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.CompositeObjectData;
-import com.sixmoney.sasza_clone.utils.Constants;
-import com.sixmoney.sasza_clone.utils.EnvironmentObjData;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;

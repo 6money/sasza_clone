@@ -12,8 +12,8 @@ import com.dongbat.jbump.Rect;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.ray3k.tenpatch.TenPatchDrawable;
+import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.PreferenceManager;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;

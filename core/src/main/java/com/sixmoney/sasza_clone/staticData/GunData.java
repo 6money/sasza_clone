@@ -1,4 +1,4 @@
-package com.sixmoney.sasza_clone.utils;
+package com.sixmoney.sasza_clone.staticData;
 
 import com.sixmoney.sasza_clone.utils.Utils.WeaponCategory;
 

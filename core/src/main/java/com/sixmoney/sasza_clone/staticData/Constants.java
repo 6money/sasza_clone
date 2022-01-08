@@ -1,4 +1,4 @@
-package com.sixmoney.sasza_clone.utils;
+package com.sixmoney.sasza_clone.staticData;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;

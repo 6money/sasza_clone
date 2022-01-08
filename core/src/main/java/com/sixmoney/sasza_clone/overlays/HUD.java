@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone.overlays;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
@@ -36,9 +35,7 @@ public class HUD {
         this.debug = debug;
         stage = new Stage(new ScreenViewport(), batch);
         skin = Assets.get_instance().skinAssets.skin;
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            skin.getFont("font").getData().scale(1.2f);
-        }
+
         table = new Table();
         table.setFillParent(true);
         table.pad(20).top();

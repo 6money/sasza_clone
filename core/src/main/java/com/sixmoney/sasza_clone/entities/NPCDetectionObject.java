@@ -8,7 +8,7 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
-import com.sixmoney.sasza_clone.utils.CollisionComparator;
+import com.sixmoney.sasza_clone.ai.CollisionComparator;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -16,8 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sixmoney.sasza_clone.Sasza;
+import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.PreferenceManager;
 
 public class OptionsScreen implements Screen {

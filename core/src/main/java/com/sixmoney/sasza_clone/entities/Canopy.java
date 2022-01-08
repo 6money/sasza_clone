@@ -6,8 +6,8 @@ import com.dongbat.jbump.CollisionFilter;
 import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
+import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import java.util.ArrayList;

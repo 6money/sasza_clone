@@ -1,4 +1,4 @@
-package com.sixmoney.sasza_clone.utils;
+package com.sixmoney.sasza_clone.ai;
 
 import com.badlogic.gdx.ai.utils.Collision;
 import com.badlogic.gdx.ai.utils.Ray;

@@ -1,8 +1,8 @@
 package com.sixmoney.sasza_clone.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.sixmoney.sasza_clone.staticData.GunData;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.GunData;
 
 public class RiflemanSoldier extends BaseSoldier {
     public RiflemanSoldier(float x, float y) {

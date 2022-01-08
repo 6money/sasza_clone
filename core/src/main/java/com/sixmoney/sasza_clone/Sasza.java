@@ -7,7 +7,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
-import com.sixmoney.sasza_clone.screens.MainMenu;
+import com.sixmoney.sasza_clone.screens.LoadoutScreen;
+import com.sixmoney.sasza_clone.screens.MainMenuScreen;
 import com.sixmoney.sasza_clone.screens.OptionsScreen;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Profile;
@@ -49,14 +50,16 @@ public class Sasza extends Game {
 		Gdx.input.setCatchKey(Input.Keys.SPACE, true);
 		Gdx.input.setCatchKey(Input.Keys.TAB, true);
 
-		if (Gdx.app.getType() == Application.ApplicationType.Android) {
-			mobileControls = true;
-		}
-
 		assets = Assets.get_instance();
 		loadProfile();
 		setCursor();
-		setScreen(new MainMenu(this));
+
+		if (Gdx.app.getType() == Application.ApplicationType.Android) {
+			mobileControls = true;
+			Assets.get_instance().skinAssets.skin.getFont("font").getData().scale(1.2f);
+		}
+
+		setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
@@ -70,15 +73,10 @@ public class Sasza extends Game {
 		Gdx.input.setInputProcessor(null);
 
 		switch (screen_name) {
-			case "gameplay":
-				setScreen(new GameWorldScreen(this));
-				break;
-			case "options":
-				setScreen(new OptionsScreen(this));
-				break;
-			default:
-				setScreen(new MainMenu(this));
-				break;
+			case "gameplay" -> setScreen(new GameWorldScreen(this));
+			case "options" -> setScreen(new OptionsScreen(this));
+			case "loadout" -> setScreen(new LoadoutScreen(this));
+			default -> setScreen(new MainMenuScreen(this));
 		}
 	}
 

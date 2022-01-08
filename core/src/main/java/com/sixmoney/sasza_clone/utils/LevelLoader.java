@@ -20,6 +20,7 @@ import com.sixmoney.sasza_clone.entities.GunnerSoldier;
 import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.entities.RiflemanSoldier;
 import com.sixmoney.sasza_clone.entities.Wall;
+import com.sixmoney.sasza_clone.staticData.Constants;
 
 import java.io.File;
 

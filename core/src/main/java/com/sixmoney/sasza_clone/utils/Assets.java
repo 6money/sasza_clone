@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.sixmoney.sasza_clone.staticData.Constants;
 
 public class Assets implements Disposable, AssetErrorListener {
     public static final String TAG = Assets.class.getName();

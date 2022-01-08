@@ -1,4 +1,4 @@
-package com.sixmoney.sasza_clone.utils.InputHandlers;
+package com.sixmoney.sasza_clone.inputHandlers;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;

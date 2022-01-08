@@ -12,8 +12,8 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.dongbat.walkable.PathHelper;
+import com.sixmoney.sasza_clone.staticData.GunData;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.GunData;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 

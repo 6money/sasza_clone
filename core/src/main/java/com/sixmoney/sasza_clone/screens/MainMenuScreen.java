@@ -15,25 +15,28 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sixmoney.sasza_clone.Sasza;
+import com.sixmoney.sasza_clone.inputHandlers.UIControllerInputHandler;
+import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.Constants;
-import com.sixmoney.sasza_clone.utils.InputHandlers.UIControllerInputHandler;
+import com.sixmoney.sasza_clone.utils.Profile;
 
 import de.golfgl.gdx.controllers.ControllerMenuStage;
 
-public class MainMenu implements Screen {
-	public static final String TAG = MainMenu.class.getName();
+public class MainMenuScreen implements Screen {
+	public static final String TAG = MainMenuScreen.class.getName();
 
 	private Sasza saszaGame;
+	private Profile profile;
 	private ControllerMenuStage stage;
 	private Skin skin;
 	private Table tableMenu;
 	private UIControllerInputHandler controllerInputHandler;
 	private Label labelProfileName;
 
-	public MainMenu(Sasza game) {
+	public MainMenuScreen(Sasza game) {
 		saszaGame = game;
 		saszaGame.loadProfile();
+		profile = saszaGame.profile;
 	}
 
 	@Override
@@ -71,13 +74,13 @@ public class MainMenu implements Screen {
 
 		tableMenu.row();
 		TextButton buttonLoadout = new TextButton("LOADOUT", skin);
-//		buttonLoadout.addListener(new ChangeListener() {
-//			@Override
-//			public void changed(ChangeEvent event, Actor actor) {
-//				gigaGalGame.switchScreen("level select");
-//				dispose();
-//			}
-//		});
+		buttonLoadout.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				saszaGame.switchScreen("loadout");
+				dispose();
+			}
+		});
 		tableMenu.add(buttonLoadout).minHeight(100f);
 
 		tableMenu.row();
@@ -113,13 +116,13 @@ public class MainMenu implements Screen {
 		stage.setFocusedActor(buttonPlay);
 
 		labelProfileName = new Label(null, skin);
-		if (!saszaGame.profile.getName().equals("default")) {
-			labelProfileName.setText(saszaGame.profile.getName() + "\nLevel: " + saszaGame.profile.getProfileLevel());
+		if (!profile.getName().equals("default")) {
+			labelProfileName.setText(profile.getName() + "\nLevel: " + profile.getProfileLevel());
 		}
 		labelProfileName.setPosition(20, stage.getHeight() - 30);
 		stage.addActor(labelProfileName);
 
-		if (saszaGame.profile.getName().equals("default")) {
+		if (profile.getName().equals("default")) {
 			buttonPlay.setDisabled(true);
 			buttonLoadout.setDisabled(true);
 			buttonStats.setDisabled(true);
@@ -140,10 +143,10 @@ public class MainMenu implements Screen {
 			buttonSetProfileName.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					saszaGame.profile.setName(inputProfileName.getText());
-					saszaGame.profile.setProfileLevel(saszaGame.profile.getProfileLevel());
-					saszaGame.profile.setGuns(saszaGame.profile.getGuns());
-					labelProfileName.setText(saszaGame.profile.getName() + "\nLevel: " + saszaGame.profile.getProfileLevel());
+					profile.setName(inputProfileName.getText());
+					profile.setProfileLevel(profile.getProfileLevel());
+					profile.setGuns(profile.getGuns());
+					labelProfileName.setText(profile.getName() + "\nLevel: " + profile.getProfileLevel());
 					window.remove();
 
 					buttonPlay.setDisabled(false);

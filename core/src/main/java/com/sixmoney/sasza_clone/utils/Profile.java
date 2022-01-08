@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.sixmoney.sasza_clone.entities.Gun;
+import com.sixmoney.sasza_clone.staticData.GunData;
 
 public class Profile {
     private String name;

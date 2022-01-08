@@ -30,6 +30,8 @@ import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.dongbat.walkable.PathHelper;
 import com.dongbat.walkable.PathfinderException;
+import com.sixmoney.sasza_clone.ai.CentralRayWithWhiskersConfig;
+import com.sixmoney.sasza_clone.ai.JBumpRaycastCollisionDetector;
 import com.sixmoney.sasza_clone.entities.BaseEnemy;
 import com.sixmoney.sasza_clone.entities.BaseSoldier;
 import com.sixmoney.sasza_clone.entities.Bullet;
@@ -41,13 +43,11 @@ import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.NPCDetectionObject;
 import com.sixmoney.sasza_clone.entities.Player;
-import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
+import com.sixmoney.sasza_clone.staticData.Constants;
+import com.sixmoney.sasza_clone.staticData.WaveData;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
-import com.sixmoney.sasza_clone.utils.Constants;
-import com.sixmoney.sasza_clone.utils.JBumpRaycastCollisionDetector;
 import com.sixmoney.sasza_clone.utils.PreferenceManager;
 import com.sixmoney.sasza_clone.utils.Utils;
-import com.sixmoney.sasza_clone.utils.WaveData;
 
 import java.util.ArrayList;
 
@@ -215,7 +215,7 @@ public class Level {
 
             Arrive<Vector2> arrive = new Arrive<>(baseSoldier, player)
                     .setTimeToTarget(0.1f)
-                    .setArrivalTolerance(50f)
+                    .setArrivalTolerance(80f)
                     .setDecelerationRadius(50);
             baseSoldier.addBehavior(arrive, 1);
 
@@ -683,7 +683,7 @@ public class Level {
 
             Arrive<Vector2> arrive = new Arrive<>(npc, player)
                     .setTimeToTarget(0.1f)
-                    .setArrivalTolerance(50f)
+                    .setArrivalTolerance(80f)
                     .setDecelerationRadius(50);
             npc.addBehavior(arrive, 1);
 

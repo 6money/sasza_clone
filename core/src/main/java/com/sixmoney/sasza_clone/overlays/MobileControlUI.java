@@ -8,10 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.sixmoney.sasza_clone.inputHandlers.MobileInputHandler;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
+import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.Constants;
-import com.sixmoney.sasza_clone.utils.InputHandlers.MobileInputHandler;
 
 public class MobileControlUI {
     public final static String TAG = MobileControlUI.class.getName();

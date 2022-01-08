@@ -15,10 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.sixmoney.sasza_clone.inputHandlers.UIControllerInputHandler;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
+import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.Constants;
-import com.sixmoney.sasza_clone.utils.InputHandlers.UIControllerInputHandler;
 
 import de.golfgl.gdx.controllers.ControllerMenuStage;
 

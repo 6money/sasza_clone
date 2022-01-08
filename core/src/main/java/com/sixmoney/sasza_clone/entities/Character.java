@@ -20,10 +20,10 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.ItemInfo;
 import com.dongbat.jbump.World;
 import com.ray3k.tenpatch.TenPatchDrawable;
+import com.sixmoney.sasza_clone.ai.CentralRayWithWhiskersConfig;
+import com.sixmoney.sasza_clone.staticData.Constants;
+import com.sixmoney.sasza_clone.staticData.GunData;
 import com.sixmoney.sasza_clone.utils.Assets;
-import com.sixmoney.sasza_clone.utils.CentralRayWithWhiskersConfig;
-import com.sixmoney.sasza_clone.utils.Constants;
-import com.sixmoney.sasza_clone.utils.GunData;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import java.util.ArrayList;

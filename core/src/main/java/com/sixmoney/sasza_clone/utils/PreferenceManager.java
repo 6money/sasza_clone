@@ -2,6 +2,7 @@ package com.sixmoney.sasza_clone.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.sixmoney.sasza_clone.staticData.Constants;
 
 public class PreferenceManager {
     private final static String TAG = PreferenceManager.class.getName();

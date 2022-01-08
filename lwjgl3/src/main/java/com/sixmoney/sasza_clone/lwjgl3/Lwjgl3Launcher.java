@@ -3,7 +3,7 @@ package com.sixmoney.sasza_clone.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.sixmoney.sasza_clone.Sasza;
-import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.staticData.Constants;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {

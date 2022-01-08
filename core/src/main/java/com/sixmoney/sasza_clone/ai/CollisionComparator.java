@@ -1,4 +1,4 @@
-package com.sixmoney.sasza_clone.utils;
+package com.sixmoney.sasza_clone.ai;
 
 import com.badlogic.gdx.math.Vector2;
 import com.dongbat.jbump.Collisions;

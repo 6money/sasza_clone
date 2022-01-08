@@ -4,7 +4,7 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.sixmoney.sasza_clone.Sasza;
-import com.sixmoney.sasza_clone.utils.Constants;
+import com.sixmoney.sasza_clone.staticData.Constants;
 
 /** Launches the desktop (LWJGL) application. */
 public class DesktopLauncher {
