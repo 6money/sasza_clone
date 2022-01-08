@@ -10,6 +10,7 @@ import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.sixmoney.sasza_clone.screens.MainMenu;
 import com.sixmoney.sasza_clone.screens.OptionsScreen;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.Profile;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Sasza extends Game {
@@ -19,6 +20,7 @@ public class Sasza extends Game {
 
 	public boolean debug;
 	public boolean mobileControls;
+	public Profile profile;
 
 	public Sasza(String[] args) {
 		this.args = args;
@@ -52,9 +54,8 @@ public class Sasza extends Game {
 		}
 
 		assets = Assets.get_instance();
-
+		loadProfile();
 		setCursor();
-
 		setScreen(new MainMenu(this));
 	}
 
@@ -105,5 +106,9 @@ public class Sasza extends Game {
 		Cursor cursor = Gdx.graphics.newCursor(cursorPixmap, 16, 16);
 		Gdx.graphics.setCursor(cursor);
 		cursorPixmap.dispose();
+	}
+
+	public void loadProfile() {
+		profile = new Profile();
 	}
 }

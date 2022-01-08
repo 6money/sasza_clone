@@ -120,6 +120,33 @@ public class PreferenceManager {
         preferences.flush();
     }
 
+    public String getProfileName() {
+        return preferences.getString("profileName", "default");
+    }
+
+    public void setProfileName(String value) {
+        preferences.putString("profileName", value);
+        preferences.flush();
+    }
+
+    public int getProfileLevel() {
+        return preferences.getInteger("profileLevel", 1);
+    }
+
+    public void setProfileLevel(int value) {
+        preferences.putInteger("profileLevel", value);
+        preferences.flush();
+    }
+
+    public String getProfileWeapons() {
+        return preferences.getString("profileWeapons", "new");
+    }
+
+    public void setProfileWeapons(String value) {
+        preferences.putString("profileWeapons", value);
+        preferences.flush();
+    }
+
     public void removeData() {
         preferences.remove("musicEnabled");
         preferences.remove("musicVolume");
@@ -132,6 +159,9 @@ public class PreferenceManager {
         preferences.remove("statusBarTransparency");
         preferences.remove("pStatusBarTransparency");
         preferences.remove("hitMarkerTransparency");
+        preferences.remove("profileName");
+        preferences.remove("profileLevel");
+        preferences.remove("profileWeapons");
         preferences.flush();
     }
 }

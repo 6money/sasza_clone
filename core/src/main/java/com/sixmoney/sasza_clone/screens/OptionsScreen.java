@@ -210,8 +210,8 @@ public class OptionsScreen implements Screen {
 
 
 //        window.setSize(stage.getWidth() / 1.5f, stage.getHeight() / 1.5f);
-        window.pack();
         window.setPosition(stage.getWidth() / 2 - window.getWidth() / 2, stage.getHeight() / 2 - window.getHeight() / 2);
+        window.pack();
         stage.addActor(window);
         stage.addActor(buttonBack);
         stage.addActor(labelVersion);

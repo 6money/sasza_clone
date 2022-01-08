@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sixmoney.sasza_clone.Sasza;
@@ -27,9 +29,11 @@ public class MainMenu implements Screen {
 	private Skin skin;
 	private Table tableMenu;
 	private UIControllerInputHandler controllerInputHandler;
+	private Label labelProfileName;
 
 	public MainMenu(Sasza game) {
 		saszaGame = game;
+		saszaGame.loadProfile();
 	}
 
 	@Override
@@ -56,9 +60,9 @@ public class MainMenu implements Screen {
 
 		tableMenu.row();
 		TextButton buttonPlay = new TextButton("PLAY", skin);
-		buttonPlay.addListener(new ClickListener() {
+		buttonPlay.addListener(new ChangeListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void changed(ChangeEvent event, Actor actor) {
 				saszaGame.switchScreen("gameplay");
 				dispose();
 			}
@@ -66,47 +70,95 @@ public class MainMenu implements Screen {
 		tableMenu.add(buttonPlay).minHeight(100f);
 
 		tableMenu.row();
-		TextButton levelSelectPlay = new TextButton("LOADOUT", skin);
-//		levelSelectPlay.addListener(new ClickListener() {
+		TextButton buttonLoadout = new TextButton("LOADOUT", skin);
+//		buttonLoadout.addListener(new ChangeListener() {
 //			@Override
-//			public void clicked(InputEvent event, float x, float y) {
+//			public void changed(ChangeEvent event, Actor actor) {
 //				gigaGalGame.switchScreen("level select");
 //				dispose();
 //			}
 //		});
-		tableMenu.add(levelSelectPlay).minHeight(100f);
+		tableMenu.add(buttonLoadout).minHeight(100f);
 
 		tableMenu.row();
 		Table tableSubmenu = new Table(skin);
 		tableSubmenu.defaults().grow();
 		tableSubmenu.row();
-		TextButton buttonHighScores = new TextButton("STATS", skin);
-//		buttonHighScores.addListener(new ClickListener() {
+		TextButton buttonStats = new TextButton("STATS", skin);
+//		buttonStats.addListener(new ChangeListener() {
 //			@Override
-//			public void clicked(InputEvent event, float x, float y) {
+//			public void changed(ChangeEvent event, Actor actor) {
 //				gigaGalGame.switchScreen("high_score");
 //				dispose();
 //			}
 //		});
-		tableSubmenu.add(buttonHighScores).uniform().spaceRight(5).minHeight(100f);
+		tableSubmenu.add(buttonStats).uniform().spaceRight(5).minHeight(100f);
 		TextButton buttonOptions = new TextButton("OPTIONS", skin);
-		buttonOptions.addListener(new ClickListener() {
+		buttonOptions.addListener(new ChangeListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void changed(ChangeEvent event, Actor actor) {
 				saszaGame.switchScreen("options");
 				dispose();
 			}
 		});
 		tableSubmenu.add(buttonOptions).uniform().spaceLeft(5).minHeight(100f);
 		tableMenu.add(tableSubmenu).minHeight(100f);
-		tableMenu.validate();
 
+		tableMenu.validate();
 		stage.addActor(tableMenu);
 		stage.addFocusableActor(buttonPlay);
-		stage.addFocusableActor(levelSelectPlay);
+		stage.addFocusableActor(buttonLoadout);
 		stage.addFocusableActor(buttonOptions);
-		stage.addFocusableActor(buttonHighScores);
+		stage.addFocusableActor(buttonStats);
 		stage.setFocusedActor(buttonPlay);
+
+		labelProfileName = new Label(null, skin);
+		if (!saszaGame.profile.getName().equals("default")) {
+			labelProfileName.setText(saszaGame.profile.getName() + "\nLevel: " + saszaGame.profile.getProfileLevel());
+		}
+		labelProfileName.setPosition(20, stage.getHeight() - 30);
+		stage.addActor(labelProfileName);
+
+		if (saszaGame.profile.getName().equals("default")) {
+			buttonPlay.setDisabled(true);
+			buttonLoadout.setDisabled(true);
+			buttonStats.setDisabled(true);
+			buttonOptions.setDisabled(true);
+
+			Window window = new Window("Create Profile", skin);
+			window.defaults().pad(10).grow();
+
+			window.row();
+			window.add(new Label("Enter name", skin));
+
+			window.row();
+			TextField inputProfileName = new TextField(null, skin);
+			window.add(inputProfileName);
+
+			window.row();
+			TextButton buttonSetProfileName = new TextButton("CONTINUE", skin);
+			buttonSetProfileName.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					saszaGame.profile.setName(inputProfileName.getText());
+					saszaGame.profile.setProfileLevel(saszaGame.profile.getProfileLevel());
+					saszaGame.profile.setGuns(saszaGame.profile.getGuns());
+					labelProfileName.setText(saszaGame.profile.getName() + "\nLevel: " + saszaGame.profile.getProfileLevel());
+					window.remove();
+
+					buttonPlay.setDisabled(false);
+					buttonLoadout.setDisabled(false);
+					buttonStats.setDisabled(false);
+					buttonOptions.setDisabled(false);
+				}
+			});
+			window.add(buttonSetProfileName);
+
+			window.setPosition(stage.getWidth() / 2 - window.getWidth() / 2, stage.getHeight() / 2 - window.getHeight() / 2);
+			window.pack();
+			stage.addActor(window);
+		}
+
 		Gdx.input.setInputProcessor(stage);
 	}
 
@@ -114,6 +166,7 @@ public class MainMenu implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		stage.getViewport().update(width, height, true);
+		labelProfileName.setPosition(20, stage.getHeight() - 30);
 	}
 
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.GunData;
@@ -11,7 +12,7 @@ import com.sixmoney.sasza_clone.utils.Utils;
 import com.sixmoney.sasza_clone.utils.Utils.WeaponCategory;
 
 public class Gun {
-    private static final String TAG = Gun.class.getName();
+    private static String TAG = Gun.class.getName();
     private String name;
     private int magazineSize;
     private float fireRate;
@@ -29,11 +30,14 @@ public class Gun {
     private float critChance;
     private float critDamage;
     private float movementPenalty;
-    private TextureRegion weaponSprite;
-    private Animation muzzleFlashAnimation;
+    private transient TextureRegion weaponSprite;
+    private transient Animation muzzleFlashAnimation;
     private Vector2 muzzleFlashOffset;
     private Vector2 muzzleFlashOffsetReal;
     private WeaponCategory weaponType;
+
+    public Gun() {
+    }
 
 
     public Gun(GunData.GunRecord gunData) {
@@ -58,6 +62,19 @@ public class Gun {
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
         weaponType = gunData.category;
         reloadTimer = 0;
+
+        if (gunData.category == WeaponCategory.RIFLE || gunData.category == WeaponCategory.LMG || gunData.category == WeaponCategory.SPECIAL) {
+            muzzleFlashAnimation = Assets.get_instance().weaponAssets.rifleMuzzleFlashAnimation;
+        } else if (gunData.category == WeaponCategory.DMR) {
+            muzzleFlashAnimation = Assets.get_instance().weaponAssets.dmrMuzzleFlashAnimation;
+        } else {
+            muzzleFlashAnimation = Assets.get_instance().weaponAssets.pistolMuzzleFlashAnimation;
+        }
+    }
+
+    public void setTextures() {
+        weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
+        GunData.GunRecord gunData = GunData.gunRecords.get(name);
 
         if (gunData.category == WeaponCategory.RIFLE || gunData.category == WeaponCategory.LMG || gunData.category == WeaponCategory.SPECIAL) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.rifleMuzzleFlashAnimation;
@@ -240,5 +257,11 @@ public class Gun {
         }
 
         return Utils.millisecondsSince(reloadTimer);
+    }
+
+    public String serializeGun() {
+        Json json = new Json();
+
+        return json.toJson(this);
     }
 }
