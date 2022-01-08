@@ -13,6 +13,7 @@ public class GunnerSoldier extends BaseSoldier {
         characterShootingTexture = Assets.get_instance().npcAssets.gunnerShooting;
         bulletOffset = new Vector2( 16, -3);
         guns.set(0, new Gun(GunData.pkm));
+        guns.get(0).setCurrentAmmo(80000);
         setGun(0);
     }
 }

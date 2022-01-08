@@ -154,7 +154,7 @@ public class Player extends Character {
             batch.setColor(1, 1, 1, PreferenceManager.get_instance().getStatusBarTransparency() / 100);
             float reloadBarWidth = Constants.HEALTH_BAR_WIDTH * 2 * (reloadTime / currentGun.getReloadTime());
             reloadBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH * 2 / 2f), position.y + Constants.PLAYER_CENTER.y / 2, reloadBarWidth, 4);
-            batch.setColor(1, 1, 1, 1);
+            batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING);
         }
     }
 

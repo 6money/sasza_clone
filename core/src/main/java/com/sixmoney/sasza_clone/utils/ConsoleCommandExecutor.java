@@ -32,6 +32,15 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     }
 
 
+    // World/level commands
+    @ConsoleDoc(description = "Set Ambient light level") public final void lightLevelAmbient(float value) {
+        Constants.AMBIENT_LIGHTING = value;
+    }
+
+    @ConsoleDoc(description = "Reset Ambient light level") public final void lightLevelAmbientReset() {
+        Constants.AMBIENT_LIGHTING = Constants.DEFAULT_AMBIENT_LIGHTING;
+    }
+
     // Player commands
     @ConsoleDoc(description = "Teleports the player to the specified location") public final void teleport(float x, float y) {
         gameWorld.level.teleportPlayer(x, y);

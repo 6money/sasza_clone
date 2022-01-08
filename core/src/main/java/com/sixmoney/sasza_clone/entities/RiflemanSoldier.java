@@ -15,6 +15,7 @@ public class RiflemanSoldier extends BaseSoldier {
         entityAnimation = Assets.get_instance().npcAssets.npcWalkingAnimationS2;
         bulletOffset = new Vector2( 16, -3);
         guns.set(0, new Gun(GunData.mp5));
+        guns.get(0).setCurrentAmmo(80000);
         setGun(0);
     }
 }

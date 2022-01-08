@@ -399,6 +399,7 @@ public class Level {
 
         player.render(batch, drawer);
 
+        batch.setColor(Math.max(0.8f, Constants.AMBIENT_LIGHTING), Math.max(0.8f, Constants.AMBIENT_LIGHTING), Math.max(0.8f, Constants.AMBIENT_LIGHTING), 1);
         for (Bullet bullet: bullets) {
             bullet.render(batch);
         }
@@ -411,7 +412,7 @@ public class Level {
             entity.renderHealthBar(batch);
             entity.renderStunBar(batch);
         }
-        batch.setColor(1, 1, 1, 1);
+        batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
         for (Utils.HitRecord hitLocation: hitLocations) {
             font.setColor(font.getColor().r, font.getColor().g, font.getColor().b, hitLocation.alpha / 100);
             font.draw(batch, Integer.toString(hitLocation.damage), hitLocation.x, hitLocation.y);

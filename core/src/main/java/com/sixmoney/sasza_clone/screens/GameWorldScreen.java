@@ -112,6 +112,7 @@ public class GameWorldScreen implements Screen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
 
         level.render(batch, drawer);
 

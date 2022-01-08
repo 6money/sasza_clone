@@ -43,6 +43,7 @@ public class BaseSoldier extends BaseNPC {
         npcCollisionFilter = new NpcCollisionFilter();
         npcPlayerCollisionFilter = new NpcPlayerCollisionFilter();
         guns.set(0, new Gun(GunData.svd));
+        guns.get(0).setCurrentAmmo(80000);
         setGun(0);
     }
 

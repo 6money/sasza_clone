@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.InputHandlers.MobileInputHandler;
 
 public class MobileControlUI {
@@ -70,7 +71,7 @@ public class MobileControlUI {
     public void render() {
         stage.act();
         stage.draw();
-        stage.getBatch().setColor(1, 1, 1, 1);
+        stage.getBatch().setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
     }
 
     public void resize(int width, int height) {
