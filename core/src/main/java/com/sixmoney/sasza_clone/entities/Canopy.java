@@ -7,6 +7,7 @@ import com.dongbat.jbump.Item;
 import com.dongbat.jbump.Response;
 import com.dongbat.jbump.World;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.Constants;
 import com.sixmoney.sasza_clone.utils.Utils;
 
 import java.util.ArrayList;
@@ -41,13 +42,13 @@ public class Canopy extends Entity {
     @Override
     public void render(Batch batch) {
         if (transparent) {
-            batch.setColor(1, 1, 1, 0.5f);
+            batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 0.5f);
         }
 
         Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
 
         if (transparent) {
-            batch.setColor(1, 1, 1, 1);
+            batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
         }
     }
 
