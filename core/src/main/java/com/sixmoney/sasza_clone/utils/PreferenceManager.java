@@ -121,6 +121,18 @@ public class PreferenceManager {
         preferences.flush();
     }
 
+    public boolean getScreenShake() {
+        return preferences.getBoolean("screenShake", true);
+    }
+
+    public void setScreenShake(boolean value) {
+        preferences.putBoolean("screenShake", value);
+        preferences.flush();
+    }
+
+
+    // Profile data
+
     public String getProfileName() {
         return preferences.getString("profileName", "default");
     }
@@ -160,6 +172,7 @@ public class PreferenceManager {
         preferences.remove("statusBarTransparency");
         preferences.remove("pStatusBarTransparency");
         preferences.remove("hitMarkerTransparency");
+        preferences.remove("screenShake");
         preferences.remove("profileName");
         preferences.remove("profileLevel");
         preferences.remove("profileWeapons");

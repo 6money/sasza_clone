@@ -529,6 +529,12 @@ public class Level {
         world.add(bullet.item, bullet.bbox.x, bullet.bbox.y, bullet.bbox.width, bullet.bbox.height);
         character.getGun().decrementCurrentMagazineAmmo();
         character.triggerMuzzleFlash();
+
+        if (character.getClass() == Player.class) {
+//            camera.position.x += MathUtils.random(-character.getGun().getScreenShake(), character.getGun().getScreenShake());
+//            camera.position.y += MathUtils.random(-character.getGun().getScreenShake(), character.getGun().getScreenShake());
+            camera.shake((int) character.getGun().getScreenShake().x, (int) character.getGun().getScreenShake().y);
+        }
     }
 
 

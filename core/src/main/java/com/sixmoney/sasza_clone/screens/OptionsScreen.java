@@ -32,6 +32,7 @@ public class OptionsScreen implements Screen {
     private CheckBox checkboxFPS;
     private CheckBox checkboxCoords;
     private CheckBox checkboxMobile;
+    private CheckBox checkboxScreenShake;
     private Slider sliderMusic;
     private Slider sliderSounds;
     private Slider sliderDifficulty;
@@ -197,6 +198,17 @@ public class OptionsScreen implements Screen {
         });
 
         window.row();
+        window.add(new Label("Enable Screen Shake", skin));
+        checkboxScreenShake = new CheckBox(null, skin);
+        window.add(checkboxScreenShake);
+        checkboxScreenShake.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                preferenceManager.setScreenShake(checkboxScreenShake.isChecked());
+            }
+        });
+
+        window.row();
         Button buttonResetData = new Button(skin);
         buttonResetData.add(new Label("Reset all data" ,skin));
         window.add(buttonResetData).height(stage.getWidth() / 20);
@@ -231,6 +243,7 @@ public class OptionsScreen implements Screen {
         boolean showFPS = preferenceManager.getShowFPS();
         boolean showCoords = preferenceManager.getShowCoords();
         boolean showMobile = preferenceManager.getMobile();
+        boolean screenShake = preferenceManager.getScreenShake();
         float statusBarTransparency = preferenceManager.getStatusBarTransparency();
         float playerStatusBarTransparency = preferenceManager.getPStatusBarTransparency();
         float hitMarkerTransparency = preferenceManager.getHitMarkerTransparency();
@@ -242,6 +255,7 @@ public class OptionsScreen implements Screen {
         sliderDifficulty.setValue(difficulty);
         checkboxFPS.setChecked(showFPS);
         checkboxCoords.setChecked(showCoords);
+        checkboxScreenShake.setChecked(screenShake);
         if (!game.mobileControls) {
             checkboxMobile.setChecked(showMobile);
         }

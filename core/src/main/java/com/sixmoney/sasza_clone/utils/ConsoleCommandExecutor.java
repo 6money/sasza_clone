@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.utils;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.sixmoney.sasza_clone.staticData.Constants;
@@ -171,6 +172,11 @@ public class ConsoleCommandExecutor extends CommandExecutor {
     @ConsoleDoc(description = "Set current weapon's movement penalty for clicked entity") public final void setWeaponMovementPenalty(float penalty) {
         gameWorld.getClickedEntity().getGun().setMovementPenalty(penalty);
         console.log("Updated weapon movement penalty for " + gameWorld.getClickedEntity().getClass().getSimpleName());
+    }
+
+    @ConsoleDoc(description = "Set current weapon's screen shake intensity for clicked entity. Only visually affects player entity") public final void setWeaponScreenShake(int amplitude, int frequency) {
+        gameWorld.getClickedEntity().getGun().setScreenShake(new Vector2(amplitude, frequency));
+        console.log("Updated weapon screen shake for " + gameWorld.getClickedEntity().getClass().getSimpleName());
     }
 
 

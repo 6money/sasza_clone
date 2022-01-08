@@ -66,8 +66,8 @@ public class HUD {
 
         table.row();
         gunSprite = new Image(level.getPlayer().getGun().getWeaponSprite());
-        gunSprite.setOriginY(gunSprite.getHeight());
         gunSprite.scaleBy(3);
+        gunSprite.setOriginY(gunSprite.getHeight());
         table.defaults().reset();
         table.add(gunSprite).align(Align.bottomLeft);
 
