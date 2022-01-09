@@ -156,7 +156,7 @@ public class Player extends Character {
         if (!lightLevel) {
             drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
         } else {
-            drawer.line(lazerVectorLightBuffer.x, lazerVectorLightBuffer.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
+            drawer.line(lazerVectorLightBuffer.x, lazerVectorLightBuffer.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 1f));
         }
     }
 
@@ -164,7 +164,7 @@ public class Player extends Character {
         float reloadTime = currentGun.checkReloadStatus();
 
         if (reloadTime != 0 && reloadTime < currentGun.getReloadTime()) {
-            batch.setColor(1, 1, 1, PreferenceManager.get_instance().getStatusBarTransparency() / 100);
+            batch.setColor(1, 1, 1, PreferenceManager.get_instance().getPStatusBarTransparency() / 100);
             float reloadBarWidth = Constants.HEALTH_BAR_WIDTH * 2 * (reloadTime / currentGun.getReloadTime());
             reloadBar.draw(batch, position.x + Constants.PLAYER_CENTER.x - (Constants.HEALTH_BAR_WIDTH * 2 / 2f), position.y + Constants.PLAYER_CENTER.y / 2, reloadBarWidth, 4);
             batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING);
