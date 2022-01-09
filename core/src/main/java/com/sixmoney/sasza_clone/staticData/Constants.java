@@ -29,7 +29,7 @@ public class Constants {
     public static final int MAX_DEAD_SPRITES = 200;
     public static final int WAVE_BREAK = 30;
     public static float DEFAULT_AMBIENT_LIGHTING = 0.4f;
-    public static float AMBIENT_LIGHTING = 0.4f;
+    public static float AMBIENT_LIGHTING = 1f;
 
 
     // debug sprites

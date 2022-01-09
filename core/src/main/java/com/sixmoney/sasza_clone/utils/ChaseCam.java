@@ -40,7 +40,7 @@ public class ChaseCam extends OrthographicCamera {
     }
 
     public void shake() {
-        shake(0.2f, 4, 90, true);
+        shake(4, 90);
     }
 
     public void shake(int amplitude, int frequency) {
@@ -55,10 +55,8 @@ public class ChaseCam extends OrthographicCamera {
         frequency = freq;
         isFading = fade;
         samples = new FloatArray(frequency);
-        Gdx.app.log("yeet", samples.size + "");
         Random random = new Random();
         IntStream.range(0, frequency).forEach(i -> samples.add(random.nextFloat() * 2f - 1f));
-        Gdx.app.log("yeet2", samples.size + "");
     }
 
     public void update() {

@@ -8,8 +8,11 @@ import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -44,6 +47,7 @@ public class GameWorldScreen implements Screen {
     private PauseOverlay pauseOverlay;
     private MobileControlUI mobileControlUI;
     private ControllerInputHandler controllerInputHandler;
+    private FrameBuffer lightBuffer;
 
     public Console console;
     public Level level;
@@ -62,6 +66,7 @@ public class GameWorldScreen implements Screen {
         batch = new SpriteBatch();
         drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
         level = LevelLoader.load("debug", viewport, camera);
+        level.getPlayer().setWeapons(saszaGame.profile.getGuns());
         hud = new HUD(level, batch, saszaGame.debug);
         pauseOverlay = new PauseOverlay(this, batch);
         mobileControlUI = new MobileControlUI(this, batch);
@@ -111,18 +116,18 @@ public class GameWorldScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
         batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        level.render(batch, drawer);
+        level.render(batch, drawer, lightBuffer);
 
+        batch.begin();
         if (saszaGame.debug) {
             level.renderDebug(drawer);
             if (clickedEntity != null) {
                 drawer.rectangle(clickedEntity.bbox, Color.GOLD);
             }
         }
-
         batch.end();
 
         hud.render();
@@ -144,6 +149,11 @@ public class GameWorldScreen implements Screen {
         hud.resize(width, height);
         pauseOverlay.resize(width, height);
         console.refresh();
+        if (lightBuffer != null) {
+            lightBuffer.dispose();
+        }
+        lightBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
+        lightBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         if (saszaGame.mobileControls) {
             mobileControlUI.resize(width, height);
@@ -172,6 +182,7 @@ public class GameWorldScreen implements Screen {
         pauseOverlay.dispose();
         hud.dispose();
         mobileControlUI.dispose();
+        lightBuffer.dispose();
     }
 
     public void setPaused() {

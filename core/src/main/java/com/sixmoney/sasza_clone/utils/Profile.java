@@ -35,7 +35,7 @@ public class Profile {
         } else {
             guns.add(new Gun(GunData.mp5));
             guns.add(new Gun(GunData.svd));
-            guns.add(new Gun(GunData.m4));
+            guns.add(new Gun(GunData.vaporizer));
         }
 
     }

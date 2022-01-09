@@ -3,6 +3,7 @@ package com.sixmoney.sasza_clone.entities;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.Collision;
 import com.dongbat.jbump.CollisionFilter;
@@ -22,6 +23,7 @@ public class Player extends Character {
     private static final String TAG = Player.class.getName();
 
     private Vector2 lazerVector;
+    private Vector2 lazerVectorLightBuffer;
     private TenPatchDrawable reloadBar;
 
 
@@ -37,6 +39,7 @@ public class Player extends Character {
         characterShootingTexture = Assets.get_instance().npcAssets.sniperShooting;
         characterIdleLegTexture = Assets.get_instance().npcAssets.npcStandS1;
         lazerVector = new Vector2();
+        lazerVectorLightBuffer = new Vector2();
         health = 2000;
         maxHealth = 2000;
         maxLinearSpeed = Constants.DEFAULT_PLAYER_SPEED;
@@ -80,6 +83,11 @@ public class Player extends Character {
         animationStartTime = 0;
     }
 
+    public void setWeapons(Array<Gun> weapons) {
+        guns = weapons;
+        setGun(0);
+    }
+
     @Override
     public void update(float delta, World<Entity> world) {
         float rotationLower = rotation - Constants.PLAYER_BACK_PEDAL_ANGLE;
@@ -121,8 +129,11 @@ public class Player extends Character {
         items.clear();
         lazerVector.set(1, 0);
         lazerVector.rotateDeg(rotation);
+        lazerVectorLightBuffer = new Vector2(lazerVector);
         lazerVector.setLength(currentGun.getRange());
         lazerVector.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y);
+        lazerVectorLightBuffer.setLength(15);
+        lazerVectorLightBuffer.add(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y);
 
         world.querySegmentWithCoords(
                 position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x,
@@ -141,11 +152,13 @@ public class Player extends Character {
     }
 
 
-    public void render(Batch batch, ShapeDrawer drawer) {
-        drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
-        super.render(batch);
+    public void renderLazer(ShapeDrawer drawer, boolean lightLevel) {
+        if (!lightLevel) {
+            drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
+        } else {
+            drawer.line(lazerVectorLightBuffer.x, lazerVectorLightBuffer.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
+        }
     }
-
 
     public void renderReloadBar(Batch batch) {
         float reloadTime = currentGun.checkReloadStatus();

@@ -29,6 +29,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public TileAssets tileAssets;
     public SkinAssets skinAssets;
     public WeaponAssets weaponAssets;
+    public LightAssets lightAssets;
 
     private Assets() {
         init();
@@ -67,6 +68,7 @@ public class Assets implements Disposable, AssetErrorListener {
         envronmentAssets = new EnvronmentAssets(atlas, atlasPrivate);
         tileAssets = new TileAssets(atlasPrivate);
         weaponAssets = new WeaponAssets(atlasPrivate, atlasPrivateWeapons);
+        lightAssets = new LightAssets(atlasPrivate);
     }
 
     public AssetManager getAssetManager() {
@@ -245,6 +247,18 @@ public class Assets implements Disposable, AssetErrorListener {
             rifleMuzzleFlashAnimation = new Animation<>(0.04f, atlasPrivate.findRegions(Constants.RIFLE_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
             pistolMuzzleFlashAnimation = new Animation<>(0.035f, atlasPrivate.findRegions(Constants.PISTOL_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
             dmrMuzzleFlashAnimation = new Animation<>(0.05f, atlasPrivate.findRegions(Constants.DMR_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
+        }
+    }
+
+    public class LightAssets {
+        public TextureRegion light1;
+        public TextureRegion light2;
+        public TextureRegion light3;
+
+        public LightAssets(TextureAtlas atlasPrivate) {
+            light1 = atlasPrivate.findRegion("light1");
+            light2 = atlasPrivate.findRegion("light2");
+            light3 = atlasPrivate.findRegion("light3");
         }
     }
 }
