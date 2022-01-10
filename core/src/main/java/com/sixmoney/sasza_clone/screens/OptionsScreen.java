@@ -210,12 +210,22 @@ public class OptionsScreen implements Screen {
 
         window.row();
         Button buttonResetData = new Button(skin);
-        buttonResetData.add(new Label("Reset all data" ,skin));
-        window.add(buttonResetData).height(stage.getWidth() / 20);
+        buttonResetData.add(new Label("Reset Preferences data", skin));
+        window.add(buttonResetData).height(stage.getWidth() / 20).uniform();
         buttonResetData.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                preferenceManager.removeData();
+                preferenceManager.removePreferencesData();
+                init_saved_settings();
+            }
+        });
+        Button buttonResetProfile = new Button(skin);
+        buttonResetProfile.add(new Label("Reset profile data", skin));
+        window.add(buttonResetProfile).uniform();
+        buttonResetProfile.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                preferenceManager.removeProfileData();
                 init_saved_settings();
             }
         });

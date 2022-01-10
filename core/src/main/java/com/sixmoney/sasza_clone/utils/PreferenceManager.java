@@ -160,7 +160,7 @@ public class PreferenceManager {
         preferences.flush();
     }
 
-    public void removeData() {
+    public void removePreferencesData() {
         preferences.remove("musicEnabled");
         preferences.remove("musicVolume");
         preferences.remove("soundEnabled");
@@ -173,6 +173,10 @@ public class PreferenceManager {
         preferences.remove("pStatusBarTransparency");
         preferences.remove("hitMarkerTransparency");
         preferences.remove("screenShake");
+        preferences.flush();
+    }
+
+    public void removeProfileData() {
         preferences.remove("profileName");
         preferences.remove("profileLevel");
         preferences.remove("profileWeapons");
