@@ -73,6 +73,10 @@ public abstract class Entity {
         return health;
     }
 
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+
     public void decrementHealth(float value) {
         health -= value;
     }

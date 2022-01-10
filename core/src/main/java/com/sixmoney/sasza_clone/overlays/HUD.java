@@ -6,11 +6,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.ray3k.tenpatch.TenPatchDrawable;
 import com.sixmoney.sasza_clone.Level;
 import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.PreferenceManager;
@@ -22,6 +24,7 @@ public class HUD {
     private Stage stage;
     private Boolean debug;
 
+    private ProgressBar progressBarHealth;
     private Label labelHealth;
     private Label labelAmmo;
     private Label labelMagAmmo;
@@ -41,6 +44,18 @@ public class HUD {
         table.pad(20).top();
         table.defaults().growX();
 
+        TenPatchDrawable tenPatchKnobBefore = new TenPatchDrawable(new int[] {1, 1}, new int[] {1, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("health_bar"));
+        TenPatchDrawable tenPatchBackground = new TenPatchDrawable(new int[] {1, 1}, new int[] {1, 1}, false, Assets.get_instance().getPrivateAtlas().findRegion("background_bar"));
+        tenPatchKnobBefore.setMinHeight(12f);
+        tenPatchBackground.setMinHeight(12f);
+        ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
+        progressBarStyle.knobBefore = tenPatchKnobBefore;
+        progressBarStyle.background = tenPatchBackground;
+        progressBarHealth = new ProgressBar(0, level.getPlayer().getMaxHealth(), 1f, false, progressBarStyle);
+        progressBarHealth.setValue(level.getPlayer().getHealth());
+        table.add(progressBarHealth).align(Align.left).width(200);
+
+        table.row();
         labelHealth = new Label("", skin);
         labelHealth.setAlignment(Align.left);
         labelFPS = new Label("", skin);
@@ -77,7 +92,9 @@ public class HUD {
     }
 
     public void render() {
-        labelHealth.setText("Health: " + ((int) level.getPlayer().getHealth()));
+        float health = Math.max(level.getPlayer().getHealth(), 0);
+        progressBarHealth.setValue(health);
+        labelHealth.setText("Health: " + ((int) health));
         labelAmmo.setText(String.valueOf(level.getPlayer().getGun().getCurrentAmmo()));
         labelMagAmmo.setText(String.valueOf(level.getPlayer().getGun().getCurrentMagazineAmmo()));
         labelWaveTimer.setText("Wave starts in " + level.waveCountdown);

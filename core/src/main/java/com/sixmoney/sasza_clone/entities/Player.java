@@ -40,8 +40,8 @@ public class Player extends Character {
         characterIdleLegTexture = Assets.get_instance().npcAssets.npcStandS1;
         lazerVector = new Vector2();
         lazerVectorLightBuffer = new Vector2();
-        health = 2000;
-        maxHealth = 2000;
+        health = Constants.DEFAULT_PLAYER_HEALTH;
+        maxHealth = Constants.DEFAULT_PLAYER_HEALTH;
         maxLinearSpeed = Constants.DEFAULT_PLAYER_SPEED;
         defaultMaxLinearSpeed = maxLinearSpeed;
         destructible = true;

@@ -37,6 +37,7 @@ public class Constants {
     public static final int HEALTH_BAR_WIDTH = 25;
 
     // player
+    public static final float DEFAULT_PLAYER_HEALTH = 1000;
     public static final float DEFAULT_PLAYER_SPEED = 200;
     public static final float PLAYER_BACK_PEDAL_PENALTY = 50;
     public static final float PLAYER_BACK_PEDAL_ANGLE = 70;
