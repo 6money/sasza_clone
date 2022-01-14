@@ -254,11 +254,13 @@ public class Assets implements Disposable, AssetErrorListener {
         public TextureRegion light1;
         public TextureRegion light2;
         public TextureRegion light3;
+        public TextureRegion light4;
 
         public LightAssets(TextureAtlas atlasPrivate) {
             light1 = atlasPrivate.findRegion("light1");
             light2 = atlasPrivate.findRegion("light2");
             light3 = atlasPrivate.findRegion("light3");
+            light4 = atlasPrivate.findRegion("light4");
         }
     }
 }

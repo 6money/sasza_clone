@@ -116,7 +116,7 @@ public class GameWorldScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camera.combined);
-        batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
+        batch.setColor(Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, 1);
         batch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         level.render(batch, drawer, lightBuffer);

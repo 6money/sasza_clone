@@ -232,7 +232,7 @@ public class LevelLoader {
     }
 
     private static void loadCanopy(Array<JsonValue> objects, Level level) {
-        Array<Entity> canopyArray = new Array<>();
+        Array<Canopy> canopyArray = new Array<>();
 
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);
@@ -248,7 +248,7 @@ public class LevelLoader {
     }
 
     private static void loadWalls(Array<JsonValue> objects, Level level) {
-        Array<Entity> wallArray = new Array<>();
+        Array<Wall> wallArray = new Array<>();
 
         for (JsonValue object : objects) {
             final float x = object.getFloat(Constants.LEVEL_X_KEY, 0);

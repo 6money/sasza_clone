@@ -39,6 +39,7 @@ import com.sixmoney.sasza_clone.entities.BaseEnemy;
 import com.sixmoney.sasza_clone.entities.BaseSoldier;
 import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
+import com.sixmoney.sasza_clone.entities.Canopy;
 import com.sixmoney.sasza_clone.entities.Character;
 import com.sixmoney.sasza_clone.entities.DeadEntity;
 import com.sixmoney.sasza_clone.entities.Entity;
@@ -46,6 +47,7 @@ import com.sixmoney.sasza_clone.entities.EnvironmentObject;
 import com.sixmoney.sasza_clone.entities.FloorTile;
 import com.sixmoney.sasza_clone.entities.NPCDetectionObject;
 import com.sixmoney.sasza_clone.entities.Player;
+import com.sixmoney.sasza_clone.entities.Wall;
 import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.staticData.WaveData;
 import com.sixmoney.sasza_clone.utils.Assets;
@@ -68,8 +70,8 @@ public class Level {
 
     private Array<Entity> tiles;
     private DelayedRemovalArray<EnvironmentObject> environmentEntities;
-    private Array<Entity> canopyEntities;
-    private Array<Entity> wallEntities;
+    private Array<Canopy> canopyEntities;
+    private Array<Wall> wallEntities;
     private DelayedRemovalArray<BaseSoldier> characterEntities;
     private DelayedRemovalArray<BaseEnemy> enemyEntities;
     private Array<Entity> deadEntities;
@@ -186,16 +188,16 @@ public class Level {
         }
     }
 
-    public void setCanopyEntities(Array<Entity> entities) {
+    public void setCanopyEntities(Array<Canopy> entities) {
         this.canopyEntities = entities;
-        for (Entity entity: canopyEntities) {
+        for (Canopy entity: canopyEntities) {
             world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
         }
     }
 
-    public void setWallEntities(Array<Entity> entities) {
+    public void setWallEntities(Array<Wall> entities) {
         this.wallEntities = entities;
-        for (Entity entity: wallEntities) {
+        for (Wall entity: wallEntities) {
             if (entity.characterCollidable) {
                 world.add(entity.item, entity.bbox.x, entity.bbox.y, entity.bbox.width, entity.bbox.height);
                 world.add(entity.bulletCollisionSubObject.item, entity.bulletCollisionSubObject.bbox.x, entity.bulletCollisionSubObject.bbox.y, entity.bulletCollisionSubObject.bbox.width, entity.bulletCollisionSubObject.bbox.height);
@@ -351,7 +353,7 @@ public class Level {
             }
         }
         characterEntities.end();
-        for (Entity entity: canopyEntities) {
+        for (Canopy entity: canopyEntities) {
             entity.update(delta, world);
         }
         bullets.begin();
@@ -382,30 +384,30 @@ public class Level {
         for (Entity entity: deadEntities) {
             entity.render(batch);
         }
-        for (Entity entity: wallEntities) {
+        for (Wall entity: wallEntities) {
             entity.render(batch);
         }
         for (BaseEnemy zom: enemyEntities) {
             zom.renderSecondary(batch);
         }
-        for (Entity entity: characterEntities) {
+        for (Character entity: characterEntities) {
             entity.renderSecondary(batch);
         }
         player.renderSecondary(batch);
-        for (Entity entity: environmentEntities) {
+        for (EnvironmentObject entity: environmentEntities) {
             entity.render(batch);
         }
         for (BaseEnemy zom: enemyEntities) {
             zom.render(batch);
         }
-        for (Entity entity: characterEntities) {
+        for (Character entity: characterEntities) {
             entity.render(batch);
         }
 
         player.renderLazer(drawer, false);
         player.render(batch);
 
-        batch.setColor(Math.max(0.8f, Constants.AMBIENT_LIGHTING), Math.max(0.8f, Constants.AMBIENT_LIGHTING), Math.max(0.8f, Constants.AMBIENT_LIGHTING), 1);
+        batch.setColor(Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), 1);
         for (Bullet bullet: bullets) {
             bullet.render(batch);
         }
@@ -418,7 +420,7 @@ public class Level {
             entity.renderHealthBar(batch);
             entity.renderStunBar(batch);
         }
-        batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
+        batch.setColor(Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, 1);
         for (Utils.HitRecord hitLocation: hitLocations) {
             font.setColor(font.getColor().r, font.getColor().g, font.getColor().b, hitLocation.alpha / 100);
             font.draw(batch, Integer.toString(hitLocation.damage), hitLocation.x, hitLocation.y);
@@ -430,7 +432,7 @@ public class Level {
                 font.setColor(Color.YELLOW);
             }
         }
-        for (Entity entity: wallEntities) {
+        for (Wall entity: wallEntities) {
             entity.renderSecondary(batch);
         }
         batch.end();
@@ -438,7 +440,7 @@ public class Level {
         // #### LIGHT BUFFER OBJECT START ####
         lightBuffer.begin();
         // set ambient light level
-        Gdx.gl.glClearColor(.2f,.2f,.2f,1);
+        Gdx.gl.glClearColor(Constants.AMBIENT_LIGHTING.r, Constants.AMBIENT_LIGHTING.g, Constants.AMBIENT_LIGHTING.b, Constants.AMBIENT_LIGHTING.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // set blending
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
@@ -467,21 +469,21 @@ public class Level {
             batch.draw(Assets.get_instance().lightAssets.light2, lightX, lightY, lightSize, lightSize);
         }
 
-        batch.setColor(1f, 1f, 1f, 1);
+//        batch.setColor(1f, 1f, 1f, 1);
         for (Character npc: characterEntities) {
             if (npc.shooting) {
                 lightSize = (80f / 100f) * 50;
-                lightX = npc.position.x + Constants.PLAYER_CENTER.x + npc.bulletOffsetReal.x - lightSize / 2f;
+                lightX = npc.position.x + Constants.PLAYER_CENTER.x + npc.bulletOffsetReal.x;
                 lightY = npc.position.y + Constants.PLAYER_CENTER.y + npc.bulletOffsetReal.y - lightSize / 2f;
-                batch.draw(Assets.get_instance().lightAssets.light2, lightX, lightY, lightSize, lightSize);
+                batch.draw(Assets.get_instance().lightAssets.light4, lightX, lightY, 0, lightSize / 2, lightSize, lightSize, 1, 1, npc.rotation);
             }
         }
 
         if (player.shooting) {
             lightSize = (80f / 100f) * 50;
-            lightX = player.position.x + Constants.PLAYER_CENTER.x + player.bulletOffsetReal.x - lightSize / 2f;
+            lightX = player.position.x + Constants.PLAYER_CENTER.x + player.bulletOffsetReal.x;
             lightY = player.position.y + Constants.PLAYER_CENTER.y + player.bulletOffsetReal.y - lightSize / 2f;
-            batch.draw(Assets.get_instance().lightAssets.light2, lightX, lightY, lightSize, lightSize);
+            batch.draw(Assets.get_instance().lightAssets.light4, lightX, lightY, 0, lightSize / 2, lightSize, lightSize, 1, 1, player.rotation);
         }
 
         batch.setColor(1, 1, 1, 1);
@@ -498,13 +500,13 @@ public class Level {
         batch.end();
 
         batch.setProjectionMatrix(camera.combined);
-        batch.setColor(0.2f, 0.2f, 0.2f, 1);
+        batch.setColor(Constants.AMBIENT_LIGHTING.r, Constants.AMBIENT_LIGHTING.g, Constants.AMBIENT_LIGHTING.b, Constants.AMBIENT_LIGHTING.a);
         batch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch.begin();
-        for (Entity entity: environmentEntities) {
+        for (EnvironmentObject entity: environmentEntities) {
             entity.renderSecondary(batch);
         }
-        for (Entity entity: canopyEntities) {
+        for (Canopy entity: canopyEntities) {
             entity.render(batch);
         }
         player.renderReloadBar(batch);
@@ -515,22 +517,22 @@ public class Level {
         for (Entity tile: tiles) {
             tile.renderDebug(drawer);
         }
-        for (Entity entity: environmentEntities) {
+        for (EnvironmentObject entity: environmentEntities) {
             entity.renderDebug(drawer);
         }
         for (BaseEnemy zom: enemyEntities) {
             zom.renderDebug(drawer);
         }
-        for (Entity entity: characterEntities) {
+        for (Character entity: characterEntities) {
             entity.renderDebug(drawer);
         }
-        for (Entity entity: wallEntities) {
+        for (Wall entity: wallEntities) {
             entity.renderDebug(drawer);
         }
-        for (Entity entity: canopyEntities) {
+        for (Canopy entity: canopyEntities) {
             entity.renderDebug(drawer);
         }
-        for (Entity entity: bullets) {
+        for (Bullet entity: bullets) {
             entity.renderDebug(drawer);
         }
         player.renderDebug(drawer);

@@ -71,7 +71,7 @@ public class MobileControlUI {
     public void render() {
         stage.act();
         stage.draw();
-        stage.getBatch().setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
+        stage.getBatch().setColor(Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, 1);
     }
 
     public void resize(int width, int height) {

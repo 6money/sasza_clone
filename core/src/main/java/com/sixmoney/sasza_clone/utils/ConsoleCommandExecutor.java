@@ -36,7 +36,15 @@ public class ConsoleCommandExecutor extends CommandExecutor {
 
     // World/level commands
     @ConsoleDoc(description = "Set Ambient light level") public final void lightLevelAmbient(float value) {
-        Constants.AMBIENT_LIGHTING = value;
+        Constants.AMBIENT_LIGHTING.r = Math.min(value, 1f);
+        Constants.AMBIENT_LIGHTING.g = Math.min(value, 1f);;
+        Constants.AMBIENT_LIGHTING.b = Math.min(value, 1f);;
+    }
+
+    @ConsoleDoc(description = "Set Ambient light level") public final void lightLevelAmbient(float r, float g, float b) {
+        Constants.AMBIENT_LIGHTING.r = Math.min(r, 1f);
+        Constants.AMBIENT_LIGHTING.g = Math.min(g, 1f);
+        Constants.AMBIENT_LIGHTING.b = Math.min(b, 1f);
     }
 
     @ConsoleDoc(description = "Reset Ambient light level") public final void lightLevelAmbientReset() {

@@ -42,13 +42,13 @@ public class Canopy extends Entity {
     @Override
     public void render(Batch batch) {
         if (transparent) {
-            batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 0.5f);
+            batch.setColor(Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, 0.5f);
         }
 
         Utils.drawTextureRegion(batch, entityTextureRegion, position.x, position.y, rotation);
 
         if (transparent) {
-            batch.setColor(Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, Constants.AMBIENT_LIGHTING, 1);
+            batch.setColor(Constants.AMBIENT_LIGHTING.r, Constants.AMBIENT_LIGHTING.g, Constants.AMBIENT_LIGHTING.b, Constants.AMBIENT_LIGHTING.a);
         }
     }
 
