@@ -73,10 +73,18 @@ public class Sasza extends Game {
 		Gdx.input.setInputProcessor(null);
 
 		switch (screen_name) {
-			case "gameplay" -> setScreen(new GameWorldScreen(this));
-			case "options" -> setScreen(new OptionsScreen(this));
-			case "loadout" -> setScreen(new LoadoutScreen(this));
-			default -> setScreen(new MainMenuScreen(this));
+			case "gameplay":
+				setScreen(new GameWorldScreen(this));
+				break;
+			case "options":
+				setScreen(new OptionsScreen(this));
+				break;
+			case "loadout":
+				setScreen(new LoadoutScreen(this));
+				break;
+			default:
+				setScreen(new MainMenuScreen(this));
+				break;
 		}
 	}
 

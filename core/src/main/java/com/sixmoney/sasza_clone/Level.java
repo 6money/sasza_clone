@@ -10,11 +10,8 @@ import com.badlogic.gdx.ai.steer.utils.RayConfiguration;
 import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -50,7 +47,6 @@ import com.sixmoney.sasza_clone.entities.Player;
 import com.sixmoney.sasza_clone.entities.Wall;
 import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.staticData.WaveData;
-import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.ChaseCam;
 import com.sixmoney.sasza_clone.utils.PreferenceManager;
 import com.sixmoney.sasza_clone.utils.Utils;
@@ -68,21 +64,22 @@ public class Level {
     private Player player;
     private String levelName;
 
-    private Array<Entity> tiles;
-    private DelayedRemovalArray<EnvironmentObject> environmentEntities;
-    private Array<Canopy> canopyEntities;
-    private Array<Wall> wallEntities;
-    private DelayedRemovalArray<BaseSoldier> characterEntities;
-    private DelayedRemovalArray<BaseEnemy> enemyEntities;
-    private Array<Entity> deadEntities;
-    private final DelayedRemovalArray<Bullet> bullets;
-    private Array<Vector2> spawnPoints;
-    private DelayedRemovalArray<Utils.HitRecord> hitLocations;
     private BitmapFont font;
     private Timer waveTimer;
     private Array<WaveData.WaveRecord>[] waves;
     private int currentWave;
     private float currentWaveDelay;
+
+    public Array<Entity> tiles;
+    public DelayedRemovalArray<EnvironmentObject> environmentEntities;
+    public Array<Canopy> canopyEntities;
+    public Array<Wall> wallEntities;
+    public DelayedRemovalArray<BaseSoldier> characterEntities;
+    public DelayedRemovalArray<BaseEnemy> enemyEntities;
+    public Array<Entity> deadEntities;
+    public final DelayedRemovalArray<Bullet> bullets;
+    public Array<Vector2> spawnPoints;
+    public DelayedRemovalArray<Utils.HitRecord> hitLocations;
 
     public PathHelper pathHelperEnemy;
     public PathHelper pathHelperNpc;
@@ -376,7 +373,8 @@ public class Level {
         hitLocations.end();
     }
 
-    public void render(Batch batch, ShapeDrawer drawer, FrameBuffer lightBuffer) {
+
+    public void render(Batch batch, ShapeDrawer drawer) {
         batch.begin();
         for (Entity tile: tiles) {
             tile.render(batch);
@@ -436,73 +434,15 @@ public class Level {
             entity.renderSecondary(batch);
         }
         batch.end();
+    }
 
-        // #### LIGHT BUFFER OBJECT START ####
-        lightBuffer.begin();
-        // set ambient light level
-        Gdx.gl.glClearColor(Constants.AMBIENT_LIGHTING.r, Constants.AMBIENT_LIGHTING.g, Constants.AMBIENT_LIGHTING.b, Constants.AMBIENT_LIGHTING.a);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // set blending
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
-        batch.begin();
-        // draw player light
-        player.renderLazer(drawer, true);
-        batch.setColor(0.768f, 0.674f, 0.329f, 1);
-        float lightSize = (600f / 100f) * 80;
-        float lightX = player.getPosition().x - lightSize / 2f;
-        float lightY = player.getPosition().y - lightSize / 2f;
-        batch.draw(Assets.get_instance().lightAssets.light2, lightX, lightY, lightSize, lightSize);
-
-        for (Character npc: characterEntities) {
-            lightSize = (600f / 100f) * 40;
-            lightX = npc.getPosition().x - lightSize / 2f;
-            lightY = npc.getPosition().y - lightSize / 2f;
-            batch.draw(Assets.get_instance().lightAssets.light2, lightX, lightY, lightSize, lightSize);
-        }
-
-        // draw bullet lights
-        for (Bullet bullet: bullets) {
-            lightSize = (600f / 100f) * 2;
-            lightX = bullet.position.x - lightSize / 2f;
-            lightY = bullet.position.y - lightSize / 2f;
-            batch.draw(Assets.get_instance().lightAssets.light2, lightX, lightY, lightSize, lightSize);
-        }
-
-//        batch.setColor(1f, 1f, 1f, 1);
-        for (Character npc: characterEntities) {
-            if (npc.shooting) {
-                lightSize = (80f / 100f) * 50;
-                lightX = npc.position.x + Constants.PLAYER_CENTER.x + npc.bulletOffsetReal.x;
-                lightY = npc.position.y + Constants.PLAYER_CENTER.y + npc.bulletOffsetReal.y - lightSize / 2f;
-                batch.draw(Assets.get_instance().lightAssets.light4, lightX, lightY, 0, lightSize / 2, lightSize, lightSize, 1, 1, npc.rotation);
-            }
-        }
-
-        if (player.shooting) {
-            lightSize = (80f / 100f) * 50;
-            lightX = player.position.x + Constants.PLAYER_CENTER.x + player.bulletOffsetReal.x;
-            lightY = player.position.y + Constants.PLAYER_CENTER.y + player.bulletOffsetReal.y - lightSize / 2f;
-            batch.draw(Assets.get_instance().lightAssets.light4, lightX, lightY, 0, lightSize / 2, lightSize, lightSize, 1, 1, player.rotation);
-        }
-
-        batch.setColor(1, 1, 1, 1);
-        batch.end();
-        lightBuffer.end();
-
-        batch.setProjectionMatrix(batch.getProjectionMatrix().idt());
-        batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_ZERO);
-        batch.begin();
-        TextureRegion t = new TextureRegion(lightBuffer.getColorBufferTexture(), viewport.getScreenWidth(), viewport.getScreenHeight());
-        t.flip(false, false);
-        batch.draw(t, -1, 1, 2, -2);
-        // #### LIGHT BUFFER OBJECT END ####
-        batch.end();
-
+    public void renderCanopy(Batch batch, ShapeDrawer drawer) {
         batch.setProjectionMatrix(camera.combined);
-        batch.setColor(Constants.AMBIENT_LIGHTING.r, Constants.AMBIENT_LIGHTING.g, Constants.AMBIENT_LIGHTING.b, Constants.AMBIENT_LIGHTING.a);
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch.begin();
+        player.renderLazer(drawer, true);
+
+        batch.setColor(Constants.AMBIENT_LIGHTING.r, Constants.AMBIENT_LIGHTING.g, Constants.AMBIENT_LIGHTING.b, Constants.AMBIENT_LIGHTING.a);
         for (EnvironmentObject entity: environmentEntities) {
             entity.renderSecondary(batch);
         }
@@ -512,6 +452,7 @@ public class Level {
         player.renderReloadBar(batch);
         batch.end();
     }
+
 
     public void renderDebug(ShapeDrawer drawer) {
         for (Entity tile: tiles) {

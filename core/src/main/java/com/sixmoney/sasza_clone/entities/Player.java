@@ -156,7 +156,7 @@ public class Player extends Character {
         if (!lightLevel) {
             drawer.line(position.x + Constants.PLAYER_CENTER.x + bulletOffsetReal.x, position.y + Constants.PLAYER_CENTER.y + bulletOffsetReal.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
         } else {
-            drawer.line(lazerVectorLightBuffer.x, lazerVectorLightBuffer.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 1f));
+            drawer.line(lazerVectorLightBuffer.x, lazerVectorLightBuffer.y, lazerVector.x, lazerVector.y, new Color(1, 0, 0, 0.2f));
         }
     }
 

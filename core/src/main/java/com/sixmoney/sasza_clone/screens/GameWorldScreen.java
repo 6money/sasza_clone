@@ -8,15 +8,13 @@ import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.Level;
+import com.sixmoney.sasza_clone.LightRenderer;
 import com.sixmoney.sasza_clone.Sasza;
 import com.sixmoney.sasza_clone.entities.Character;
 import com.sixmoney.sasza_clone.entities.Entity;
@@ -47,7 +45,7 @@ public class GameWorldScreen implements Screen {
     private PauseOverlay pauseOverlay;
     private MobileControlUI mobileControlUI;
     private ControllerInputHandler controllerInputHandler;
-    private FrameBuffer lightBuffer;
+    private LightRenderer lightRenderer;
 
     public Console console;
     public Level level;
@@ -67,6 +65,7 @@ public class GameWorldScreen implements Screen {
         drawer = new ShapeDrawer(batch, Assets.get_instance().debugAssets.bboxOutline);
         level = LevelLoader.load("debug", viewport, camera);
         level.getPlayer().setWeapons(saszaGame.profile.getGuns());
+        lightRenderer = new LightRenderer(batch, drawer);
         hud = new HUD(level, batch, saszaGame.debug);
         pauseOverlay = new PauseOverlay(this, batch);
         mobileControlUI = new MobileControlUI(this, batch);
@@ -109,6 +108,7 @@ public class GameWorldScreen implements Screen {
         if (!paused) {
             GdxAI.getTimepiece().update(delta);
             level.update(delta);
+            lightRenderer.update(level);
         }
 
         viewport.apply(); // viewport.apply() will call camera.update()
@@ -119,7 +119,9 @@ public class GameWorldScreen implements Screen {
         batch.setColor(Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, 1);
         batch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        level.render(batch, drawer, lightBuffer);
+        level.render(batch, drawer);
+        lightRenderer.render();
+        level.renderCanopy(batch, drawer);
 
         batch.begin();
         if (saszaGame.debug) {
@@ -149,11 +151,8 @@ public class GameWorldScreen implements Screen {
         hud.resize(width, height);
         pauseOverlay.resize(width, height);
         console.refresh();
-        if (lightBuffer != null) {
-            lightBuffer.dispose();
-        }
-        lightBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
-        lightBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        lightRenderer.resize(viewport);
+
 
         if (saszaGame.mobileControls) {
             mobileControlUI.resize(width, height);
@@ -182,7 +181,7 @@ public class GameWorldScreen implements Screen {
         pauseOverlay.dispose();
         hud.dispose();
         mobileControlUI.dispose();
-        lightBuffer.dispose();
+        lightRenderer.dispose();
     }
 
     public void setPaused() {
