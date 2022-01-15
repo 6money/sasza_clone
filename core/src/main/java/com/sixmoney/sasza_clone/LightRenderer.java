@@ -1,6 +1,5 @@
 package com.sixmoney.sasza_clone;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.Character;
@@ -130,8 +130,7 @@ public class LightRenderer {
         // RENDER TO FBO
         lightBuffer.begin();
         // set ambient light level
-        Gdx.gl.glClearColor(Constants.AMBIENT_LIGHTING.r, Constants.AMBIENT_LIGHTING.g, Constants.AMBIENT_LIGHTING.b, Constants.AMBIENT_LIGHTING.a);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ScreenUtils.clear(Constants.AMBIENT_LIGHTING);
         // set blending
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         batch.begin();
@@ -173,6 +172,5 @@ public class LightRenderer {
 
     public void dispose() {
         lightBuffer.dispose();
-        batch.dispose();
     }
 }

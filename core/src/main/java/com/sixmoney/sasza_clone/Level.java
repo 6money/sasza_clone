@@ -308,10 +308,10 @@ public class Level {
         for (EnvironmentObject entity: environmentEntities) {
             if (entity.health <= 0) {
                 world.remove(entity.item);
-                if (entity.pathObstacle != null) {
+//                if (entity.pathObstacle != null) {
 //                    pathHelperEnemy.removeObstacle(entity.pathObstacle);
 //                    pathHelperNpc.removeObstacle(entity.pathObstacle);
-                }
+//                }
                 if (entity.bulletCollisionSubObject != null) {
                     world.remove(entity.bulletCollisionSubObject.item);
                 }
