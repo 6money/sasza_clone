@@ -59,7 +59,7 @@ public class Sasza extends Game {
 
 		// set vsync and target fps
 		boolean vsync = Constants.V_SYNC;
-		int fps = Constants.FORGROUND_FPS;
+		int fps = Constants.FOREGROUND_FPS;
 		if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
 			vsync = PreferenceManager.get_instance().getVSync();
 			fps = PreferenceManager.get_instance().getFps();

@@ -13,8 +13,8 @@ public class Constants {
     public static final int WORLD_HEIGHT = 360;
     public static final Color BG_COLOR = Color.BLACK;
     public static final int BACKGROUND_FPS = 30;
-    public static final int FORGROUND_FPS = 144;
-    public static final boolean V_SYNC = false;
+    public static final int FOREGROUND_FPS = 60;
+    public static final boolean V_SYNC = true;
     public static final String SKIN_PATH = "ui/shimmer-ui.json";
     public static final String SKIN_CONSOLE_PATH = "ui/console/uiskin.json";
     public static final String PREFERENCES_NAME = "sasza_clone";
