@@ -16,7 +16,15 @@ public class GwtLauncher extends GwtApplication {
 		}
 
 		@Override
-		public ApplicationListener createApplicationListener () { 
-			return new Sasza(null);
+		public ApplicationListener createApplicationListener () {
+			String[] args;
+
+			if (GwtApplication.isMobileDevice()) {
+				args = new String[]{"mobile_browser"};
+			} else {
+				args = new String[]{};
+			}
+
+			return new Sasza(args);
 		}
 }

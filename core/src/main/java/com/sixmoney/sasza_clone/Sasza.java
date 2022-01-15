@@ -10,7 +10,9 @@ import com.sixmoney.sasza_clone.screens.GameWorldScreen;
 import com.sixmoney.sasza_clone.screens.LoadoutScreen;
 import com.sixmoney.sasza_clone.screens.MainMenuScreen;
 import com.sixmoney.sasza_clone.screens.OptionsScreen;
+import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.utils.Assets;
+import com.sixmoney.sasza_clone.utils.PreferenceManager;
 import com.sixmoney.sasza_clone.utils.Profile;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -31,11 +33,17 @@ public class Sasza extends Game {
 
 	@Override
 	public void create() {
+		// set app log level
+		Gdx.app.setLogLevel(Application.LOG_ERROR);
+
+		// update config based on args
 		if (args != null) {
 			for (String arg : args) {
 				if (arg.equals("debug")) {
 					Gdx.app.setLogLevel(Application.LOG_DEBUG);
 					debug = true;
+				} else if (arg.equals("info")) {
+					Gdx.app.setLogLevel(Application.LOG_INFO);
 				} else {
 					Gdx.app.setLogLevel(Application.LOG_ERROR);
 				}
@@ -45,19 +53,47 @@ public class Sasza extends Game {
 			}
 		}
 
-//		Gdx.app.setLogLevel(Application.LOG_INFO);
-		Gdx.app.log(TAG, ("debug mode: " + debug));
+		// set catch keys for html build
 		Gdx.input.setCatchKey(Input.Keys.SPACE, true);
 		Gdx.input.setCatchKey(Input.Keys.TAB, true);
 
+		// set vsync and target fps
+		boolean vsync = Constants.V_SYNC;
+		int fps = Constants.FORGROUND_FPS;
+		if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+			vsync = PreferenceManager.get_instance().getVSync();
+			fps = PreferenceManager.get_instance().getFps();
+			if (fps == 150) {
+				fps = 0;
+			}
+		}
+		Gdx.graphics.setVSync(vsync);
+		Gdx.graphics.setForegroundFPS(fps);
+
+		// load assets and user profile
 		assets = Assets.get_instance();
 		loadProfile();
+
+		// does what is says
 		setCursor();
 
+		// enable mobile controls and gui scaling if on android
 		if (Gdx.app.getType() == Application.ApplicationType.Android) {
 			mobileControls = true;
 			Assets.get_instance().skinAssets.skin.getFont("font").getData().scale(1.2f);
 		}
+
+		// set mobile controls based on user pref, if not yet set from args
+		if (!mobileControls) {
+			mobileControls = PreferenceManager.get_instance().getMobile();
+		}
+
+		Gdx.app.log(TAG, "debug mode: " + debug);
+		Gdx.app.log(TAG, "Log Level: " + Gdx.app.getLogLevel());
+		Gdx.app.log(TAG, "VSync enabled: " + vsync);
+		Gdx.app.log(TAG, "target fps: " + fps);
+		Gdx.app.log(TAG, "Mobile Controls: " + mobileControls);
+
 
 		setScreen(new MainMenuScreen(this));
 	}

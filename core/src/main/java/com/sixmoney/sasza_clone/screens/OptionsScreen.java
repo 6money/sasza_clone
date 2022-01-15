@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,12 +34,14 @@ public class OptionsScreen implements Screen {
     private CheckBox checkboxCoords;
     private CheckBox checkboxMobile;
     private CheckBox checkboxScreenShake;
+    private CheckBox checkBoxVSync;
     private Slider sliderMusic;
     private Slider sliderSounds;
     private Slider sliderDifficulty;
     private Slider sliderStatusBarTransparency;
     private Slider sliderPlayerStatusBarTransparency;
     private Slider sliderHitMarkerTransparency;
+    private Slider sliderFps;
     private PreferenceManager preferenceManager;
 
     public OptionsScreen(Sasza saszaGame) {
@@ -151,18 +154,17 @@ public class OptionsScreen implements Screen {
             }
         });
 
-        if (!game.mobileControls) {
-            window.row();
-            window.add(new Label("Enable Mobile Controls", skin));
-            checkboxMobile = new CheckBox(null, skin);
-            window.add(checkboxMobile);
-            checkboxMobile.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    preferenceManager.setMobile(checkboxMobile.isChecked());
-                }
-            });
-        }
+        window.row();
+        window.add(new Label("Enable Mobile Controls", skin));
+        checkboxMobile = new CheckBox(null, skin);
+        window.add(checkboxMobile);
+        checkboxMobile.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.mobileControls = checkboxMobile.isChecked();
+                preferenceManager.setMobile(checkboxMobile.isChecked());
+            }
+        });
 
         window.row();
         window.add(new Label("Player Status Bar Transparency", skin));
@@ -207,6 +209,37 @@ public class OptionsScreen implements Screen {
                 preferenceManager.setScreenShake(checkboxScreenShake.isChecked());
             }
         });
+
+        if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            window.row();
+            window.add(new Label("Enable v-sync", skin));
+            checkBoxVSync = new CheckBox(null, skin);
+            window.add(checkBoxVSync);
+            checkBoxVSync.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.graphics.setVSync(checkBoxVSync.isChecked());
+                    preferenceManager.setVSync(checkBoxVSync.isChecked());
+                }
+            });
+
+            window.row();
+            window.add(new Label("Frame rate", skin));
+            sliderFps = new Slider(30, 150, 5, false, skin);
+            window.add(sliderFps);
+            sliderFps.addListener(new DragListener() {
+                @Override
+                public void dragStop(InputEvent event, float x, float y, int pointer) {
+                    int fps = (int) sliderFps.getValue();
+                    if (fps == 150) {
+                        fps = 0;
+                    }
+
+                    Gdx.graphics.setForegroundFPS(fps);
+                    preferenceManager.setFps((int) sliderFps.getValue());
+                }
+            });
+        }
 
         window.row();
         Button buttonResetData = new Button(skin);
@@ -257,6 +290,8 @@ public class OptionsScreen implements Screen {
         float statusBarTransparency = preferenceManager.getStatusBarTransparency();
         float playerStatusBarTransparency = preferenceManager.getPStatusBarTransparency();
         float hitMarkerTransparency = preferenceManager.getHitMarkerTransparency();
+        boolean vSync = preferenceManager.getVSync();
+        int fps = preferenceManager.getFps();
 
         checkboxMusic.setChecked(musicEnabled);
         sliderMusic.setValue(musicVolume);
@@ -266,12 +301,12 @@ public class OptionsScreen implements Screen {
         checkboxFPS.setChecked(showFPS);
         checkboxCoords.setChecked(showCoords);
         checkboxScreenShake.setChecked(screenShake);
-        if (!game.mobileControls) {
-            checkboxMobile.setChecked(showMobile);
-        }
+        checkBoxVSync.setChecked(vSync);
+        checkboxMobile.setChecked(showMobile);
         sliderStatusBarTransparency.setValue(statusBarTransparency);
         sliderPlayerStatusBarTransparency.setValue(playerStatusBarTransparency);
         sliderHitMarkerTransparency.setValue(hitMarkerTransparency);
+        sliderFps.setValue(fps);
 
 //        SoundManager.get_instance().updateSoundPreferences();
     }

@@ -130,6 +130,24 @@ public class PreferenceManager {
         preferences.flush();
     }
 
+    public boolean getVSync() {
+        return preferences.getBoolean("vSync", true);
+    }
+
+    public void setVSync(boolean value) {
+        preferences.putBoolean("vSync", value);
+        preferences.flush();
+    }
+
+    public int getFps() {
+        return preferences.getInteger("fps", 60);
+    }
+
+    public void setFps(int value) {
+        preferences.putInteger("fps", value);
+        preferences.flush();
+    }
+
 
     // Profile data
 
@@ -173,6 +191,8 @@ public class PreferenceManager {
         preferences.remove("pStatusBarTransparency");
         preferences.remove("hitMarkerTransparency");
         preferences.remove("screenShake");
+        preferences.remove("vSync");
+        preferences.remove("fps");
         preferences.flush();
     }
 
