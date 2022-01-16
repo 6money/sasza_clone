@@ -47,8 +47,14 @@ public class Bullet extends Entity {
         target = new Vector2(targetX, targetY);
         if (projectileType == WeaponCategory.DMR) {
             entityTextureRegion = Assets.get_instance().weaponAssets.dmrProjectile;
-        } else {
+        } else if (projectileType == WeaponCategory.RIFLE) {
             entityTextureRegion = Assets.get_instance().weaponAssets.rifleProjectile;
+        } else if (projectileType == WeaponCategory.LMG || projectileType == WeaponCategory.SPECIAL) {
+            entityTextureRegion = Assets.get_instance().weaponAssets.lmgProjectile;
+        } else if (projectileType == WeaponCategory.SMG) {
+            entityTextureRegion = Assets.get_instance().weaponAssets.pistolProjectile;
+        } else {
+            entityTextureRegion = Assets.get_instance().weaponAssets.pistolProjectile;
         }
 
         this.speed = speed;

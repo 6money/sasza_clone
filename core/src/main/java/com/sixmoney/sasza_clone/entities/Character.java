@@ -176,9 +176,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     public void render(Batch batch, float xOffset, float yOffset) {
         if (currentGun != null && characterShootingTexture != null && shooting && currentGun.getCurrentMagazineAmmo() > 0 && currentGun.checkReloadStatus() == 0) {
             if (Utils.secondsSince(shootSpriteTime) < Math.max(0.02, Math.min(0.1, 1 / currentGun.getFireRate()))) {
-                batch.setColor(Math.max(0.6f, Constants.BACK_BUFFER_LIGHTING), Math.max(0.6f, Constants.BACK_BUFFER_LIGHTING), Math.max(0.6f, Constants.BACK_BUFFER_LIGHTING), 1);
                 Utils.drawTextureRegion(batch, characterShootingTexture, position.x, position.y, rotation);
-                batch.setColor(Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, 1 );
             } else {
                 super.render(batch, xOffset, yOffset);
             }
@@ -203,7 +201,6 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         if (muzzleFlash && !currentGun.getMuzzleFlashAnimation().isAnimationFinished(muzzleFlahsStartSeconds)) {
             currentGun.getMuzzleFlashOffsetReal().set(currentGun.getMuzzleFlashOffset());
             currentGun.getMuzzleFlashOffsetReal().set(currentGun.getMuzzleFlashOffsetReal().rotateDeg(rotation));
-            batch.setColor(Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), 1);
             Utils.drawTextureRegion(
                     batch,
                     (TextureRegion) currentGun.getMuzzleFlashAnimation().getKeyFrame(muzzleFlahsStartSeconds),
@@ -214,7 +211,6 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
                     0,
                     0
             );
-            batch.setColor(Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, Constants.BACK_BUFFER_LIGHTING, 1 );
         } else if (muzzleFlash && currentGun.getMuzzleFlashAnimation().isAnimationFinished(muzzleFlahsStartSeconds)) {
             muzzleFlashStartTime = 0;
             muzzleFlash = false;

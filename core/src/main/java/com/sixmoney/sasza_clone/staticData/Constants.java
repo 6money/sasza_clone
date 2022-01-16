@@ -109,9 +109,13 @@ public class Constants {
     public static final String M4_BASE = "m4_base";
     public static final String RIFLE_PROJECTILE = "rifle_projectile";
     public static final String DMR_PROJECTILE = "dmr_projectile";
+    public static final String LMG_PROJECTILE = "lmg_projectile";
+    public static final String PISTOL_PROJECTILE = "pistol_projectile";
     public static final String RIFLE_MUZZLE_FLASH = "rifle_muzzle_flash";
     public static final String PISTOL_MUZZLE_FLASH = "pistol_muzzle_flash";
+    public static final String SMG_MUZZLE_FLASH = "smg_muzzle_flash";
     public static final String DMR_MUZZLE_FLASH = "dmr_muzzle_flash";
+    public static final String LMG_MUZZLE_FLASH = "lmg_muzzle_flash";
 
     // HUD
     public static final float HUD_MARGIN = 23;

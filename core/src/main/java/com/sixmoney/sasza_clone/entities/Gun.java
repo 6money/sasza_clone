@@ -33,11 +33,12 @@ public class Gun {
     private Vector2 screenShake;
     private transient TextureRegion weaponSprite;
     private transient Animation muzzleFlashAnimation;
-    private Vector2 muzzleFlashOffset;
-    private Vector2 muzzleFlashOffsetReal;
+    private transient Vector2 muzzleFlashOffset;
+    private transient Vector2 muzzleFlashOffsetReal;
     private WeaponCategory weaponType;
 
     public Gun() {
+        muzzleFlashOffset = new Vector2(0, 0);
     }
 
 
@@ -59,32 +60,30 @@ public class Gun {
         critDamage = gunData.critDamage;
         movementPenalty = gunData.movementPenalty;
         screenShake = gunData.screenShake;
-        weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
-        muzzleFlashOffset = new Vector2(5, 16);
-        muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
         weaponType = gunData.category;
-        reloadTimer = 0;
-
-        if (gunData.category == WeaponCategory.RIFLE || gunData.category == WeaponCategory.LMG || gunData.category == WeaponCategory.SPECIAL) {
-            muzzleFlashAnimation = Assets.get_instance().weaponAssets.rifleMuzzleFlashAnimation;
-        } else if (gunData.category == WeaponCategory.DMR) {
-            muzzleFlashAnimation = Assets.get_instance().weaponAssets.dmrMuzzleFlashAnimation;
-        } else {
-            muzzleFlashAnimation = Assets.get_instance().weaponAssets.pistolMuzzleFlashAnimation;
-        }
+        initGun();
     }
 
-    public void setTextures() {
+    // Needs to be called after gun instance created from serialized data
+    public void initGun() {
         weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
         GunData.GunRecord gunData = GunData.gunRecords.get(name);
 
-        if (gunData.category == WeaponCategory.RIFLE || gunData.category == WeaponCategory.LMG || gunData.category == WeaponCategory.SPECIAL) {
+        if (gunData.category == WeaponCategory.RIFLE) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.rifleMuzzleFlashAnimation;
+        } else if (gunData.category == WeaponCategory.LMG || gunData.category == WeaponCategory.SPECIAL) {
+            muzzleFlashAnimation = Assets.get_instance().weaponAssets.lmgMuzzleFlashAnimation;
         } else if (gunData.category == WeaponCategory.DMR) {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.dmrMuzzleFlashAnimation;
+        } else if (gunData.category == WeaponCategory.SMG) {
+            muzzleFlashAnimation = Assets.get_instance().weaponAssets.smgMuzzleFlashAnimation;
         } else {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.pistolMuzzleFlashAnimation;
         }
+
+        muzzleFlashOffset = new Vector2(-2, 12);
+        muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
+        reloadTimer = 0;
     }
 
     public int getMagazineSize() {

@@ -29,7 +29,7 @@ public class Profile {
 
             for (JsonValue gunJson : gunsJson) {
                 Gun gun = json.fromJson(Gun.class, gunJson.toJson(JsonWriter.OutputType.json));
-                gun.setTextures();
+                gun.initGun();
                 guns.add(gun);
             }
         } else {

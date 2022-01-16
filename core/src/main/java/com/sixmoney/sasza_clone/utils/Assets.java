@@ -230,23 +230,32 @@ public class Assets implements Disposable, AssetErrorListener {
         public TextureRegion mp5Base;
         public TextureRegion svdBase;
 
+        public TextureRegion pistolProjectile;
         public TextureRegion rifleProjectile;
+        public TextureRegion rifleProjectile2;
         public TextureRegion dmrProjectile;
+        public TextureRegion lmgProjectile;
 
         public Animation<TextureRegion> rifleMuzzleFlashAnimation;
         public Animation<TextureRegion> pistolMuzzleFlashAnimation;
+        public Animation<TextureRegion> smgMuzzleFlashAnimation;
         public Animation<TextureRegion> dmrMuzzleFlashAnimation;
+        public Animation<TextureRegion> lmgMuzzleFlashAnimation;
 
         public WeaponAssets(TextureAtlas atlasPrivate, TextureAtlas atlasPrivateWeapons) {
             mp5Base = atlasPrivate.findRegion(Constants.MP5_BASE);
             svdBase = atlasPrivate.findRegion(Constants.SVD_BASE);
 
+            pistolProjectile = atlasPrivate.findRegion(Constants.PISTOL_PROJECTILE);
             rifleProjectile = atlasPrivate.findRegion(Constants.RIFLE_PROJECTILE);
             dmrProjectile = atlasPrivate.findRegion(Constants.DMR_PROJECTILE);
+            lmgProjectile = atlasPrivate.findRegion(Constants.LMG_PROJECTILE);
 
             rifleMuzzleFlashAnimation = new Animation<>(0.04f, atlasPrivate.findRegions(Constants.RIFLE_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
             pistolMuzzleFlashAnimation = new Animation<>(0.035f, atlasPrivate.findRegions(Constants.PISTOL_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
-            dmrMuzzleFlashAnimation = new Animation<>(0.05f, atlasPrivate.findRegions(Constants.DMR_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
+            smgMuzzleFlashAnimation = new Animation<>(0.035f, atlasPrivate.findRegions(Constants.SMG_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
+            dmrMuzzleFlashAnimation = new Animation<>(0.06f, atlasPrivate.findRegions(Constants.DMR_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
+            lmgMuzzleFlashAnimation = new Animation<>(0.04f, atlasPrivate.findRegions(Constants.LMG_MUZZLE_FLASH), Animation.PlayMode.NORMAL);
         }
     }
 

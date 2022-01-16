@@ -405,7 +405,6 @@ public class Level {
         player.renderLazer(drawer, false);
         player.render(batch);
 
-        batch.setColor(Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), Math.max(0.8f, Constants.BACK_BUFFER_LIGHTING), 1);
         for (Bullet bullet: bullets) {
             bullet.render(batch);
         }
