@@ -38,7 +38,6 @@ public class Gun {
     private WeaponCategory weaponType;
 
     public Gun() {
-        muzzleFlashOffset = new Vector2(0, 0);
     }
 
 
@@ -81,7 +80,7 @@ public class Gun {
             muzzleFlashAnimation = Assets.get_instance().weaponAssets.pistolMuzzleFlashAnimation;
         }
 
-        muzzleFlashOffset = new Vector2(-2, 12);
+        muzzleFlashOffset = new Vector2(-6, 12);
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
         reloadTimer = 0;
     }

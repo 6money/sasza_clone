@@ -395,6 +395,9 @@ public class Level {
         for (EnvironmentObject entity: environmentEntities) {
             entity.render(batch);
         }
+        for (Bullet bullet: bullets) {
+            bullet.render(batch);
+        }
         for (BaseEnemy zom: enemyEntities) {
             zom.render(batch);
         }
@@ -405,9 +408,6 @@ public class Level {
         player.renderLazer(drawer, false);
         player.render(batch);
 
-        for (Bullet bullet: bullets) {
-            bullet.render(batch);
-        }
         batch.setColor(1, 1, 1, PreferenceManager.get_instance().getStatusBarTransparency() / 100);
         for (BaseEnemy zom: enemyEntities) {
             zom.renderHealthBar(batch);

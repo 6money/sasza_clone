@@ -13,8 +13,6 @@ import com.sixmoney.sasza_clone.utils.Assets;
 import com.sixmoney.sasza_clone.utils.Utils;
 import com.sixmoney.sasza_clone.utils.Utils.WeaponCategory;
 
-import java.util.ArrayList;
-
 public class Bullet extends Entity {
     private static final String TAG = Bullet.class.getName();
 
@@ -25,7 +23,6 @@ public class Bullet extends Entity {
     private boolean dead;
     private boolean firstUpdate;
     private float impact;
-    private ArrayList<Item> items;
     private BulletCollisionFilter bulletCollisionFilter;
     private int penetration;
     private int penetrationCount;
@@ -61,7 +58,6 @@ public class Bullet extends Entity {
         this.damage = damage;
         dead = false;
         firstUpdate = true;
-        items = new ArrayList<>();
         bulletCollisionFilter = new BulletCollisionFilter();
         characterCollidable = false;
         bulletCollidable = false;

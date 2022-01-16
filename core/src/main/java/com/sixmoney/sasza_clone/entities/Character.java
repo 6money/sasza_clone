@@ -87,7 +87,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
         oldVelocity = new Vector2(velocity);
         legsOffset = 0;
         legsRotation = 0;
-        bulletOffset = new Vector2( 18, -3);
+        bulletOffset = new Vector2( 16, -3);
         bulletOffsetReal = new Vector2(bulletOffset);
         guns = new Array<>(true, 3);
         guns.add(new Gun(GunData.m4), new Gun(GunData.mp5), new Gun(GunData.pkm));
