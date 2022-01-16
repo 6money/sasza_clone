@@ -51,7 +51,8 @@
 		"offsetYspeed": -5,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"button-over": {
 		"region": "button-over_00",
@@ -109,7 +110,8 @@
 			"button-over_00",
 			"button-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"button-pressed": {
 		"region": "button-pressed_00",
@@ -163,7 +165,8 @@
 			"button-pressed_00",
 			"button-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"checkbox-checkbox-checked-over": {
 		"region": "checkbox-checkbox-checked-over_00",
@@ -217,7 +220,8 @@
 			"checkbox-checkbox-checked-over_00",
 			"checkbox-checkbox-checked-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"checkbox-checkbox-checked-pressed": {
 		"region": "checkbox-checkbox-checked-pressed_00",
@@ -271,7 +275,8 @@
 			"checkbox-checkbox-checked-pressed_00",
 			"checkbox-checkbox-checked-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"checkbox-checkbox-over": {
 		"region": "checkbox-checkbox-over_00",
@@ -320,7 +325,8 @@
 			"checkbox-checkbox-over_00",
 			"checkbox-checkbox-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"checkbox-checkbox-pressed": {
 		"region": "checkbox-checkbox-pressed_00",
@@ -374,7 +380,8 @@
 			"checkbox-checkbox-pressed_00",
 			"checkbox-checkbox-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"checkbox-radio-checked-over": {
 		"region": "checkbox-radio-checked-over_00",
@@ -428,7 +435,8 @@
 			"checkbox-radio-checked-over_00",
 			"checkbox-radio-checked-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"checkbox-radio-checked-pressed": {
 		"region": "checkbox-radio-checked-pressed_00",
@@ -482,7 +490,8 @@
 			"checkbox-radio-checked-pressed_00",
 			"checkbox-radio-checked-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"checkbox-radio-over": {
 		"region": "checkbox-radio-over_00",
@@ -533,7 +542,8 @@
 			"checkbox-radio-over_00",
 			"checkbox-radio-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"checkbox-radio-pressed": {
 		"region": "checkbox-radio-pressed_00",
@@ -587,7 +597,8 @@
 			"checkbox-radio-pressed_00",
 			"checkbox-radio-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"libgdx-animation": {
 		"region": "libgdx-animation_00",
@@ -707,7 +718,8 @@
 			"libgdx-animation_00",
 			"libgdx-animation_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"libgdx-bg-ten": {
 		"region": "libgdx-bg",
@@ -726,7 +738,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"list-ten": {
 		"region": "list",
@@ -745,7 +758,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"play-close-over": {
 		"region": "play-close-over_00",
@@ -799,7 +813,8 @@
 			"play-close-over_00",
 			"play-close-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"play-close-pressed": {
 		"region": "play-close-pressed_00",
@@ -853,7 +868,8 @@
 			"play-close-pressed_00",
 			"play-close-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"play-pause-over": {
 		"region": "play-pause-over_00",
@@ -907,7 +923,8 @@
 			"play-pause-over_00",
 			"play-pause-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"play-pause-pressed": {
 		"region": "play-pause-pressed_00",
@@ -961,7 +978,8 @@
 			"play-pause-pressed_00",
 			"play-pause-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"play-play-over": {
 		"region": "play-play-over_00",
@@ -1015,7 +1033,8 @@
 			"play-play-over_00",
 			"play-play-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"play-play-pressed": {
 		"region": "play-play-pressed_00",
@@ -1069,7 +1088,8 @@
 			"play-play-pressed_00",
 			"play-play-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"play-stop-over": {
 		"region": "play-stop-over_00",
@@ -1123,7 +1143,8 @@
 			"play-stop-over_00",
 			"play-stop-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"play-stop-pressed": {
 		"region": "play-stop-pressed_00",
@@ -1177,7 +1198,8 @@
 			"play-stop-pressed_00",
 			"play-stop-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"progress-bar-ten": {
 		"region": "progress-bar",
@@ -1196,7 +1218,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"progress-bar-knob-before-ten": {
 		"region": "progress-bar-knob-before",
@@ -1215,7 +1238,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"scroll-horizontal-ten": {
 		"region": "scroll-horizontal",
@@ -1234,7 +1258,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"scroll-vertical-ten": {
 		"region": "scroll-vertical",
@@ -1253,7 +1278,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"select-box-over": {
 		"region": "select-box-over_00",
@@ -1307,7 +1333,8 @@
 			"select-box-over_00",
 			"select-box-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"select-box-pressed": {
 		"region": "select-box-pressed_00",
@@ -1361,7 +1388,8 @@
 			"select-box-pressed_00",
 			"select-box-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"slider-horizontal-ten": {
 		"region": "slider-horizontal",
@@ -1380,7 +1408,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"slider-knob-over": {
 		"region": "slider-knob-over_00",
@@ -1434,7 +1463,8 @@
 			"slider-knob-over_00",
 			"slider-knob-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"slider-knob-pressed": {
 		"region": "slider-knob-pressed_00",
@@ -1488,7 +1518,8 @@
 			"slider-knob-pressed_00",
 			"slider-knob-pressed_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"slider-scrubber-ten": {
 		"region": "slider-scrubber",
@@ -1507,7 +1538,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"slider-vertical-ten": {
 		"region": "slider-vertical",
@@ -1526,7 +1558,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"slider-scrubber-knob-before-ten": {
 		"region": "slider-scrubber-knob-before",
@@ -1545,7 +1578,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"split-pane-horizontal-ten": {
 		"region": "split-pane-horizontal",
@@ -1564,7 +1598,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"split-pane-vertical-ten": {
 		"region": "split-pane-vertical",
@@ -1583,7 +1618,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"text-field-animation": {
 		"region": "text-field-animation_00",
@@ -1637,7 +1673,8 @@
 			"text-field-animation_00",
 			"text-field-animation_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"tooltip-ten": {
 		"region": "tooltip",
@@ -1656,7 +1693,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"tree-minus-over": {
 		"region": "tree-minus-over_00",
@@ -1710,7 +1748,8 @@
 			"tree-minus-over_00",
 			"tree-minus-over_00"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"tree-minus": {
 		"region": "tree-minus_00",
@@ -1770,7 +1809,8 @@
 			"tree-minus_19",
 			"tree-minus_19"
 		],
-		"playMode": 0
+		"playMode": 0,
+		"crushMode": 0
 	},
 	"tree-plus-over": {
 		"region": "tree-plus-over_00",
@@ -1824,7 +1864,8 @@
 			"tree-plus-over_13",
 			"tree-plus-over_13"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"tree-plus": {
 		"region": "tree-plus_00",
@@ -1884,7 +1925,8 @@
 			"tree-plus_19",
 			"tree-plus_19"
 		],
-		"playMode": 0
+		"playMode": 0,
+		"crushMode": 0
 	},
 	"window-ten": {
 		"region": "window",
@@ -1903,7 +1945,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"button-normal-pressed-red-ten": {
 		"region": "button-normal-pressed-red",
@@ -1922,7 +1965,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"select-box-pressed-red-ten": {
 		"region": "select-box-pressed-red",
@@ -1941,7 +1985,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"select-box": {
 		"region": "select-box-over_00",
@@ -1960,7 +2005,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"selection": {
 		"region": "selection-animation_00",
@@ -2020,7 +2066,8 @@
 			"selection-animation_38",
 			"selection-animation_39"
 		],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"button-normal": {
 		"region": "button-over_00",
@@ -2039,7 +2086,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"text-field": {
 		"region": "text-field-animation_00",
@@ -2058,7 +2106,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	},
 	"black": {
 		"region": "white",
@@ -2078,7 +2127,8 @@
 		"offsetYspeed": 0,
 		"frameDuration": 0.03,
 		"regions": [],
-		"playMode": 2
+		"playMode": 2,
+		"crushMode": 0
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
@@ -2162,6 +2212,12 @@
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
+	"default": {
+		"font": "font",
+		"fontColorSelected": "red",
+		"fontColorUnselected": "white",
+		"selection": "button-normal"
+	},
 	"select-box": {
 		"font": "small",
 		"fontColorSelected": "red",

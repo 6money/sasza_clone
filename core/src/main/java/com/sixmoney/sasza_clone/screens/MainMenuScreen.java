@@ -43,6 +43,7 @@ public class MainMenuScreen implements Screen {
 	public void show() {
 		stage = new ControllerMenuStage(new ScreenViewport());
 		skin = Assets.get_instance().skinAssets.skin;
+		stage.setDebugAll(saszaGame.debug);
 
 		controllerInputHandler = new UIControllerInputHandler(stage);
 		Controllers.addListener(controllerInputHandler);

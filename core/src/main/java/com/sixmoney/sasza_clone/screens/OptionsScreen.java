@@ -23,7 +23,7 @@ import com.sixmoney.sasza_clone.utils.PreferenceManager;
 
 public class OptionsScreen implements Screen {
     private static final String TAG = OptionsScreen.class.getName();
-    private Sasza game;
+    private Sasza saszaGame;
     private Stage stage;
     private Skin skin;
     private Button buttonBack;
@@ -45,13 +45,14 @@ public class OptionsScreen implements Screen {
     private PreferenceManager preferenceManager;
 
     public OptionsScreen(Sasza saszaGame) {
-        game = saszaGame;
+        this.saszaGame = saszaGame;
     }
 
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        skin = Assets.get_instance().skinAssets.skin;;
+        skin = Assets.get_instance().skinAssets.skin;
+        stage.setDebugAll(saszaGame.debug);
 
         buttonBack = new Button(skin);
         buttonBack.add(new Label("Back" ,skin));
@@ -61,7 +62,7 @@ public class OptionsScreen implements Screen {
         buttonBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.switchScreen("menu");
+                saszaGame.switchScreen("menu");
                 dispose();
             }
         });
@@ -161,7 +162,7 @@ public class OptionsScreen implements Screen {
         checkboxMobile.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.mobileControls = checkboxMobile.isChecked();
+                saszaGame.mobileControls = checkboxMobile.isChecked();
                 preferenceManager.setMobile(checkboxMobile.isChecked());
             }
         });

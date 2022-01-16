@@ -85,6 +85,10 @@ public class Gun {
         reloadTimer = 0;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getMagazineSize() {
         return magazineSize;
     }

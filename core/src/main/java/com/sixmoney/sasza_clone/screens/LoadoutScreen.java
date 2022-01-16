@@ -3,16 +3,24 @@ package com.sixmoney.sasza_clone.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sixmoney.sasza_clone.Sasza;
+import com.sixmoney.sasza_clone.entities.Gun;
 import com.sixmoney.sasza_clone.inputHandlers.UIControllerInputHandler;
 import com.sixmoney.sasza_clone.staticData.Constants;
 import com.sixmoney.sasza_clone.utils.Assets;
@@ -30,6 +38,7 @@ public class LoadoutScreen implements Screen {
 	private Table tableMenu;
 	private UIControllerInputHandler controllerInputHandler;
 	private Label labelProfileName;
+	private Button buttonBack;
 
 	public LoadoutScreen(Sasza game) {
 		saszaGame = game;
@@ -40,6 +49,7 @@ public class LoadoutScreen implements Screen {
 	public void show() {
 		stage = new ControllerMenuStage(new ScreenViewport());
 		skin = Assets.get_instance().skinAssets.skin;
+		stage.setDebugAll(saszaGame.debug);
 
 		controllerInputHandler = new UIControllerInputHandler(stage);
 		Controllers.addListener(controllerInputHandler);
@@ -47,77 +57,80 @@ public class LoadoutScreen implements Screen {
 		tableMenu = new Table(skin);
 		tableMenu.setFillParent(true);
 		tableMenu.pad(5);
-		tableMenu.defaults().space(5).padLeft(50).padRight(50).padTop(30);
+		tableMenu.defaults().space(5);
 		tableMenu.setBackground(skin.getDrawable("bg-tile-ten"));
 
-		tableMenu.row();
-		Label title = new Label("SAS: ZA Clone", skin);
+		// row start //
+		Label title = new Label("Loadout", skin);
 		title.setAlignment(Align.center);
-		tableMenu.add(title).height(114f);
-		tableMenu.defaults().space(5).padLeft(50).padRight(50).padTop(30).grow();
-
-		tableMenu.row().uniform().fill();
+		tableMenu.add(title).colspan(2).height(100).expandX();
+		tableMenu.defaults().space(5).grow();
 
 		tableMenu.row();
-		TextButton buttonPlay = new TextButton("PLAY", skin);
-		buttonPlay.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				saszaGame.switchScreen("gameplay");
-				dispose();
-			}
-		});
-		tableMenu.add(buttonPlay).minHeight(100f);
+		// row start //
+		Table gunTable = new Table(skin);
+		gunTable.defaults().growX();
+		for (Gun gun: profile.getGuns()) {
+			gunTable.row();
+			Table table = new Table(skin);
+			Label gunName = new Label(gun.getName(), skin);
+			gunName.setAlignment(Align.center);
+			table.add(gunName).fill().expandX();
+			Image gunSprite = new Image(gun.getWeaponSprite());
+			table.add(gunSprite).width(gun.getWeaponSprite().getRegionWidth() * 4).height(gun.getWeaponSprite().getRegionHeight() * 4);
+			table.addListener(new FocusListener(){
+				@Override
+				public boolean handle(Event event){
+					if (event.toString().equals("mouseMoved")){
+						table.background(new TextureRegionDrawable(Assets.get_instance().tileAssets.dirt));
+						return false;
+					}
+					else if(event.toString().equals("exit")){
+						table.setBackground((Drawable) null);
+						return false;
+					}
+					return true;
+				}
+			});
+			gunTable.add(table);
+		}
+		Container<Table> container = new Container<Table>(gunTable);
+		container.align(Align.top).fillX();
+		ScrollPane scrollPane = new ScrollPane(container, skin);
+		tableMenu.add(scrollPane);
 
-		tableMenu.row();
-		TextButton buttonLoadout = new TextButton("LOADOUT", skin);
-//		buttonLoadout.addListener(new ChangeListener() {
-//			@Override
-//			public void changed(ChangeEvent event, Actor actor) {
-//				gigaGalGame.switchScreen("level select");
-//				dispose();
-//			}
-//		});
-		tableMenu.add(buttonLoadout).minHeight(100f);
 
-		tableMenu.row();
-		Table tableSubmenu = new Table(skin);
-		tableSubmenu.defaults().grow();
-		tableSubmenu.row();
-		TextButton buttonStats = new TextButton("STATS", skin);
-//		buttonStats.addListener(new ChangeListener() {
-//			@Override
-//			public void changed(ChangeEvent event, Actor actor) {
-//				gigaGalGame.switchScreen("high_score");
-//				dispose();
-//			}
-//		});
-		tableSubmenu.add(buttonStats).uniform().spaceRight(5).minHeight(100f);
-		TextButton buttonOptions = new TextButton("OPTIONS", skin);
-		buttonOptions.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				saszaGame.switchScreen("options");
-				dispose();
-			}
-		});
-		tableSubmenu.add(buttonOptions).uniform().spaceLeft(5).minHeight(100f);
-		tableMenu.add(tableSubmenu).minHeight(100f);
+		Table table2 = new Table(skin);
+		Label gun = new Label("Gun", skin);
+		gun.setAlignment(Align.center);
+		table2.add(gun);
+		tableMenu.add(table2).width(stage.getWidth() / 3 * 2);
+
+
 
 		tableMenu.validate();
 		stage.addActor(tableMenu);
-		stage.addFocusableActor(buttonPlay);
-		stage.addFocusableActor(buttonLoadout);
-		stage.addFocusableActor(buttonOptions);
-		stage.addFocusableActor(buttonStats);
-		stage.setFocusedActor(buttonPlay);
 
-		labelProfileName = new Label(null, skin);
-		if (!saszaGame.profile.getName().equals("default")) {
-			labelProfileName.setText(saszaGame.profile.getName() + "\nLevel: " + saszaGame.profile.getProfileLevel());
-		}
-		labelProfileName.setPosition(20, stage.getHeight() - 30);
-		stage.addActor(labelProfileName);
+		buttonBack = new Button(skin);
+		buttonBack.add(new Label("Back" ,skin));
+		buttonBack.setWidth(stage.getWidth() / 8);
+		buttonBack.setHeight(stage.getHeight() / 10);
+		buttonBack.setPosition(0, stage.getHeight() - buttonBack.getHeight());
+		buttonBack.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				saszaGame.switchScreen("menu");
+				dispose();
+			}
+		});
+		stage.addActor(buttonBack);
+
+//		labelProfileName = new Label(null, skin);
+//		if (!saszaGame.profile.getName().equals("default")) {
+//			labelProfileName.setText(saszaGame.profile.getName() + "\nLevel: " + saszaGame.profile.getProfileLevel());
+//		}
+//		labelProfileName.setPosition(20, stage.getHeight() - 30);
+//		stage.addActor(labelProfileName);
 
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -126,7 +139,7 @@ public class LoadoutScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		stage.getViewport().update(width, height, true);
-		labelProfileName.setPosition(20, stage.getHeight() - 30);
+		buttonBack.setPosition(0, stage.getHeight() - buttonBack.getHeight());
 	}
 
 
