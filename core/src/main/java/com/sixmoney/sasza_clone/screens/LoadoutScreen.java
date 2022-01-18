@@ -57,6 +57,7 @@ public class LoadoutScreen implements Screen {
 	private Array<Image> gunEquippedImages;
 	private Array<Label> gunEquippedLabels;
 	private Table gunEquippedTable;
+	private Array<Container<Image>> gunEquippedContainers;
 
 	public LoadoutScreen(Sasza game) {
 		saszaGame = game;
@@ -74,6 +75,7 @@ public class LoadoutScreen implements Screen {
 
 		selectedSlot = 0;
 		gunEquippedImages = new Array<>(true, 3);
+		gunEquippedContainers = new Array<>(true, 3);
 		gunEquippedLabels = new Array<>(true, 3);
 
 		tableMenu = new Table(skin);
@@ -100,9 +102,9 @@ public class LoadoutScreen implements Screen {
 			table.add(slotName).fill().expandX();
 			table.row();
 			gunEquippedImages.add(new Image(new TextureRegionDrawable(gun.getWeaponSprite()), Scaling.fit));
-			Container<Image> gunContainer = new Container<>(gunEquippedImages.get(i));
-			gunContainer.width(gun.getWeaponSprite().getRegionWidth() * 4).height(gun.getWeaponSprite().getRegionHeight() * 4);
-			table.add(gunContainer).width(200).height(75).align(Align.center);
+			gunEquippedContainers.add(new Container<>(gunEquippedImages.get(i)));
+			gunEquippedContainers.get(i).width(gun.getWeaponSprite().getRegionWidth() * 4).height(gun.getWeaponSprite().getRegionHeight() * 4);
+			table.add(gunEquippedContainers.get(i)).width(200).height(75).align(Align.center);
 			table.row();
 			gunEquippedLabels.add(new Label(gun.getName(), skin));
 			gunEquippedLabels.get(i).setAlignment(Align.center);
@@ -184,6 +186,7 @@ public class LoadoutScreen implements Screen {
 
 		Gun slot0Gun = profile.getLoadout().get(selectedSlot);
 		Table table2 = new Table(skin);
+		table2.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
 		table2.defaults().expand();
 		labelGunName = new Label(slot0Gun.getName(), skin);
 		labelGunName.setAlignment(Align.center);
@@ -228,6 +231,7 @@ public class LoadoutScreen implements Screen {
 				profile.setLoadout(profile.getLoadout());
 				gunEquippedLabels.get(selectedSlot).setText(selectedGun.getName());
 				gunEquippedImages.get(selectedSlot).setDrawable(new TextureRegionDrawable(selectedGun.getWeaponSprite()));
+				gunEquippedContainers.get(selectedSlot).width(selectedGun.getWeaponSprite().getRegionWidth() * 4).height(selectedGun.getWeaponSprite().getRegionHeight() * 4);
 				tableMenu.pack();
 			}
 		});
