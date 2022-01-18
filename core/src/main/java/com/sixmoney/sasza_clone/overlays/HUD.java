@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ray3k.tenpatch.TenPatchDrawable;
 import com.sixmoney.sasza_clone.Level;
@@ -81,10 +82,9 @@ public class HUD {
 
         table.row();
         gunSprite = new Image(level.getPlayer().getGun().getWeaponSprite());
-        gunSprite.scaleBy(3);
-        gunSprite.setOriginY(gunSprite.getHeight());
+        gunSprite.setScaling(Scaling.fillY);
         table.defaults().reset();
-        table.add(gunSprite).align(Align.bottomLeft);
+        table.add(gunSprite).align(Align.bottomLeft).width(200).height(60);
 
         table.pack();
         table.validate();

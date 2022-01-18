@@ -14,6 +14,7 @@ import com.sixmoney.sasza_clone.utils.Utils.WeaponCategory;
 public class Gun {
     private static String TAG = Gun.class.getName();
     private String name;
+    private String textureName;
     private int magazineSize;
     private float fireRate;
     private float range;
@@ -42,7 +43,8 @@ public class Gun {
 
 
     public Gun(GunData.GunRecord gunData) {
-        name = gunData.textureName;
+        name = gunData.name;
+        textureName = gunData.textureName;
         magazineSize = gunData.magSize;
         fireRate = gunData.fireRate;
         range = gunData.range;
@@ -65,7 +67,7 @@ public class Gun {
 
     // Needs to be called after gun instance created from serialized data
     public void initGun() {
-        weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(name + "_base");
+        weaponSprite = Assets.get_instance().getPrivateWeaponAtlas().findRegion(textureName + "_base");
         GunData.GunRecord gunData = GunData.gunRecords.get(name);
 
         if (gunData.category == WeaponCategory.RIFLE) {
@@ -87,6 +89,10 @@ public class Gun {
 
     public String getName() {
         return name;
+    }
+
+    public String getTextureName() {
+        return textureName;
     }
 
     public int getMagazineSize() {

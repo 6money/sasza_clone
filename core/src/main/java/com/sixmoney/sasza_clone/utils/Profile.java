@@ -13,15 +13,17 @@ public class Profile {
     private int profileLevel;
     private int profileXP;
     private Array<Float> profileScores;
-    private Array<Gun> guns;
+    private Array<Gun> loadout;
+    private Array<Gun> profileGuns;
 
 
     public Profile() {
         name = PreferenceManager.get_instance().getProfileName();
         profileLevel = PreferenceManager.get_instance().getProfileLevel();
-        guns = new Array<>();
+        loadout = new Array<>();
+        profileGuns = new Array<>();
 
-        String gunDataString = PreferenceManager.get_instance().getProfileWeapons();
+        String gunDataString = PreferenceManager.get_instance().getProfileLoadout();
         if (!gunDataString.equals("new") && !name.equals("default")) {
             Json json = new Json();
             JsonReader jsonReader = new JsonReader();
@@ -30,14 +32,29 @@ public class Profile {
             for (JsonValue gunJson : gunsJson) {
                 Gun gun = json.fromJson(Gun.class, gunJson.toJson(JsonWriter.OutputType.json));
                 gun.initGun();
-                guns.add(gun);
+                loadout.add(gun);
             }
-        } else {
-            guns.add(new Gun(GunData.mp5));
-            guns.add(new Gun(GunData.svd));
-            guns.add(new Gun(GunData.vaporizer));
         }
 
+        gunDataString = PreferenceManager.get_instance().getProfileWeapons();
+        if (!gunDataString.equals("new") && !name.equals("default")) {
+            Json json = new Json();
+            JsonReader jsonReader = new JsonReader();
+            JsonValue gunsJson = jsonReader.parse(gunDataString);
+
+            for (JsonValue gunJson : gunsJson) {
+                Gun gun = json.fromJson(Gun.class, gunJson.toJson(JsonWriter.OutputType.json));
+                gun.initGun();
+                profileGuns.add(gun);
+            }
+        } else {
+            loadout.add(new Gun(GunData.mp5));
+            loadout.add(new Gun(GunData.svd));
+            loadout.add(new Gun(GunData.vaporizer));
+
+            profileGuns = new Array<>(loadout);
+            profileGuns.add(new Gun(GunData.mp5));
+        }
     }
 
 
@@ -75,16 +92,33 @@ public class Profile {
         this.profileScores = profileScores;
     }
 
-    public Array<Gun> getGuns() {
-        return guns;
+    public Array<Gun> getLoadout() {
+        return loadout;
     }
 
-    public void setGuns(Array<Gun> guns) {
-        this.guns = guns;
+    public void setLoadout(Array<Gun> loadout) {
+        this.loadout = loadout;
         Json json = new Json();
         JsonValue gunsJson = new JsonValue(JsonValue.ValueType.array);
 
-        for (Gun gun: guns) {
+        for (Gun gun: loadout) {
+            String gunJson = json.toJson(gun);
+            gunsJson.addChild(new JsonValue(gunJson));
+        }
+
+        PreferenceManager.get_instance().setProfileLoadout(gunsJson.toJson(JsonWriter.OutputType.json));
+    }
+
+    public Array<Gun> getProfileGuns() {
+        return profileGuns;
+    }
+
+    public void setProfileGuns(Array<Gun> profileGuns) {
+        this.profileGuns = profileGuns;
+        Json json = new Json();
+        JsonValue gunsJson = new JsonValue(JsonValue.ValueType.array);
+
+        for (Gun gun: profileGuns) {
             String gunJson = json.toJson(gun);
             gunsJson.addChild(new JsonValue(gunJson));
         }

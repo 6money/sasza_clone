@@ -146,7 +146,8 @@ public class MainMenuScreen implements Screen {
 				public void changed(ChangeEvent event, Actor actor) {
 					profile.setName(inputProfileName.getText());
 					profile.setProfileLevel(profile.getProfileLevel());
-					profile.setGuns(profile.getGuns());
+					profile.setLoadout(profile.getLoadout());
+					profile.setProfileGuns(profile.getProfileGuns());
 					labelProfileName.setText(profile.getName() + "\nLevel: " + profile.getProfileLevel());
 					window.remove();
 

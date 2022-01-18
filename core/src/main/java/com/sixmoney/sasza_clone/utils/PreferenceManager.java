@@ -169,6 +169,15 @@ public class PreferenceManager {
         preferences.flush();
     }
 
+    public String getProfileLoadout() {
+        return preferences.getString("profileLoadout", "new");
+    }
+
+    public void setProfileLoadout(String value) {
+        preferences.putString("profileLoadout", value);
+        preferences.flush();
+    }
+
     public String getProfileWeapons() {
         return preferences.getString("profileWeapons", "new");
     }
@@ -177,6 +186,7 @@ public class PreferenceManager {
         preferences.putString("profileWeapons", value);
         preferences.flush();
     }
+
 
     public void removePreferencesData() {
         preferences.remove("musicEnabled");
@@ -199,6 +209,7 @@ public class PreferenceManager {
     public void removeProfileData() {
         preferences.remove("profileName");
         preferences.remove("profileLevel");
+        preferences.remove("profileLoadout");
         preferences.remove("profileWeapons");
         preferences.flush();
     }
