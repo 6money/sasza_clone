@@ -11,7 +11,8 @@ dependencies {
 	api "com.crashinvaders.vfx:gdx-vfx-core:$gdxVfxCoreVersion"
 	api "com.crashinvaders.vfx:gdx-vfx-effects:$gdxVfxEffectsVersion"
 //	api "com.strongjoshua:libgdx-inGameConsole:$inGameConsoleVersion"
-	api "com.github.tommyettinger:jbump:$jbumpVersion"
+//	api "com.github.tommyettinger:jbump:$jbumpVersion"
+	api "com.github.implicit-invocation:jbump:$jbumpVersion"
 	api "space.earlygrey:shapedrawer:$shapedrawerVersion"
 	api "de.golfgl.gdxcontrollerutils:gdx-controllerutils-scene2d:$gdxControllerutilsScene2d"
 	api files("libs/libgdx-inGameConsole-1.0.0.jar")
