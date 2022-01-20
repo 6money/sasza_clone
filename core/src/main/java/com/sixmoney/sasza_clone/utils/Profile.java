@@ -51,8 +51,6 @@ public class Profile {
             addProfileGun(new Gun(GunData.m4));
             addProfileGun(new Gun(GunData.svd));
             addProfileGun(new Gun(GunData.pkm));
-            addProfileGun(new Gun(GunData.svd));
-            addProfileGun(new Gun(GunData.pkm));
             addProfileGun(new Gun(GunData.vaporizer));
         }
 
@@ -81,8 +79,10 @@ public class Profile {
             loadout.add(null);
         }
 
+        // if this is not a new profile, oh no :(
+        // try find highest itemId from items to set seq
         if (itemIdSeq == -1) {
-            // if this is not a new profile, oh no :(
+
             long tempId = itemIdSeq;
 
             for (Gun gun: profileGuns) {
