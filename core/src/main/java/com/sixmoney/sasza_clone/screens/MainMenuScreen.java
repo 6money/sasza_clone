@@ -35,7 +35,9 @@ public class MainMenuScreen implements Screen {
 
 	public MainMenuScreen(Sasza game) {
 		saszaGame = game;
-		saszaGame.loadProfile();
+		if (saszaGame.profile == null) {
+			saszaGame.loadProfile();
+		}
 		profile = saszaGame.profile;
 	}
 

@@ -120,8 +120,13 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     }
 
     public void setGun(int index) {
-        currentGun = guns.get(index);
-        setMaxLinearSpeed(defaultMaxLinearSpeed);
+        if (guns.get(index) != null) {
+            if (currentGun != null) {
+                currentGun.resetReloadTimer();
+            }
+            currentGun = guns.get(index);
+            setMaxLinearSpeed(defaultMaxLinearSpeed);
+        }
     }
 
     public void setNewGun(String gunName) {

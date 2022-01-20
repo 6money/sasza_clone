@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -41,7 +42,7 @@ public class LoadoutScreen implements Screen {
 	private Profile profile;
 	private ControllerMenuStage stage;
 	private Skin skin;
-	private Table tableMenu;
+	private Table tableLoadoutBase;
 	private UIControllerInputHandler controllerInputHandler;
 	private Label labelProfileName;
 	private Button buttonBack;
@@ -54,10 +55,11 @@ public class LoadoutScreen implements Screen {
 
 	private int selectedSlot;
 	private Gun selectedGun;
-	private Array<Image> gunEquippedImages;
-	private Array<Label> gunEquippedLabels;
-	private Table gunEquippedTable;
-	private Array<Container<Image>> gunEquippedContainers;
+	private Array<Image> loadoutImages;
+	private Array<Label> loadoutLabels;
+	private Table tableLoadout;
+	private Table tableProfileWeapons;
+	private Array<Container<Image>> loadoutContainers;
 
 	public LoadoutScreen(Sasza game) {
 		saszaGame = game;
@@ -74,173 +76,248 @@ public class LoadoutScreen implements Screen {
 		Controllers.addListener(controllerInputHandler);
 
 		selectedSlot = 0;
-		gunEquippedImages = new Array<>(true, 3);
-		gunEquippedContainers = new Array<>(true, 3);
-		gunEquippedLabels = new Array<>(true, 3);
+		loadoutImages = new Array<>(true, 3);
+		loadoutContainers = new Array<>(true, 3);
+		loadoutLabels = new Array<>(true, 3);
 
-		tableMenu = new Table(skin);
-		tableMenu.setFillParent(true);
-		tableMenu.pad(5);
-		tableMenu.defaults().space(5);
-		tableMenu.setBackground(skin.getDrawable("bg-tile-ten"));
+		tableLoadoutBase = new Table(skin);
+		tableLoadoutBase.setFillParent(true);
+		tableLoadoutBase.pad(5);
+		tableLoadoutBase.defaults().space(5);
+		tableLoadoutBase.setBackground(skin.getDrawable("bg-tile-ten"));
 
 		// row start //
 		Label title = new Label("Loadout", skin);
 		title.setAlignment(Align.center);
-		tableMenu.add(title).colspan(2).height(100).expandX();
+		tableLoadoutBase.add(title).colspan(2).height(100).expandX();
+
+		tableLoadout = new Table(skin); // table for currently equipped items
+		tableProfileWeapons = new Table(skin); // table for all items in account
+		tableProfileWeapons.defaults().growX();
 
 		// row start //
-		tableMenu.row();
-		gunEquippedTable = new Table(skin);
-		for (int i = 0; i <= 2; i++) {
-			Gun gun = profile.getLoadout().get(i);
-			Table table = new Table(skin);
-			table.setTouchable(Touchable.enabled);
-			table.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+		tableLoadoutBase.row();
+		for (int i = 0; i < 3; i++) {
+			Table tableLoadoutInner = new Table(skin);
+			tableLoadoutInner.setTouchable(Touchable.enabled);
+			if (i == 0) {
+				tableLoadoutInner.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("health_bar"), 1, 1, 1, 1)));
+			} else {
+				tableLoadoutInner.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+			}
 			Label slotName = new Label("Slot " + (i + 1), skin);
 			slotName.setAlignment(Align.center);
-			table.add(slotName).fill().expandX();
-			table.row();
-			gunEquippedImages.add(new Image(new TextureRegionDrawable(gun.getWeaponSprite()), Scaling.fit));
-			gunEquippedContainers.add(new Container<>(gunEquippedImages.get(i)));
-			gunEquippedContainers.get(i).width(gun.getWeaponSprite().getRegionWidth() * 4).height(gun.getWeaponSprite().getRegionHeight() * 4);
-			table.add(gunEquippedContainers.get(i)).width(200).height(75).align(Align.center);
-			table.row();
-			gunEquippedLabels.add(new Label(gun.getName(), skin));
-			gunEquippedLabels.get(i).setAlignment(Align.center);
-			table.add(gunEquippedLabels.get(i)).fill().expandX();
-			table.addListener(new InputListener() {
+			tableLoadoutInner.add(slotName).fill().expandX();
+			tableLoadoutInner.row();
+			loadoutImages.add(new Image(null, Scaling.fit));
+			loadoutContainers.add(new Container<>(loadoutImages.get(i)));
+			tableLoadoutInner.add(loadoutContainers.get(i)).width(200).height(75).align(Align.center);
+			loadoutLabels.add(new Label("", skin));
+			loadoutLabels.get(i).setAlignment(Align.center);
+			if (profile.getLoadout().get(i) != null) {
+				Gun gun = profile.getLoadout().get(i);
+				loadoutImages.get(i).setDrawable(new TextureRegionDrawable(gun.getWeaponSprite()));
+				loadoutImages.get(i).setDrawable(new TextureRegionDrawable(gun.getWeaponSprite()));
+				loadoutContainers.get(i).width(gun.getWeaponSprite().getRegionWidth() * 4).height(gun.getWeaponSprite().getRegionHeight() * 4);
+				loadoutLabels.get(i).setText(gun.getName());
+			}
+			tableLoadoutInner.row();
+			tableLoadoutInner.add(loadoutLabels.get(i)).fill().expandX();
+			int finalI = i;
+			tableLoadoutInner.addListener(new InputListener() {
 				@Override
 				public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 					super.enter(event, x, y, pointer, fromActor);
-					table.background(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("reload_bar"), 1, 1, 1, 1)));
+					if (selectedSlot != finalI) {
+						tableLoadoutInner.background(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("reload_bar"), 1, 1, 1, 1)));
+					}
 				}
 
 				@Override
 				public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
 					super.exit(event, x, y, pointer, toActor);
-					table.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+					if (selectedSlot != finalI) {
+						tableLoadoutInner.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+					}
 				}
 			});
-			int finalI = i;
-			table.addListener(new ClickListener() {
+			tableLoadoutInner.addListener(new ClickListener() {
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					selectedSlot = finalI;
 					super.touchDown(event, x, y, pointer, button);
+					selectedSlot = finalI;
+					if (profile.getLoadout().get(selectedSlot) != null) {
+						setWeaponDetails(profile.getLoadout().get(selectedSlot));
+					}
+					selectedGun = null;
+
+					for (Cell<Table> cell: tableLoadout.getCells()) {
+						cell.getActor().setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+					}
+					for (Cell<Table> cell: tableProfileWeapons.getCells()) {
+						cell.getActor().setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+					}
+
+					tableLoadoutInner.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("health_bar"), 1, 1, 1, 1)));
 
 					return true;
 				}
 			});
-			gunEquippedTable.add(table);
+			tableLoadout.add(tableLoadoutInner);
 		}
-		tableMenu.add(gunEquippedTable).colspan(2).height(120).expandX();
-		tableMenu.defaults().space(5).grow();
+		tableLoadoutBase.add(tableLoadout).colspan(2).height(120).expandX();
+		tableLoadoutBase.defaults().space(5).grow();
 
 
 		// row start //
-		tableMenu.row();
-		Table gunTable = new Table(skin);
-		gunTable.defaults().growX();
+		tableLoadoutBase.row();
 		for (Gun gun: profile.getProfileGuns()) {
-			gunTable.row();
-			Table table = new Table(skin);
-			table.setTouchable(Touchable.enabled);
-			table.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+			tableProfileWeapons.row();
+			Table tableProfileWeaponsInner = new Table(skin);
+			tableProfileWeaponsInner.setTouchable(Touchable.enabled);
+			tableProfileWeaponsInner.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
 			Label gunName = new Label(gun.getName(), skin);
 			gunName.setAlignment(Align.center);
-			table.add(gunName).fill().expandX();
+			tableProfileWeaponsInner.add(gunName).fill().expandX();
 			Image gunSprite = new Image(new TextureRegionDrawable(gun.getWeaponSprite()), Scaling.fit);
 			Container<Image> gunContainer = new Container<>(gunSprite);
 			gunContainer.width(gun.getWeaponSprite().getRegionWidth() * 4).height(gun.getWeaponSprite().getRegionHeight() * 4);
-			table.add(gunContainer).align(Align.center).width(200).height(75);
-			table.addListener(new InputListener() {
+			tableProfileWeaponsInner.add(gunContainer).align(Align.center).width(200).height(75);
+			tableProfileWeaponsInner.addListener(new InputListener() {
 				@Override
 				public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 					super.enter(event, x, y, pointer, fromActor);
-					table.background(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("reload_bar"), 1, 1, 1, 1)));
+					if (selectedGun != gun) {
+						tableProfileWeaponsInner.background(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("reload_bar"), 1, 1, 1, 1)));
+					}
 				}
 
 				@Override
 				public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
 					super.exit(event, x, y, pointer, toActor);
-					table.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+					if (selectedGun != gun) {
+						tableProfileWeaponsInner.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+					}
 				}
 			});
-			table.addListener(new ClickListener() {
+			tableProfileWeaponsInner.addListener(new ClickListener() {
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 					super.touchDown(event, x, y, pointer, button);
 					selectedGun = gun;
 					setWeaponDetails(gun);
 
+					for (Cell<Table> cell: tableProfileWeapons.getCells()) {
+						cell.getActor().setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+					}
+
+					tableProfileWeaponsInner.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("health_bar"), 1, 1, 1, 1)));
+
 					return true;
 				}
 			});
-			gunTable.add(table);
+			tableProfileWeapons.add(tableProfileWeaponsInner);
 		}
-		Container<Table> container = new Container<Table>(gunTable);
-		container.align(Align.top).fillX();
-		ScrollPane scrollPane = new ScrollPane(container, skin);
-		tableMenu.add(scrollPane);
+		Container<Table> containerProfileWeapons = new Container<Table>(tableProfileWeapons);
+		containerProfileWeapons.align(Align.top).fillX();
+		ScrollPane scrollPaneProfileWeapons = new ScrollPane(containerProfileWeapons, skin);
+		scrollPaneProfileWeapons.addListener(new InputListener() {
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				stage.setScrollFocus(scrollPaneProfileWeapons);
+			}
 
-		Gun slot0Gun = profile.getLoadout().get(selectedSlot);
-		Table table2 = new Table(skin);
-		table2.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
-		table2.defaults().expand();
-		labelGunName = new Label(slot0Gun.getName(), skin);
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				stage.setScrollFocus(null);
+			}
+		});
+		tableLoadoutBase.add(scrollPaneProfileWeapons);
+
+		Table tableWeaponInfo = new Table(skin);
+		tableWeaponInfo.setBackground(new NinePatchDrawable(new NinePatch(Assets.get_instance().getPrivateAtlas().findRegion("background_bar"), 1, 1, 1, 1)));
+		tableWeaponInfo.defaults().expand();
+		labelGunName = new Label("", skin);
 		labelGunName.setAlignment(Align.center);
-		table2.add(labelGunName).colspan(2);
+		tableWeaponInfo.add(labelGunName).colspan(2);
 
-		table2.row();
+		tableWeaponInfo.row();
 		Label labelDamage = new Label("Damage", skin);
-		labelDamageValue = new Label(String.valueOf(slot0Gun.getDamage()), skin);
-		table2.add(labelDamage);
-		table2.add(labelDamageValue);
+		labelDamageValue = new Label("", skin);
+		tableWeaponInfo.add(labelDamage);
+		tableWeaponInfo.add(labelDamageValue);
 
-		table2.row();
+		tableWeaponInfo.row();
 		Label labelFireRate = new Label("Fire rate", skin);
-		labelFireRateValue = new Label(String.valueOf(slot0Gun.getFireRate()), skin);
-		table2.add(labelFireRate);
-		table2.add(labelFireRateValue);
+		labelFireRateValue = new Label("", skin);
+		tableWeaponInfo.add(labelFireRate);
+		tableWeaponInfo.add(labelFireRateValue);
 
-		table2.row();
+		tableWeaponInfo.row();
 		Label labelRange = new Label("Range", skin);
-		labelRangeValue = new Label(String.valueOf(slot0Gun.getRange()), skin);
-		table2.add(labelRange);
-		table2.add(labelRangeValue);
+		labelRangeValue = new Label("", skin);
+		tableWeaponInfo.add(labelRange);
+		tableWeaponInfo.add(labelRangeValue);
 
-		table2.row();
+		tableWeaponInfo.row();
 		Label labelMagSize = new Label("Mag Size", skin);
-		labelMagSizeValue = new Label(String.valueOf(slot0Gun.getMagazineSize()), skin);
-		table2.add(labelMagSize);
-		table2.add(labelMagSizeValue);
+		labelMagSizeValue = new Label("", skin);
+		tableWeaponInfo.add(labelMagSize);
+		tableWeaponInfo.add(labelMagSizeValue);
 
-		table2.row();
+		tableWeaponInfo.row();
 		Label labelReloadTime = new Label("Reload Time", skin);
-		labelReloadTimeValue = new Label(String.valueOf(slot0Gun.getReloadTime()), skin);
-		table2.add(labelReloadTime);
-		table2.add(labelReloadTimeValue);
+		labelReloadTimeValue = new Label("", skin);
+		tableWeaponInfo.add(labelReloadTime);
+		tableWeaponInfo.add(labelReloadTimeValue);
 
-		table2.row();
+		if (profile.getLoadout().get(selectedSlot) != null) {
+			setWeaponDetails(profile.getLoadout().get(selectedSlot));
+		}
+
+		tableWeaponInfo.row();
 		TextButton buttonSwitchWeapon = new TextButton("Select Weapon", skin);
 		buttonSwitchWeapon.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				if (selectedGun == null) {
+					return;
+				}
+
+				for (Gun gun: profile.getLoadout()) {
+					if (gun != null && gun.getItemId() == selectedGun.getItemId()) {
+						int slot = profile.getLoadout().indexOf(gun, true);
+						loadoutLabels.get(slot).setText("");
+						loadoutImages.get(slot).setDrawable(null);
+						profile.getLoadout().set(slot, null);
+						break;
+					}
+				}
+
 				profile.getLoadout().set(selectedSlot, selectedGun);
 				profile.setLoadout(profile.getLoadout());
-				gunEquippedLabels.get(selectedSlot).setText(selectedGun.getName());
-				gunEquippedImages.get(selectedSlot).setDrawable(new TextureRegionDrawable(selectedGun.getWeaponSprite()));
-				gunEquippedContainers.get(selectedSlot).width(selectedGun.getWeaponSprite().getRegionWidth() * 4).height(selectedGun.getWeaponSprite().getRegionHeight() * 4);
-				tableMenu.pack();
+				loadoutLabels.get(selectedSlot).setText(selectedGun.getName());
+				loadoutImages.get(selectedSlot).setDrawable(new TextureRegionDrawable(selectedGun.getWeaponSprite()));
+				loadoutContainers.get(selectedSlot).width(selectedGun.getWeaponSprite().getRegionWidth() * 4).height(selectedGun.getWeaponSprite().getRegionHeight() * 4);
 			}
 		});
-		table2.add(buttonSwitchWeapon).colspan(2);
-		tableMenu.add(table2).width(stage.getWidth() / 3 * 2);
+		tableWeaponInfo.add(buttonSwitchWeapon);
+		TextButton buttonRemoveWeapon = new TextButton("Remove Weapon", skin);
+		buttonRemoveWeapon.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				loadoutLabels.get(selectedSlot).setText("");
+				loadoutImages.get(selectedSlot).setDrawable(null);
+				profile.getLoadout().set(selectedSlot, null);
+				profile.setLoadout(profile.getLoadout());
+			}
+		});
+		tableWeaponInfo.add(buttonRemoveWeapon);
+		tableLoadoutBase.add(tableWeaponInfo).width(stage.getWidth() / 3 * 2);
 
 
-		tableMenu.pack();
-		stage.addActor(tableMenu);
+		tableLoadoutBase.pack();
+		stage.addActor(tableLoadoutBase);
 
 		buttonBack = new Button(skin);
 		buttonBack.add(new Label("Back" ,skin));
@@ -255,13 +332,6 @@ public class LoadoutScreen implements Screen {
 			}
 		});
 		stage.addActor(buttonBack);
-
-//		labelProfileName = new Label(null, skin);
-//		if (!saszaGame.profile.getName().equals("default")) {
-//			labelProfileName.setText(saszaGame.profile.getName() + "\nLevel: " + saszaGame.profile.getProfileLevel());
-//		}
-//		labelProfileName.setPosition(20, stage.getHeight() - 30);
-//		stage.addActor(labelProfileName);
 
 		Gdx.input.setInputProcessor(stage);
 	}

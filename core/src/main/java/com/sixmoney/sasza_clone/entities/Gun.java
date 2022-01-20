@@ -37,6 +37,7 @@ public class Gun {
     private transient Vector2 muzzleFlashOffset;
     private transient Vector2 muzzleFlashOffsetReal;
     private WeaponCategory weaponType;
+    private long itemId;
 
     public Gun() {
     }
@@ -62,6 +63,7 @@ public class Gun {
         movementPenalty = gunData.movementPenalty;
         screenShake = gunData.screenShake;
         weaponType = gunData.category;
+        itemId = -1;
         initGun();
     }
 
@@ -89,6 +91,19 @@ public class Gun {
 
     public String getName() {
         return name;
+    }
+
+    public long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(long itemId) {
+        if (this.itemId != -1) {
+            Gdx.app.error(TAG, String.format("attempted to override itemId %s to %s", this.itemId, itemId));
+            throw new RuntimeException(String.format("attempted to override itemId %s to %s", this.itemId, itemId));
+        }
+
+        this.itemId = itemId;
     }
 
     public String getTextureName() {

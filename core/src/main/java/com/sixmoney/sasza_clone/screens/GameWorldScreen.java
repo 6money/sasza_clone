@@ -234,7 +234,6 @@ public class GameWorldScreen implements Screen {
     }
 
     public void switchWeapon(int index) {
-        level.getPlayer().getGun().resetReloadTimer();
         level.getPlayer().setGun(index);
         hud.updateWeaponSprite();
     }

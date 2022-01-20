@@ -260,6 +260,7 @@ public class OptionsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 preferenceManager.removeProfileData();
+                saszaGame.profile = null;
                 init_saved_settings();
             }
         });

@@ -169,6 +169,15 @@ public class PreferenceManager {
         preferences.flush();
     }
 
+    public long getProfileItemIdSeq() {
+        return preferences.getLong("profileItemIdSeq", -1);
+    }
+
+    public void setProfileItemIdSeq(long value) {
+        preferences.putLong("profileItemIdSeq", value);
+        preferences.flush();
+    }
+
     public String getProfileLoadout() {
         return preferences.getString("profileLoadout", "new");
     }
@@ -208,6 +217,7 @@ public class PreferenceManager {
 
     public void removeProfileData() {
         preferences.remove("profileName");
+        preferences.remove("profileItemIdSeq");
         preferences.remove("profileLevel");
         preferences.remove("profileLoadout");
         preferences.remove("profileWeapons");
