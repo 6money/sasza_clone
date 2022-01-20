@@ -46,12 +46,17 @@ public class LoadoutScreen implements Screen {
 	private UIControllerInputHandler controllerInputHandler;
 	private Label labelProfileName;
 	private Button buttonBack;
+	private Label labelGunName;
 	private Label labelDamageValue;
 	private Label labelFireRateValue;
-	private Label labelRangeValue;
+	private Label labelCritChanceValue;
+	private Label labelCritDamageValue;
 	private Label labelMagSizeValue;
 	private Label labelReloadTimeValue;
-	private Label labelGunName;
+	private Label labelRangeValue;
+	private Label labelBloomValue;
+	private Label labelPenetrationValue;
+	private Label labelMovementPenaltyValue;
 
 	private int selectedSlot;
 	private Gun selectedGun;
@@ -254,10 +259,16 @@ public class LoadoutScreen implements Screen {
 		tableWeaponInfo.add(labelFireRateValue);
 
 		tableWeaponInfo.row();
-		Label labelRange = new Label("Range", skin);
-		labelRangeValue = new Label("", skin);
-		tableWeaponInfo.add(labelRange);
-		tableWeaponInfo.add(labelRangeValue);
+		Label labelCritChance = new Label("Crit Chance", skin);
+		labelCritChanceValue = new Label("", skin);
+		tableWeaponInfo.add(labelCritChance);
+		tableWeaponInfo.add(labelCritChanceValue);
+
+		tableWeaponInfo.row();
+		Label labelCritDamage = new Label("Crit Damage", skin);
+		labelCritDamageValue = new Label("", skin);
+		tableWeaponInfo.add(labelCritDamage);
+		tableWeaponInfo.add(labelCritDamageValue);
 
 		tableWeaponInfo.row();
 		Label labelMagSize = new Label("Mag Size", skin);
@@ -270,6 +281,30 @@ public class LoadoutScreen implements Screen {
 		labelReloadTimeValue = new Label("", skin);
 		tableWeaponInfo.add(labelReloadTime);
 		tableWeaponInfo.add(labelReloadTimeValue);
+
+		tableWeaponInfo.row();
+		Label labelRange = new Label("Range", skin);
+		labelRangeValue = new Label("", skin);
+		tableWeaponInfo.add(labelRange);
+		tableWeaponInfo.add(labelRangeValue);
+
+		tableWeaponInfo.row();
+		Label labelBloom = new Label("Bloom", skin);
+		labelBloomValue = new Label("", skin);
+		tableWeaponInfo.add(labelBloom);
+		tableWeaponInfo.add(labelBloomValue);
+
+		tableWeaponInfo.row();
+		Label labelPenetration = new Label("Penetration", skin);
+		labelPenetrationValue = new Label("", skin);
+		tableWeaponInfo.add(labelPenetration);
+		tableWeaponInfo.add(labelPenetrationValue);
+
+		tableWeaponInfo.row();
+		Label labelMovementPenalty = new Label("Movement Penalty", skin);
+		labelMovementPenaltyValue = new Label("", skin);
+		tableWeaponInfo.add(labelMovementPenalty);
+		tableWeaponInfo.add(labelMovementPenaltyValue);
 
 		if (profile.getLoadout().get(selectedSlot) != null) {
 			setWeaponDetails(profile.getLoadout().get(selectedSlot));
@@ -375,8 +410,13 @@ public class LoadoutScreen implements Screen {
 		labelGunName.setText(gun.getName());
 		labelDamageValue.setText(String.valueOf(gun.getDamage()));
 		labelFireRateValue.setText(String.valueOf(gun.getFireRate()));
-		labelRangeValue.setText(String.valueOf(gun.getRange()));
-		labelReloadTimeValue.setText(String.valueOf(gun.getReloadTime()));
+		labelCritChanceValue.setText(String.valueOf(gun.getCritChance()));
+		labelCritDamageValue.setText(String.valueOf(gun.getCritDamage()));
 		labelMagSizeValue.setText(String.valueOf(gun.getMagazineSize()));
+		labelReloadTimeValue.setText(String.valueOf(gun.getReloadTime()));
+		labelRangeValue.setText(String.valueOf(gun.getRange()));
+		labelBloomValue.setText(String.valueOf(gun.getBloom()));
+		labelPenetrationValue.setText(String.valueOf(gun.getPenetration()));
+		labelMovementPenaltyValue.setText(String.valueOf(gun.getMovementPenalty()));
 	}
 }
