@@ -29,7 +29,7 @@ public class Case {
         caseTextureRegion = Assets.get_instance().weaponAssets.pistolProjectile;
         spawnTime = TimeUtils.nanoTime();
         dead = false;
-        velocity = 30;
+        velocity = 30 + MathUtils.random(-5 , 5);
     }
 
     public void update(float delta) {
