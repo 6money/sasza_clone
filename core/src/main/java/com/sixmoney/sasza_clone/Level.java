@@ -37,6 +37,7 @@ import com.sixmoney.sasza_clone.entities.BaseSoldier;
 import com.sixmoney.sasza_clone.entities.Bullet;
 import com.sixmoney.sasza_clone.entities.BulletCollisionSubObject;
 import com.sixmoney.sasza_clone.entities.Canopy;
+import com.sixmoney.sasza_clone.entities.Case;
 import com.sixmoney.sasza_clone.entities.Character;
 import com.sixmoney.sasza_clone.entities.DeadEntity;
 import com.sixmoney.sasza_clone.entities.Entity;
@@ -78,6 +79,7 @@ public class Level {
     public DelayedRemovalArray<BaseEnemy> enemyEntities;
     public Array<Entity> deadEntities;
     public final DelayedRemovalArray<Bullet> bullets;
+    public DelayedRemovalArray<Case> bulletCases;
     public Array<Vector2> spawnPoints;
     public DelayedRemovalArray<Utils.HitRecord> hitLocations;
 
@@ -106,6 +108,7 @@ public class Level {
         enemyEntities = new DelayedRemovalArray<>();
         deadEntities = new Array<>();
         bullets = new DelayedRemovalArray<>();
+        bulletCases = new DelayedRemovalArray<>();
         spawnPoints = new Array<>();
         hitLocations = new DelayedRemovalArray<>(100);
         font = new BitmapFont(Gdx.files.internal("fonts/arial-15.fnt"));
@@ -362,6 +365,14 @@ public class Level {
             }
         }
         bullets.end();
+        bulletCases.begin();
+        for (Case bulletCase: bulletCases) {
+            bulletCase.update(delta);
+            if (bulletCase.dead) {
+                bulletCases.removeValue(bulletCase, true);
+            }
+        }
+        bulletCases.end();
         hitLocations.begin();
         for (Utils.HitRecord hitLocation: hitLocations) {
             if (Utils.millisecondsSince(hitLocation.hitTime) >= 500) {
@@ -397,6 +408,9 @@ public class Level {
         }
         for (Bullet bullet: bullets) {
             bullet.render(batch);
+        }
+        for (Case bulletCase: bulletCases) {
+            bulletCase.render(batch);
         }
         for (BaseEnemy zom: enemyEntities) {
             zom.render(batch);
@@ -542,14 +556,22 @@ public class Level {
                 character.getGun().getCritDamage()
         );
 
+        Vector2 temp = character.bulletOffsetReal;
+        temp.setLength(temp.len() - 8);
+
+        Case bulletCase =  new Case(
+                character.position.x + Constants.PLAYER_CENTER.x + temp.x,
+                character.position.y + Constants.PLAYER_CENTER.y + temp.y,
+                character.rotation
+        );
+
         bullets.add(bullet);
+        bulletCases.add(bulletCase);
         world.add(bullet.item, bullet.bbox.x, bullet.bbox.y, bullet.bbox.width, bullet.bbox.height);
         character.getGun().decrementCurrentMagazineAmmo();
         character.triggerMuzzleFlash();
 
         if (character.getClass() == Player.class) {
-//            camera.position.x += MathUtils.random(-character.getGun().getScreenShake(), character.getGun().getScreenShake());
-//            camera.position.y += MathUtils.random(-character.getGun().getScreenShake(), character.getGun().getScreenShake());
             camera.shake((int) character.getGun().getScreenShake().x, (int) character.getGun().getScreenShake().y);
         }
     }

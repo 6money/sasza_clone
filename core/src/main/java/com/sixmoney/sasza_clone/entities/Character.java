@@ -52,7 +52,6 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected Vector2 bulletOffset;
     protected Gun currentGun;
     protected Array<Gun> guns;
-    protected boolean muzzleFlash;
     protected boolean muzzleFlashReset;
     protected long muzzleFlashStartTime;
     protected boolean showHealthBar;
@@ -66,6 +65,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     protected long stunDecayTimer;
 
     public boolean shooting;
+    public boolean muzzleFlash;
     public long shootStartTime;
     public long shootSpriteTime;
     public Animation<TextureRegion> deathAnimation;

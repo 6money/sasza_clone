@@ -52,6 +52,7 @@ public class Profile {
             addProfileGun(new Gun(GunData.svd));
             addProfileGun(new Gun(GunData.pkm));
             addProfileGun(new Gun(GunData.vaporizer));
+            setProfileGuns(profileGuns);
         }
 
         gunDataString = PreferenceManager.get_instance().getProfileLoadout();

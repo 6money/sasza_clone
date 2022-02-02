@@ -98,32 +98,32 @@ public class LightRenderer {
         }
 
 
-        for (Character npc: level.characterEntities) {
-            if (npc.shooting) {
-                tempLight = lightPool.obtain();
-                lights.add(tempLight);
-                tempLight.size = (80f / 100f) * 50;
-                tempLight.x = npc.position.x + Constants.PLAYER_CENTER.x + npc.bulletOffsetReal.x;
-                tempLight.y = npc.position.y + Constants.PLAYER_CENTER.y + npc.bulletOffsetReal.y - tempLight.size / 2f;
-                tempLight.yOrigin = tempLight.size / 2;
-                tempLight.rotation = npc.rotation;
-                tempLight.lightTexture = Assets.get_instance().lightAssets.light4;
-                tempLight.color = color2;
-            }
-        }
-
-        if (level.getPlayer().shooting) {
-            tempLight = lightPool.obtain();
-            lights.add(tempLight);
-            tempLight.reset();
-            tempLight.size = (80f / 100f) * 50;
-            tempLight.x = level.getPlayer().position.x + Constants.PLAYER_CENTER.x + level.getPlayer().bulletOffsetReal.x;
-            tempLight.y = level.getPlayer().position.y + Constants.PLAYER_CENTER.y + level.getPlayer().bulletOffsetReal.y - tempLight.size / 2f;
-            tempLight.yOrigin = tempLight.size / 2;
-            tempLight.rotation = level.getPlayer().rotation;
-            tempLight.lightTexture = Assets.get_instance().lightAssets.light4;
-            tempLight.color = color2;
-        }
+//        for (Character npc: level.characterEntities) {
+//            if (npc.muzzleFlash) {
+//                tempLight = lightPool.obtain();
+//                lights.add(tempLight);
+//                tempLight.size = (600f / 100f) * 6;
+//                tempLight.x = npc.position.x + Constants.PLAYER_CENTER.x + npc.bulletOffsetReal.x;
+//                tempLight.y = npc.position.y + Constants.PLAYER_CENTER.y + npc.bulletOffsetReal.y - tempLight.size / 2f;
+//                tempLight.yOrigin = tempLight.size / 2;
+//                tempLight.rotation = npc.rotation;
+//                tempLight.lightTexture = Assets.get_instance().lightAssets.light5;
+//                tempLight.color = Color.ORANGE;
+//            }
+//        }
+//
+//        if (level.getPlayer().muzzleFlash) {
+//            tempLight = lightPool.obtain();
+//            lights.add(tempLight);
+//            tempLight.reset();
+//            tempLight.size = (600f / 100f) * 6;
+//            tempLight.x = level.getPlayer().position.x + Constants.PLAYER_CENTER.x + level.getPlayer().bulletOffsetReal.x;
+//            tempLight.y = level.getPlayer().position.y + Constants.PLAYER_CENTER.y + level.getPlayer().bulletOffsetReal.y - tempLight.size / 2f;
+//            tempLight.yOrigin = tempLight.size / 2;
+//            tempLight.rotation = level.getPlayer().rotation;
+//            tempLight.lightTexture = Assets.get_instance().lightAssets.light5;
+//            tempLight.color = Color.ORANGE;
+//        }
     }
 
     public void render() {

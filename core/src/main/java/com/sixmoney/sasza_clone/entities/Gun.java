@@ -19,12 +19,12 @@ public class Gun {
     private float fireRate;
     private float range;
     private int maxAmmo;
-    private int currentAmmo;
-    private int currentMagazineAmmo;
+    private transient int currentAmmo;
+    private transient int currentMagazineAmmo;
     private float projectileSpeed;
     private float damage;
     private int reloadTime;
-    private long reloadTimer;
+    private transient long reloadTimer;
     private float bloom;
     private float impact;
     private int penetration;
@@ -87,6 +87,8 @@ public class Gun {
         muzzleFlashOffset = new Vector2(-6, 12);
         muzzleFlashOffsetReal = new Vector2(muzzleFlashOffset);
         reloadTimer = 0;
+        currentAmmo = maxAmmo;
+        currentMagazineAmmo = magazineSize;
     }
 
     public String getName() {
