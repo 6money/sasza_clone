@@ -169,8 +169,8 @@ public class PreferenceManager {
         preferences.flush();
     }
 
-    public long getProfileItemIdSeq() {
-        return preferences.getLong("profileItemIdSeq", -1);
+    public int getProfileItemIdSeq() {
+        return preferences.getInteger("profileItemIdSeq", -1);
     }
 
     public void setProfileItemIdSeq(long value) {

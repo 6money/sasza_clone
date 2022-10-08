@@ -14,7 +14,7 @@ public class Profile {
     private String name;
     private int profileLevel;
     private int profileXP;
-    private long itemIdSeq;
+    private int itemIdSeq;
     private Array<Float> profileScores;
     private Array<Gun> loadout;
     private Array<Gun> profileGuns;
@@ -84,9 +84,9 @@ public class Profile {
         // try find highest itemId from items to set seq
         if (itemIdSeq == -1) {
 
-            long tempId = itemIdSeq;
+            int tempId = itemIdSeq;
 
-            for (Gun gun: profileGuns) {
+            for (Gun gun: new Array.ArrayIterator<>(profileGuns)) {
                 if (gun.getItemId() > tempId) {
                     tempId = gun.getItemId();
                 }
@@ -141,7 +141,7 @@ public class Profile {
         Json json = new Json();
         JsonValue gunsJson = new JsonValue(JsonValue.ValueType.array);
 
-        for (Gun gun: loadout) {
+        for (Gun gun: new Array.ArrayIterator<>(loadout)) {
             String gunJson = json.toJson(gun);
             gunsJson.addChild(new JsonValue(gunJson));
         }
@@ -167,7 +167,7 @@ public class Profile {
         Json json = new Json();
         JsonValue gunsJson = new JsonValue(JsonValue.ValueType.array);
 
-        for (Gun gun: profileGuns) {
+        for (Gun gun: new Array.ArrayIterator<>(profileGuns)) {
             String gunJson = json.toJson(gun);
             gunsJson.addChild(new JsonValue(gunJson));
         }

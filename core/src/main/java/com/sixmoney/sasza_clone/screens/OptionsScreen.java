@@ -303,12 +303,15 @@ public class OptionsScreen implements Screen {
         checkboxFPS.setChecked(showFPS);
         checkboxCoords.setChecked(showCoords);
         checkboxScreenShake.setChecked(screenShake);
-        checkBoxVSync.setChecked(vSync);
         checkboxMobile.setChecked(showMobile);
         sliderStatusBarTransparency.setValue(statusBarTransparency);
         sliderPlayerStatusBarTransparency.setValue(playerStatusBarTransparency);
         sliderHitMarkerTransparency.setValue(hitMarkerTransparency);
-        sliderFps.setValue(fps);
+
+        if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            checkBoxVSync.setChecked(vSync);
+            sliderFps.setValue(fps);
+        }
 
 //        SoundManager.get_instance().updateSoundPreferences();
     }

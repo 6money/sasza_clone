@@ -33,11 +33,11 @@ public class Gun {
     private float movementPenalty;
     private Vector2 screenShake;
     private transient TextureRegion weaponSprite;
-    private transient Animation muzzleFlashAnimation;
+    private transient Animation<TextureRegion> muzzleFlashAnimation;
     private transient Vector2 muzzleFlashOffset;
     private transient Vector2 muzzleFlashOffsetReal;
     private WeaponCategory weaponType;
-    private long itemId;
+    private int itemId;
 
     public Gun() {
     }
@@ -95,14 +95,14 @@ public class Gun {
         return name;
     }
 
-    public long getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(long itemId) {
+    public void setItemId(int itemId) {
         if (this.itemId != -1) {
-            Gdx.app.error(TAG, String.format("attempted to override itemId %s to %s", this.itemId, itemId));
-            throw new RuntimeException(String.format("attempted to override itemId %s to %s", this.itemId, itemId));
+            Gdx.app.error(TAG, "attempted to override itemId " + this.itemId + " to " + itemId);
+            throw new RuntimeException("attempted to override itemId " + this.itemId + " to " + itemId);
         }
 
         this.itemId = itemId;
@@ -180,7 +180,7 @@ public class Gun {
         return weaponSprite;
     }
 
-    public Animation getMuzzleFlashAnimation() {
+    public Animation<TextureRegion> getMuzzleFlashAnimation() {
         return muzzleFlashAnimation;
     }
 
