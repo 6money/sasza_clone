@@ -11,8 +11,8 @@ public class EnemyTierTwo extends BaseEnemy {
         deathAnimation = Assets.get_instance().enemyAssets.zom2DyingAnimation;
         characterIdleLegTexture = Assets.get_instance().enemyAssets.enemyStand;
 
-        health = 200;
-        maxHealth = 200;
+        health = 160;
+        maxHealth = 160;
         maxLinearSpeed = 190f;
         damage = 15;
     }

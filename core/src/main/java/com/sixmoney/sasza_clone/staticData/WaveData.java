@@ -24,11 +24,17 @@ public class WaveData {
             new WaveRecord("BaseEnemy", 5, 10, 1f)
     });
 
+    public static Array<WaveRecord> dw2 = new Array<>(new WaveRecord[]{
+            new WaveRecord("BaseEnemy", 5, 10, 1f),
+            new WaveRecord("EnemyTierTwo", 10, Constants.WAVE_BREAK, 0.2f),
+            new WaveRecord("EnemyTierThree", 2, Constants.WAVE_BREAK, 1)
+    });
+
     public static final Map<String, Array<WaveRecord>[]> waveRecords = createWaveRecordMap();
     public static Map<String, Array<WaveRecord>[]> createWaveRecordMap() {
         Map<String, Array<WaveRecord>[]> map = new HashMap<>();
         map.put("level1", new Array[]{l1w1, l1w2, l1w3});
-        map.put("debug", new Array[]{dw1, dw1, dw1, dw1, dw1, dw1, dw1, dw1, dw1, dw1, dw1, dw1, dw1});
+        map.put("debug", new Array[]{dw1, dw2, dw1, dw2, dw1, dw2, dw1, dw2, dw1, dw2, dw1, dw2, dw1});
 
         return map;
     }
