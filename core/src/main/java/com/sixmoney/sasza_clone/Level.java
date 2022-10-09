@@ -375,11 +375,14 @@ public class Level {
         bulletCases.end();
         hitLocations.begin();
         for (Utils.HitRecord hitLocation: hitLocations) {
-            if (Utils.millisecondsSince(hitLocation.hitTime) >= 500) {
+            if (Utils.millisecondsSince(hitLocation.hitTime) >= 700) {
                 hitLocations.removeValue(hitLocation, true);
             } else if (Utils.millisecondsSince(hitLocation.hitTime) >= 200) {
-                hitLocation.alpha -= 2;
+                hitLocation.alpha -= Utils.millisecondsSince(hitLocation.hitTime) - hitLocation.milliSincehit;
+                Gdx.app.log(TAG, Float.toString(hitLocation.alpha));
             }
+
+            hitLocation.milliSincehit = Utils.millisecondsSince(hitLocation.hitTime);
         }
         hitLocations.end();
     }

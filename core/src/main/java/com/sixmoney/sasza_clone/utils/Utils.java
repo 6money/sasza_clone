@@ -13,7 +13,7 @@ public class Utils {
         DMR,
         LMG,
         SPECIAL
-    };
+    }
 
     public static void drawTextureRegion(Batch batch, TextureRegion region, float x, float y) {
         drawTextureRegion(batch, region, x, y, 0f);
@@ -65,6 +65,7 @@ public class Utils {
         public int damage;
         public boolean isCrit;
         public long hitTime;
+        public float milliSincehit;
         public float alpha;
 
         public HitRecord(float x, float y, float damage, boolean isCrit) {
@@ -73,6 +74,7 @@ public class Utils {
             this.damage = MathUtils.round(damage);
             this.isCrit = isCrit;
             this.hitTime = TimeUtils.nanoTime();
+            this.milliSincehit = 0;
             this.alpha = PreferenceManager.get_instance().getHitMarkerTransparency();
         }
     }
