@@ -62,12 +62,11 @@ public class Profile {
             JsonValue gunsJson = jsonReader.parse(gunDataString);
 
             for (JsonValue gunJson : gunsJson) {
-                if (gunJson.toString().equals("null")) {
-                    loadout.add(null);
-                } else {
-                    Gun gun = json.fromJson(Gun.class, gunJson.toJson(JsonWriter.OutputType.json));
+                if (!gunJson.toString().equals("null")) {Gun gun = json.fromJson(Gun.class, gunJson.toJson(JsonWriter.OutputType.json));
                     gun.initGun();
                     loadout.add(gun);
+                } else {
+                    loadout.add(null);
                 }
             }
         } else {
@@ -76,8 +75,9 @@ public class Profile {
         }
 
         if (loadout.size < 3) {
-            for (int i = 0; i <= 3 - loadout.size; i++)
-            loadout.add(null);
+            for (int i = 0; i <= 3 - loadout.size; i++) {
+                loadout.add(null);
+            }
         }
 
         // if this is not a new profile, oh no :(

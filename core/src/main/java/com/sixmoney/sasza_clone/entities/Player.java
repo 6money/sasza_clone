@@ -90,7 +90,14 @@ public class Player extends Character {
     }
 
     public void setWeapons(Array<Gun> weapons) {
-        guns = weapons;
+        guns.clear();
+
+        for (Gun gun: weapons) {
+            if (gun != null) {
+                guns.add(gun);
+            }
+        }
+
         initGuns();
         setGun(0);
     }

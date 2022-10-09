@@ -120,7 +120,7 @@ public abstract class Character extends Entity implements Steerable<Vector2> {
     }
 
     public void setGun(int index) {
-        if (guns.get(index) != null) {
+        if (guns.size > index) {
             if (currentGun != null) {
                 currentGun.resetReloadTimer();
             }
