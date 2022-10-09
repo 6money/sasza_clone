@@ -4,8 +4,7 @@ eclipse.project.name = appName + '-core'
 dependencies {
 //	api "com.badlogicgames.gdx:gdx:$gdxVersion"
 	implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-	implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-	api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+    api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
 	api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
 	api "com.github.raeleus.TenPatch:tenpatch:$tenPatchVersion"
 	api "com.crashinvaders.vfx:gdx-vfx-core:$gdxVfxCoreVersion"
