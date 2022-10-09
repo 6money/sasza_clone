@@ -32,4 +32,9 @@ public class BulletCollisionSubObject extends Entity {
     public void decrementHealth(float value) {
         parent.decrementHealth(value);
     }
+
+    public void updateSize(int buffer) {
+        bbox.width = parent.bbox.width + buffer * 2;
+        bbox.height = parent.bbox.height + buffer * 2;
+    }
 }

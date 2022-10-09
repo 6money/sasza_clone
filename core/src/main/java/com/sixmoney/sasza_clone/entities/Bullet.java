@@ -1,5 +1,6 @@
 package com.sixmoney.sasza_clone.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -99,6 +100,8 @@ public class Bullet extends Entity {
                     boolean isCrit = MathUtils.randomBoolean(critChance);
                     float realDamage = (!isCrit) ? damage : damage * critDamage;
 
+                    Gdx.app.log(TAG, "hit!" + item.userData.getClass().getCanonicalName());
+
                     if (((Entity) item.userData).destructible) {
                         ((Entity) item.userData).decrementHealth(realDamage);
 
@@ -106,6 +109,13 @@ public class Bullet extends Entity {
                             ((BaseEnemy) item.userData).incrementStun(impact);
                             penetrationCount += 1;
                             hitEntities.add(((Entity) item.userData));
+                            hitEntities.add((((BaseEnemy) item.userData).bulletCollisionSubObject));
+                            hitLocations.add(new Utils.HitRecord(collisions.get(collisions.others.indexOf(item)).touch.x, collisions.get(collisions.others.indexOf(item)).touch.y, realDamage, isCrit));
+                        } else if (item.userData instanceof BulletCollisionSubObject && ((BulletCollisionSubObject) item.userData).parent instanceof BaseEnemy) {
+                            ((BaseEnemy) ((BulletCollisionSubObject) item.userData).parent).incrementStun(impact);
+                            penetrationCount += 1;
+                            hitEntities.add(((Entity) item.userData));
+                            hitEntities.add((((BulletCollisionSubObject) item.userData).parent));
                             hitLocations.add(new Utils.HitRecord(collisions.get(collisions.others.indexOf(item)).touch.x, collisions.get(collisions.others.indexOf(item)).touch.y, realDamage, isCrit));
                         } else {
                             dead = true;
@@ -131,7 +141,7 @@ public class Bullet extends Entity {
         public Response filter(Item item, Item other) {
             if(other == null) return null;
             if (((Entity) other.userData).bulletCollidable) {
-                if (other.userData instanceof Character) {
+                if (other.userData instanceof Character || (other.userData instanceof BulletCollisionSubObject && ((BulletCollisionSubObject) other.userData).parent instanceof Character)) {
                     return Response.cross;
                 } else {
                     return Response.touch;

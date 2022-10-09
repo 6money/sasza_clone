@@ -25,6 +25,7 @@ public class Constants {
 
     // level stuff
     public static final int BBOX_BUFFER_ENVIRONMENT = 5;
+    public static final int BBOX_BUFFER_CHARACTERS = 6;
     public static final int BBOX_BUFFER_WALL = 2;
     public static final int MAX_DEAD_SPRITES = 200;
     public static final int WAVE_BREAK = 30;

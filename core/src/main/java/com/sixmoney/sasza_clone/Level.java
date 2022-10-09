@@ -239,6 +239,14 @@ public class Level {
         enemyEntities.addAll(entities);
         for (BaseEnemy enemy: enemyEntities) {
             world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
+            world.add(
+                    enemy.bulletCollisionSubObject.item,
+                    enemy.bulletCollisionSubObject.bbox.x,
+                    enemy.bulletCollisionSubObject.bbox.y,
+                    enemy.bulletCollisionSubObject.bbox.width,
+                    enemy.bulletCollisionSubObject.bbox.height
+            );
+
 
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
@@ -329,6 +337,11 @@ public class Level {
                 world.remove(enemy.item);
                 enemyEntities.removeValue(enemy, true);
                 deadEntities.add(new DeadEntity(enemy.position.x, enemy.position.y, enemy.rotation, enemy.deathAnimation));
+
+                if (enemy.bulletCollisionSubObject != null) {
+                    world.remove(enemy.bulletCollisionSubObject.item);
+                }
+
                 if (deadEntities.size > Constants.MAX_DEAD_SPRITES) {
                     deadEntities.removeIndex(0);
                 }
@@ -379,7 +392,6 @@ public class Level {
                 hitLocations.removeValue(hitLocation, true);
             } else if (Utils.millisecondsSince(hitLocation.hitTime) >= 200) {
                 hitLocation.alpha -= Utils.millisecondsSince(hitLocation.hitTime) - hitLocation.milliSincehit;
-                Gdx.app.log(TAG, Float.toString(hitLocation.alpha));
             }
 
             hitLocation.milliSincehit = Utils.millisecondsSince(hitLocation.hitTime);
@@ -628,6 +640,13 @@ public class Level {
                 }
 
                 world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
+                world.add(
+                        enemy.bulletCollisionSubObject.item,
+                        enemy.bulletCollisionSubObject.bbox.x,
+                        enemy.bulletCollisionSubObject.bbox.y,
+                        enemy.bulletCollisionSubObject.bbox.width,
+                        enemy.bulletCollisionSubObject.bbox.height
+                );
 
                 RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
                 RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);
@@ -681,6 +700,13 @@ public class Level {
             BaseEnemy enemy = (BaseEnemy) constructor.newInstance(x, y);
 
             world.add(enemy.item, enemy.bbox.x, enemy.bbox.y, enemy.bbox.width, enemy.bbox.height);
+            world.add(
+                    enemy.bulletCollisionSubObject.item,
+                    enemy.bulletCollisionSubObject.bbox.x,
+                    enemy.bulletCollisionSubObject.bbox.y,
+                    enemy.bulletCollisionSubObject.bbox.width,
+                    enemy.bulletCollisionSubObject.bbox.height
+            );
 
             RayConfiguration<Vector2> rayConfiguration = new CentralRayWithWhiskersConfig(enemy, 30, 12, 40);
             RaycastCollisionDetector<Vector2> raycastCollisionDetector = new JBumpRaycastCollisionDetector(world);

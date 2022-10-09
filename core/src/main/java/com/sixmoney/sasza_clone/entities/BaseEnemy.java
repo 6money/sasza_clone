@@ -3,6 +3,8 @@ package com.sixmoney.sasza_clone.entities;
 import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.dongbat.jbump.Collision;
@@ -27,6 +29,7 @@ public class BaseEnemy extends BaseNPC {
 
     public BaseEnemy(float x, float y) {
         super(x, y);
+        bbox = new Rectangle(x + Constants.PLAYER_CENTER.x * 0.80f, y + Constants.PLAYER_CENTER.y * 0.80f, MathUtils.round(Constants.PLAYER_CENTER.x / 3.5f), MathUtils.round(Constants.PLAYER_CENTER.y / 3.5f));
         position = new Vector2(x, y);
         entityTextureRegion = Assets.get_instance().enemyAssets.zom1;
         destructible = true;
@@ -43,6 +46,8 @@ public class BaseEnemy extends BaseNPC {
         npcPlayerCollisionFilter = new ZomPlayerCollisionFilter();
         prioritySteering.setEnabled(false);
         pathSteering.setEnabled(false);
+        bulletCollisionSubObject = new BulletCollisionSubObject(this, Constants.BBOX_BUFFER_CHARACTERS);
+        bulletCollisionSubObject.bulletCollidable = true;
     }
 
 
@@ -72,6 +77,17 @@ public class BaseEnemy extends BaseNPC {
         }
     }
 
+    @Override
+    protected void updateBBox() {
+        bbox.x = position.x + Constants.PLAYER_CENTER.x * 0.85f;
+        bbox.y = position.y + Constants.PLAYER_CENTER.y * 0.85f;
+
+        if (bulletCollisionSubObject != null) {
+            bulletCollisionSubObject.bbox.x = position.x + Constants.PLAYER_CENTER.x * 0.67f;
+            bulletCollisionSubObject.bbox.y = position.y + Constants.PLAYER_CENTER.y * 0.67f;
+        }
+    }
+
     private void attack(Entity entity) {
         if (Utils.secondsSince(attackDelayTimer) >= Constants.ENEMY_ATTACK_SPEED || attackDelayTimer == 0) {
             attackDelayTimer = TimeUtils.nanoTime();
@@ -81,6 +97,10 @@ public class BaseEnemy extends BaseNPC {
 
     public void renderDebug(ShapeDrawer drawer) {
         super.renderDebug(drawer);
+
+        if (bulletCollisionSubObject != null && bulletCollidable) {
+            drawer.rectangle(bulletCollisionSubObject.bbox, Color.ORANGE);
+        }
 
         if (pathSteering.isEnabled()) {
             LinePath<Vector2> path = (LinePath<Vector2>) ((FollowPath<Vector2, LinePath.LinePathParam>) steeringBehaviors.get(2)).getPath();
