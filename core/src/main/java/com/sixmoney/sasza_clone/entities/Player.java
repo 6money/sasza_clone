@@ -83,8 +83,15 @@ public class Player extends Character {
         animationStartTime = 0;
     }
 
+    private void initGuns() {
+        for (Gun gun: guns) {
+            gun.initGun();
+        }
+    }
+
     public void setWeapons(Array<Gun> weapons) {
         guns = weapons;
+        initGuns();
         setGun(0);
     }
 
