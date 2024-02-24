@@ -12,7 +12,7 @@ buildscript {
 	dependencies {
 		classpath "com.android.tools.build:gradle:$androidPluginVersion"
 		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
-		classpath 'com.badlogicgames.gdx:gdx-tools:1.11.0'
+		classpath 'com.badlogicgames.gdx:gdx-tools:1.12.1'
 		classpath "space.earlygrey:shapedrawer:$shapedrawerVersion"
 		classpath files("libs/libgdx-inGameConsole-1.0.0.jar")
 	}
@@ -64,6 +64,9 @@ configure(subprojects - project(':android')) {
 	project.tasks.compileJava.dependsOn packTextures
 	project.tasks.compileJava.dependsOn packPrivateTextures
 	project.tasks.compileJava.dependsOn copyLevels
+	packTextures.dependsOn(':lwjgl3:processResources')
+	packPrivateTextures.dependsOn(':lwjgl3:processResources')
+	copyLevels.dependsOn(':lwjgl3:processResources')
 }
 
 subprojects {

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 
 android {
-	compileSdkVersion 30
+	namespace 'com.sixmoney.sasza_clone'
 	sourceSets {
 		main {
 			manifest.srcFile 'AndroidManifest.xml'
@@ -32,7 +32,7 @@ android {
 	defaultConfig {
 		applicationId 'com.sixmoney.sasza_clone'
 		minSdkVersion 23
-		targetSdkVersion 30
+		targetSdkVersion 33
 		versionCode 1
 		versionName "1.0"
 		multiDexEnabled true
@@ -60,7 +60,7 @@ repositories {
 configurations { natives }
 
 dependencies {
-	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 	implementation project(':core')
 	implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
 	implementation "com.badlogicgames.gdx-controllers:gdx-controllers-android:$gdxControllersVersion"
